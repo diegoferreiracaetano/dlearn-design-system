@@ -34,13 +34,9 @@ jobs:
         id: version
         run: echo "VERSION_NAME=1.0.0-test" >> $GITHUB_ENV
 
-      # 🔹 Aqui a gente simula o build da XCFramework, sem precisar do Gradle real
-      - name: Generate fake XCFramework
-        run: |
-          mkdir -p designsystem/build/XCFrameworks/release/DesignSystem.xcframework
-          echo "Fake binary for test build" > designsystem/build/XCFrameworks/release/DesignSystem.xcframework/placeholder.txt
+      - name: Build iOS XCFramework
+        run: ./gradlew :designsystem:assembleDesignsystemReleaseXCFramework -PVERSION_NAME=${{ env.VERSION_NAME }}
 
-      # 🔹 Mesmo processo de criação do Package.swift
       - name: Prepare Swift Package (root level)
         run: |
           cp -R designsystem/build/XCFrameworks/release/DesignSystem.xcframework .
@@ -64,7 +60,6 @@ jobs:
           )
           EOF
 
-      # 🔹 Gera um artefato de teste para download
       - name: Upload test artifact
         uses: actions/upload-artifact@v4
         with:
