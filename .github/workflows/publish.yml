@@ -16,9 +16,11 @@ jobs:
       packages: write
 
     steps:
-      # 1️⃣ Checkout do repositório
+      # 1️⃣ Checkout do repositório com histórico completo
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # 2️⃣ Configura JDK (use 17, que é o padrão atual do KMP)
       - name: Set up JDK 17
@@ -53,7 +55,7 @@ jobs:
           mkdir -p SwiftPackage
           cp -R designsystem/build/XCFrameworks/release/DesignSystem.xcframework SwiftPackage/
 
-          VERSION=$(git describe --tags --always || echo "1.0.1")
+          VERSION=$(git describe --tags --always)
 
           cat <<EOF > SwiftPackage/Package.swift
           // swift-tools-version:5.9
