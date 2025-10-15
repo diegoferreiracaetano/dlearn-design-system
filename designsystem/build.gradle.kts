@@ -98,7 +98,7 @@ group = findProperty("GROUP") as String? ?: "com.diegoferreiracaetano.dlearn"
 version = findProperty("VERSION_NAME") as String? ?: "1.0.2"
 
 publishing {
-    publications.withType<MavenPublication>().configureEach {
+    publications.withType<MavenPublication>().configureEach { 
         // Adiciona um sufixo ao artifactId para diferenciar as publicações de cada plataforma,
         // exceto para a publicação principal que contém apenas os metadados.
         if (name != "kotlinMultiplatform") {
@@ -109,7 +109,7 @@ publishing {
 
         groupId = project.group.toString()
         version = project.version.toString()
-
+        
         pom {
             name.set("DesignSystem")
             description.set("Design System multiplataforma para Android e iOS")
@@ -141,5 +141,14 @@ publishing {
                 password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key") as String?
             }
         }
+    }
+}
+
+// Desabilita explicitamente as publicações do iOS no Maven,
+// pois a distribuição é feita via XCFramework.
+tasks.withType<PublishToMavenRepository>().configureEach {
+    val pubName = publication?.name
+    if (pubName?.startsWith("ios") == true || pubName == "js" || pubName == "wasmJs") {
+        enabled = false
     }
 }
