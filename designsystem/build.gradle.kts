@@ -107,7 +107,6 @@ publishing {
             artifactId = "designsystem"
         }
 
-        artifactId = "designsystem"
         groupId = project.group.toString()
         version = project.version.toString()
 
