@@ -32,7 +32,7 @@ jobs:
       - name: Build KMP Library
         run: |
           ./gradlew kotlinUpgradeYarnLock
-          ./gradlew :designsystem:assembleDebug -x kotlinWasmStoreYarnLock
+          ./gradlew :designsystem:assembleDebug
 
       # 5️⃣ Publica a lib KMP (por exemplo, no GitHub Packages)
       - name: Publish KMP Library to GitHub Packages
