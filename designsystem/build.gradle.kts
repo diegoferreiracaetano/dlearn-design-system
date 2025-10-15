@@ -117,7 +117,7 @@ publishing {
             pom {
                 name.set("DesignSystem")
                 description.set("Design System multiplataforma para Android e iOS")
-                url.set("https://github.com/diegoferreiracaetano/DLearnDesignSystem")
+                url.set("https://github.com/diegoferreiracaetano/dlearn-design-system")
                 licenses {
                     license {
                         name.set("MIT License")
@@ -131,7 +131,7 @@ publishing {
                     }
                 }
                 scm {
-                    url.set("https://github.com/diegoferreiracaetano/DLearnDesignSystem")
+                    url.set("https://github.com/diegoferreiracaetano/dlearn-design-system")
                 }
             }
         }
@@ -140,7 +140,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/diegoferreiracaetano/dlearndesignsystem")
+            url = uri("https://maven.pkg.github.com/diegoferreiracaetano/dlearn-design-system")
             credentials {
                 username = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.user") as String?
                 password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key") as String?
