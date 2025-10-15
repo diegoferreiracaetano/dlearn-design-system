@@ -126,8 +126,8 @@ publishing {
                 }
                 developers {
                     developer {
-                        id.set(System.getenv("GITHUB_ACTOR"))
-                        name.set(System.getenv("GITHUB_USER"))
+                        id.set("diegoferreiracaetano")
+                        name.set("Diego Ferreira Caetano")
                     }
                 }
                 scm {
