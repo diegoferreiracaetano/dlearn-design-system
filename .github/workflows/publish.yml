@@ -11,6 +11,9 @@ jobs:
   publish:
     name: Build & Publish DesignSystem (KMP + SPM)
     runs-on: macos-latest
+    permissions:
+      contents: write
+      packages: write
 
     steps:
       # 1️⃣ Checkout do repositório
