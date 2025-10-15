@@ -77,7 +77,6 @@ fun BannerCard(
     imageUrl: String? = null,
     onClick: () -> Unit
 ) {
-
     Card(
         modifier = modifier
             .aspectRatio(RATIO)
@@ -86,9 +85,7 @@ fun BannerCard(
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.DarkGray)
     ) {
-
         Box(modifier = Modifier.fillMaxSize()) {
-
             AppImage(
                 imageURL = imageUrl,
                 imageResource = imageResource,

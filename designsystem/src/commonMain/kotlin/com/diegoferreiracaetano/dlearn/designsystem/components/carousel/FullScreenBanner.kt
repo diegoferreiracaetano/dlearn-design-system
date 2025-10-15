@@ -26,13 +26,13 @@ import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.button.AppButton
 import com.diegoferreiracaetano.dlearn.designsystem.components.button.ButtonType
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
-import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_add_to_list
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_watch
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner1
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner2
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner3
+import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview

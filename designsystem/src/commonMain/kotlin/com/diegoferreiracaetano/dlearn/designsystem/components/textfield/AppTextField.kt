@@ -23,12 +23,12 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.email_message_validation
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.password_message_validation
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.title_email
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.title_password
+import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -103,21 +103,21 @@ fun AppTextField(
             },
             singleLine = true,
             colors =
-                OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = borderColor,
-                    unfocusedBorderColor = borderColor,
-                    errorBorderColor = colorScheme.error,
-                    cursorColor = textColor,
-                    focusedContainerColor = containerColor,
-                    unfocusedContainerColor = containerColor,
-                    errorContainerColor = containerColor,
-                    focusedTextColor = textColor,
-                    unfocusedTextColor = textColor,
-                    errorTextColor = textColor,
-                ),
+            OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = borderColor,
+                unfocusedBorderColor = borderColor,
+                errorBorderColor = colorScheme.error,
+                cursorColor = textColor,
+                focusedContainerColor = containerColor,
+                unfocusedContainerColor = containerColor,
+                errorContainerColor = containerColor,
+                focusedTextColor = textColor,
+                unfocusedTextColor = textColor,
+                errorTextColor = textColor,
+            ),
             modifier =
-                Modifier
-                    .fillMaxWidth(),
+            Modifier
+                .fillMaxWidth(),
         )
 
         if (supportingText != null) {
@@ -126,9 +126,9 @@ fun AppTextField(
                 color = supportingTextColor,
                 style = MaterialTheme.typography.bodySmall,
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = 4.dp, start = 16.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, start = 16.dp),
             )
         }
     }
@@ -144,8 +144,8 @@ fun AppTextFieldPreview() {
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier =
-                Modifier
-                    .padding(16.dp),
+            Modifier
+                .padding(16.dp),
         ) {
             AppTextField(
                 value = email,

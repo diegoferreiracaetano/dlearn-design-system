@@ -1,7 +1,6 @@
 package com.diegoferreiracaetano.dlearn.sample.components
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -18,6 +17,10 @@ import dlearn.sample.generated.resources.banner1
 import dlearn.sample.generated.resources.banner2
 import dlearn.sample.generated.resources.banner3
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+private const val RATING_1 = 4.5f
+private const val RATING_2 = 4.8f
+private const val RATING_3 = 4.2f
 
 @Preview
 @Composable
@@ -37,7 +40,7 @@ fun CardsScreen() {
         Res.drawable.banner2,
         Res.drawable.banner3
     )
-    val dummyRatings = listOf(4.5f, 4.8f, 4.2f)
+    val dummyRatings = listOf(RATING_1, RATING_2, RATING_3)
 
     LazyColumn(
         modifier = Modifier.padding(16.dp),
@@ -88,7 +91,6 @@ fun CardsScreen() {
                 description = "A carousel of movie video cards.",
                 codeSnippet = "Carousel(title = \"New Releases\", itemCount = 3) { MovieVideoCard(...) }"
             ) {
-
                 val carouselItems = dummyTitles.mapIndexed { index, value ->
                     CarouselItem(
                         title = value,

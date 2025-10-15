@@ -5,4 +5,8 @@
 
     <string name="title_email">E-mail</string>
     <string name="title_password">Senha</string>
+
+    <string name="overview_welcome_title">Bem-vindo ao Catálogo do DLearn Design System!</string>
+    <string name="overview_description">O DLearn Design System é um sistema de design de código aberto para a criação de produtos bonitos e utilizáveis.</string>
+    <string name="overview_explore">Explore os componentes abaixo para ver exemplos de como usá-los em seu aplicativo.</string>
 </resources>

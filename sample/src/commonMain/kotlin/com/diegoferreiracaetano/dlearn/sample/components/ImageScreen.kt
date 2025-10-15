@@ -10,8 +10,6 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.CircularImage
 import dlearn.sample.generated.resources.Res
 import dlearn.sample.generated.resources.banner1
-import dlearn.sample.generated.resources.banner2
-import dlearn.sample.generated.resources.banner3
 import dlearn.sample.generated.resources.dlearn_logo
 
 @Composable

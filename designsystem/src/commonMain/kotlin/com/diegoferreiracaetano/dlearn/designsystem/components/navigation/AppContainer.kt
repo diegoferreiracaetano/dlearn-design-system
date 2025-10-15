@@ -3,6 +3,7 @@ package com.diegoferreiracaetano.dlearn.designsystem.components.navigation
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.PermanentDrawerSheet
+import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -38,8 +41,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 private fun AppScaffoldContent(
     modifier: Modifier = Modifier,
-    topBar: AppTopBar? = null,
-    bottomBar: AppBottomNavigation? = null,
+    topBar: @Composable (() -> Unit)? = null,
+    bottomBar: @Composable (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState,
     scrollBehavior: TopAppBarScrollBehavior,
     content: @Composable (Modifier) -> Unit
@@ -51,23 +54,8 @@ private fun AppScaffoldContent(
                 hostState = snackBarHostState
             )
         },
-        topBar = {
-            topBar?.let {
-                AppTopBarFactory(
-                    config = it,
-                    scrollBehavior = scrollBehavior
-                )
-            }
-        },
-        bottomBar = {
-            bottomBar?.let {
-                AppBottomNavigationBar(
-                    items = it.items,
-                    onTabSelected = it.onTabSelected,
-                    selectedRoute = it.selectedRoute
-                )
-            }
-        }
+        topBar = { topBar?.invoke() },
+        bottomBar = { bottomBar?.invoke() }
     ) { innerPadding ->
 
         val baseModifier = modifier
@@ -78,7 +66,7 @@ private fun AppScaffoldContent(
             .padding(start = 8.dp, end = 8.dp)
 
         Box(
-            modifier = Modifier
+            modifier = baseModifier
                 .background(MaterialTheme.colorScheme.surface)
                 .fillMaxSize(),
             contentAlignment = Alignment.TopCenter
@@ -88,40 +76,69 @@ private fun AppScaffoldContent(
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppContainer(
     modifier: Modifier = Modifier,
-    topBar: AppTopBar? = null,
+    topBar: @Composable (() -> Unit)? = null,
     drawerContent: @Composable (ColumnScope.() -> Unit)? = null,
-    bottomBar: AppBottomNavigation? = null,
+    bottomBar: @Composable (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState()),
     content: @Composable (Modifier) -> Unit
 ) {
     if (drawerContent != null) {
-        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-        val scope = rememberCoroutineScope()
+        BoxWithConstraints {
+            val showPermanentDrawer = maxWidth > 600.dp
 
-        ModalNavigationDrawer(
-            drawerState = drawerState,
-            drawerContent = {
-                ModalDrawerSheet {
-                    drawerContent()
+            if (showPermanentDrawer) {
+                PermanentNavigationDrawer(
+                    drawerContent = {
+                        PermanentDrawerSheet {
+                            drawerContent()
+                        }
+                    },
+                    content = {
+                        AppScaffoldContent(
+                            modifier = modifier,
+                            topBar = topBar,
+                            bottomBar = bottomBar,
+                            snackBarHostState = snackBarHostState,
+                            scrollBehavior = scrollBehavior,
+                            content = content
+                        )
+                    }
+                )
+            } else {
+                val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+                val scope = rememberCoroutineScope()
+
+                val topBarWithMenu: @Composable () -> Unit = {
+                    AppTopBar(
+                        onMenuClick = { scope.launch { drawerState.open() } }
+                    )
                 }
-            },
-            content = {
-                AppScaffoldContent(
-                    modifier = modifier,
-                    topBar = topBar?.copy(onMenuClick = { scope.launch { drawerState.open() } }),
-                    bottomBar = bottomBar,
-                    snackBarHostState = snackBarHostState,
-                    scrollBehavior = scrollBehavior,
-                    content = content
+
+                ModalNavigationDrawer(
+                    drawerState = drawerState,
+                    drawerContent = {
+                        ModalDrawerSheet {
+                            drawerContent()
+                        }
+                    },
+                    content = {
+                        AppScaffoldContent(
+                            modifier = modifier,
+                            topBar = topBarWithMenu,
+                            bottomBar = bottomBar,
+                            snackBarHostState = snackBarHostState,
+                            scrollBehavior = scrollBehavior,
+                            content = content
+                        )
+                    }
                 )
             }
-        )
+        }
     } else {
         AppScaffoldContent(
             modifier = modifier,
@@ -134,18 +151,19 @@ fun AppContainer(
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun AppTopBarPreview() {
     DLearnTheme(darkTheme = true) {
         AppContainer(
-            topBar = AppTopBar(
-                title = "Create",
-                backgroundColor = MaterialTheme.colorScheme.background,
-                onBack = {}
-            ),
+            topBar = {
+                AppTopBar(
+                    title = "Create",
+                    backgroundColor = MaterialTheme.colorScheme.background,
+                    onBack = {}
+                )
+            }
         ) {
             Text(
                 text = "Container",

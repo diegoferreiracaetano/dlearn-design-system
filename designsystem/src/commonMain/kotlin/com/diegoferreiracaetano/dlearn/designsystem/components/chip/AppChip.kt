@@ -25,9 +25,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.chip_action_clear_selection
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.chip_description_dropdown
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.chip_label_categories
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.chip_label_movies
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.chip_label_series
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.diegoferreiracaetano.dlearn.designsystem.theme.Shapes
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+private val CHIP_GROUP_PADDING_VERTICAL = 8.dp
+private val CHIP_GROUP_PADDING_HORIZONTAL = 16.dp
+private val CHIP_SPACING = 8.dp
+private const val CHIP_BORDER_ALPHA = 0.5f
 
 data class AppChip(
     val label: String,
@@ -39,8 +51,8 @@ data class AppChip(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppChipGroup(
-    items: List<AppChip>,
     modifier: Modifier = Modifier,
+    items: List<AppChip>,
     onFilterChanged: (String?) -> Unit
 ) {
     var selectedFilterLabel by remember { mutableStateOf<String?>(null) }
@@ -54,8 +66,8 @@ fun AppChipGroup(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+            .padding(vertical = CHIP_GROUP_PADDING_VERTICAL, horizontal = CHIP_GROUP_PADDING_HORIZONTAL),
+        horizontalArrangement = Arrangement.spacedBy(CHIP_SPACING),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (selectedFilterLabel != null) {
@@ -65,14 +77,14 @@ fun AppChipGroup(
             }) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Clear selection",
+                    contentDescription = stringResource(Res.string.chip_action_clear_selection),
                     tint = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
 
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(CHIP_SPACING)
         ) {
             items(visibleChips) { chip ->
                 val isSelected = chip.label == selectedFilterLabel
@@ -97,7 +109,7 @@ fun AppChipGroup(
                         selectedTrailingIconColor = MaterialTheme.colorScheme.surface
                     ),
                     border = FilterChipDefaults.filterChipBorder(
-                        borderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                        borderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = CHIP_BORDER_ALPHA),
                         selectedBorderColor = Color.Transparent,
                         enabled = true,
                         selected = isSelected
@@ -106,10 +118,12 @@ fun AppChipGroup(
                         {
                             Icon(
                                 imageVector = Icons.Default.ArrowDropDown,
-                                contentDescription = null
+                                contentDescription = stringResource(Res.string.chip_description_dropdown)
                             )
                         }
-                    } else null
+                    } else {
+                        null
+                    }
                 )
             }
         }
@@ -123,13 +137,13 @@ fun AppChipGroupPreview() {
         AppChipGroup(
             items = listOf(
                 AppChip(
-                    label = "Séries"
+                    label = stringResource(Res.string.chip_label_series)
                 ),
                 AppChip(
-                    label = "Filmes"
+                    label = stringResource(Res.string.chip_label_movies)
                 ),
                 AppChip(
-                    label = "Categorias",
+                    label = stringResource(Res.string.chip_label_categories),
                     hasDropDown = true,
                     isFilter = false
                 )

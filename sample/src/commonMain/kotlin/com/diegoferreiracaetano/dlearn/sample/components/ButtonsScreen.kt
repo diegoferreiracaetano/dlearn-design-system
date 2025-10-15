@@ -49,7 +49,7 @@ fun ButtonsScreen() {
                 description = "A simple selection component.",
                 codeSnippet = "AppSelectionSimple(list = listOf(\"Option 1\", \"Option 2\"), selected = { _, _ -> })"
             ) {
-                AppSelectionSimple(list = listOf("Option 1", "Option 2", "Option 3"), selected = { _, _ -> })
+                AppSelectionSimple(list = listOf("Option 1", "Option 2", "Option 3"), onSelectionChanged = {})
             }
         }
     }

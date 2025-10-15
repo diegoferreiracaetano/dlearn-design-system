@@ -20,9 +20,13 @@ fun NavigationScreen() {
             ComponentScaffold(
                 title = "AppTopBar",
                 description = "The top app bar. A transparent version is also available.",
-                codeSnippet = "AppTopBar(title = \"Navigation\")\nAppTopBar(title = \"Navigation\", useTransparent = true)"
+                codeSnippet = "AppTopBar(title = " +
+                        "\"Navigation\")\nAppTopBar(title = \"Navigation\", useTransparent = true)"
             ) {
-                Text("This screen is displayed within an AppContainer.", modifier = Modifier.padding(16.dp))
+                Text(
+                    "This screen is displayed within an AppContainer.",
+                    modifier = Modifier.padding(16.dp)
+                )
             }
         }
         item {

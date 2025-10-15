@@ -33,7 +33,7 @@ fun CodeSnippet(code: String) {
             style = MaterialTheme.typography.bodyMedium.copy(fontFamily = FontFamily.Monospace)
         )
         IconButton(
-            onClick = { 
+            onClick = {
                 clipboardManager.setText(AnnotatedString(code))
             },
             modifier = Modifier.align(Alignment.TopEnd)

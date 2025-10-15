@@ -16,15 +16,16 @@ import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+private val PreviewPadding = 16.dp
+private val PreviewSpacing = 16.dp
+
 @Composable
 fun AppSwitcher(
-    isChecked: Boolean = false,
+    modifier: Modifier = Modifier,
+    isChecked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
     enabled: Boolean = true,
-    onCheckedChange: (Boolean) -> Unit = {},
-    modifier: Modifier = Modifier
 ) {
-    var switchChecked by remember { mutableStateOf(isChecked) }
-
     val customSwitchColors = SwitchDefaults.colors(
         checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
         checkedTrackColor = MaterialTheme.colorScheme.primary,
@@ -34,31 +35,36 @@ fun AppSwitcher(
 
     Switch(
         modifier = modifier,
-        checked = switchChecked,
+        checked = isChecked,
         enabled = enabled,
-        onCheckedChange = {
-            switchChecked = it
-            onCheckedChange(switchChecked)
-        },
+        onCheckedChange = onCheckedChange,
         colors = customSwitchColors
     )
 }
 
-@Preview()
+@Preview(showBackground = true)
 @Composable
 fun AppSwitchesPreview() {
     DLearnTheme {
         Column(
-            Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            Modifier.padding(PreviewPadding),
+            verticalArrangement = Arrangement.spacedBy(PreviewSpacing)
         ) {
+            var isChecked1 by remember { mutableStateOf(true) }
+            var isChecked2 by remember { mutableStateOf(false) }
+            val isChecked3 by remember { mutableStateOf(true) } // For disabled state
+
             AppSwitcher(
-                true
+                isChecked = isChecked1,
+                onCheckedChange = { isChecked1 = it }
             )
             AppSwitcher(
-                false
+                isChecked = isChecked2,
+                onCheckedChange = { isChecked2 = it }
             )
             AppSwitcher(
+                isChecked = isChecked3,
+                onCheckedChange = {},
                 enabled = false
             )
         }

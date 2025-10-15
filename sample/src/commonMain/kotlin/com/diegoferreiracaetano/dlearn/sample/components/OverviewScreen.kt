@@ -19,6 +19,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import dlearn.sample.generated.resources.Res
+import dlearn.sample.generated.resources.overview_description
+import dlearn.sample.generated.resources.overview_explore
+import dlearn.sample.generated.resources.overview_welcome_title
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun OverviewScreen() {
@@ -35,7 +40,7 @@ fun OverviewScreen() {
                     modifier = Modifier.padding(16.dp)
                 ) {
                     Text(
-                        text = "Bem-vindo ao Catálogo do DLearn Design System!",
+                        text = stringResource(Res.string.overview_welcome_title),
                         style = MaterialTheme.typography.headlineSmall,
                         textAlign = TextAlign.Center
                     )
@@ -66,7 +71,7 @@ fun OverviewScreen() {
                     modifier = Modifier.padding(16.dp)
                 ) {
                     Text(
-                        text = "O DLearn Design System é um sistema de design de código aberto para a criação de produtos bonitos e utilizáveis.",
+                        text = stringResource(Res.string.overview_description),
                         style = MaterialTheme.typography.bodyLarge,
                         textAlign = TextAlign.Center
                     )
@@ -81,7 +86,7 @@ fun OverviewScreen() {
                     modifier = Modifier.padding(16.dp)
                 ) {
                     Text(
-                        text = "Explore os principais componentes e veja como eles funcionam na prática. Use este catálogo como referência para criar suas próprias experiências incríveis.",
+                        text = stringResource(Res.string.overview_explore),
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center
                     )
