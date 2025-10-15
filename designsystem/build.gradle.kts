@@ -126,8 +126,8 @@ publishing {
                 }
                 developers {
                     developer {
-                        id.set("diegoferreiracaetano")
-                        name.set("Diego Ferreira Caetano")
+                        id.set(System.getenv("GITHUB_ACTOR"))
+                        name.set(System.getenv("GITHUB_USER"))
                     }
                 }
                 scm {
@@ -142,8 +142,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/diegoferreiracaetano/dlearn-design-system")
             credentials {
-                username = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.user") as String?
-                password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key") as String?
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
