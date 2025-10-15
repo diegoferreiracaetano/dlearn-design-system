@@ -11,25 +11,23 @@ plugins {
 
 subprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
+
     configure<io.gitlab.arturbosch.detekt.extensions.DetektExtension> {
         config.setFrom("${rootDir}/config/detekt/detekt.yml")
         buildUponDefaultConfig = true
         allRules = false
-
         source.setFrom("src")
-    }
-
-    tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
-        reports {
-            html.required.set(true)
-            xml.required.set(true)
-            txt.required.set(false)
-        }
     }
 
     tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
         jvmTarget = "17"
         exclude("**/build/**")
+
+        reports {
+            html.required.set(true)
+            xml.required.set(true)
+            txt.required.set(false)
+        }
     }
 
     tasks.register("detektAll") {
@@ -41,5 +39,10 @@ subprojects {
                 sub.tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().toList()
             }
         )
+    }
+    
+    // Garante que o detekt rode antes dos testes (o 'check' depende dos testes)
+    tasks.named("check").configure {
+        dependsOn(tasks.withType<io.gitlab.arturbosch.detekt.Detekt>())
     }
 }
