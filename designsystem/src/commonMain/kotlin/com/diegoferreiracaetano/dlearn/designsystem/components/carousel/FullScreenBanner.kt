@@ -19,7 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -28,21 +27,25 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.button.AppButton
 import com.diegoferreiracaetano.dlearn.designsystem.components.button.ButtonType
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
-import com.diegoferreiracaetano.dlearn.domain.video.Video
-import com.diegoferreiracaetano.dlearn.domain.video.VideoCategory
 import dlearn.designsystem.generated.resources.Res
 import dlearn.designsystem.generated.resources.action_add_to_list
 import dlearn.designsystem.generated.resources.action_watch
+import dlearn.designsystem.generated.resources.banner1
+import dlearn.designsystem.generated.resources.banner2
+import dlearn.designsystem.generated.resources.banner3
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-
 
 private const val RATIO = 12f / 16f
 
 @Composable
-private fun FullScreenVideo(
-    item: Video,
+fun FullScreenVideo(
     modifier: Modifier = Modifier,
+    title: String,
+    subtitle: String,
+    imageResource: DrawableResource? = null,
+    imageUrl: String? = null,
     onItemClick: () -> Unit,
     onWatchClick: () -> Unit,
     onAddToListClick: () -> Unit,
@@ -58,8 +61,9 @@ private fun FullScreenVideo(
             modifier = modifier.fillMaxWidth()
         ) {
             AppImage(
-                imageURL = item.imageUrl,
-                contentDescription = item.title,
+                imageURL = imageUrl,
+                imageResource = imageResource,
+                contentDescription = title,
                 modifier = Modifier
                     .fillMaxSize()
                     .statusBarsPadding()
@@ -85,13 +89,13 @@ private fun FullScreenVideo(
                     .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
             ) {
                 Text(
-                    text = item.title,
+                    text = title,
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.onPrimary
                 )
 
                 Text(
-                    text = item.subtitle,
+                    text = subtitle,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
                     modifier = Modifier.padding(vertical = 8.dp)
@@ -125,14 +129,12 @@ private fun FullScreenVideo(
 @Composable
 fun FullScreenBanner(
     modifier: Modifier = Modifier,
-    banners: List<Video>,
-    onItemClick: (Video) -> Unit,
-    onWatchClick: (Video) -> Unit,
-    onAddToListClick: (Video) -> Unit,
+    pageCount: Int,
+    pageContent: @Composable (pageIndex: Int) -> Unit
 ) {
     val pagerState = rememberPagerState(
         initialPage = 0,
-        pageCount = { banners.size }
+        pageCount = { pageCount }
     )
 
     Box(
@@ -141,22 +143,16 @@ fun FullScreenBanner(
         HorizontalPager(
             state = pagerState
         ) { pageIndex ->
-            val banner = banners[pageIndex]
-            FullScreenVideo(
-                item = banner,
-                onItemClick = { onItemClick(banner) },
-                onWatchClick = { onWatchClick(banner) },
-                onAddToListClick = { onAddToListClick(banner) },
-            )
+            pageContent(pageIndex)
         }
 
-        if (banners.size > 1) {
+        if (pageCount > 1) {
             PageIndicator(
-                banners.size,
+                pageCount,
                 currentPage = pagerState.currentPage,
                 modifier = Modifier
                     .padding(bottom = 8.dp)
-                    .align(BottomCenter)
+                    .align(Alignment.BottomCenter)
             )
         }
     }
@@ -165,75 +161,49 @@ fun FullScreenBanner(
 @Preview
 @Composable
 fun FullScreenVideoPreview() {
-
-    val itemVideo = Video(
-        id = "1",
-        title = "Introduction to Jetpack Compose",
-        subtitle = "Jetpack Compose",
-        description = "A comprehensive guide to Jetpack Compose for beginners.",
-        categories = listOf(VideoCategory.JETPACK_COMPOSE, VideoCategory.ANDROID),
-        imageUrl = "https://i3.ytimg.com/vi/n2t5_qA1Q-o/maxresdefault.jpg",
-        isFavorite = false,
-        rating = 4.5f,
-        url = "https://www.youtube.com/watch?v=n2t5_qA1Q-o"
-    )
-
     DLearnTheme {
         FullScreenVideo(
-            item = itemVideo,
+            title = "Introduction to Jetpack Compose",
+            subtitle = "Jetpack Compose",
+            imageResource = Res.drawable.banner1,
             onItemClick = { println("Clicked") },
             onWatchClick = { println("Watch Clicked") },
             onAddToListClick = { println("Add to List Clicked") }
         )
     }
-
 }
 
 @Preview
 @Composable
 fun FullScreenBannerPreview() {
-    val dummyBanners = listOf(
-        Video(
-            id = "1",
-            title = "Introduction to Jetpack Compose",
-            subtitle = "Jetpack Compose",
-            description = "A comprehensive guide to Jetpack Compose for beginners.",
-            categories = listOf(VideoCategory.JETPACK_COMPOSE, VideoCategory.ANDROID),
-            imageUrl = "https://i3.ytimg.com/vi/n2t5_qA1Q-o/maxresdefault.jpg",
-            isFavorite = false,
-            rating = 4.5f,
-            url = "https://www.youtube.com/watch?v=n2t5_qA1Q-o"
-        ),
-        Video(
-            id = "2",
-            title = "State Management in Compose",
-            subtitle = "Jetpack Compose",
-            description = "Learn how to manage state effectively in your Compose applications.",
-            categories = listOf(VideoCategory.JETPACK_COMPOSE, VideoCategory.ANDROID),
-            imageUrl = "https://i3.ytimg.com/vi/N_9o_L4nN5E/maxresdefault.jpg",
-            isFavorite = true,
-            rating = 4.8f,
-            url = "https://www.youtube.com/watch?v=N_9o_L4nN5E"
-        ),
-        Video(
-            id = "3",
-            title = "Dagger Hilt for Dependency Injection",
-            subtitle = "Android",
-            description = "Master dependency injection in Android with Dagger Hilt.",
-            categories = listOf(VideoCategory.ANDROID, VideoCategory.ARCHITECTURE),
-            imageUrl = "https://i3.ytimg.com/vi/g-2fcfd4gVE/maxresdefault.jpg",
-            isFavorite = false,
-            rating = 4.2f,
-            url = "https://www.youtube.com/watch?v=g-2fcfd4gVE"
-        )
+    val dummyTitles = listOf(
+        "Introduction to Jetpack Compose",
+        "State Management in Compose",
+        "Dagger Hilt for Dependency Injection"
+    )
+    val dummySubtitles = listOf(
+        "Jetpack Compose",
+        "Jetpack Compose",
+        "Android"
+    )
+    val dummyImageUrls = listOf(
+        Res.drawable.banner1,
+        Res.drawable.banner2,
+        Res.drawable.banner3
     )
 
     DLearnTheme {
         FullScreenBanner(
-            banners = dummyBanners,
-            onItemClick = { item -> println("Clicked ${item.title}") },
-            onWatchClick = { item -> println("Watch ${item.title}") },
-            onAddToListClick = { item -> println("Add to List ${item.title}") }
-        )
+            pageCount = dummyTitles.size,
+        ) { pageIndex ->
+            FullScreenVideo(
+                title = dummyTitles[pageIndex],
+                subtitle = dummySubtitles[pageIndex],
+                imageResource = dummyImageUrls[pageIndex],
+                onItemClick = { println("Clicked ${dummyTitles[pageIndex]}") },
+                onWatchClick = { println("Watch ${dummyTitles[pageIndex]}") },
+                onAddToListClick = { println("Add to List ${dummyTitles[pageIndex]}") }
+            )
+        }
     }
 }

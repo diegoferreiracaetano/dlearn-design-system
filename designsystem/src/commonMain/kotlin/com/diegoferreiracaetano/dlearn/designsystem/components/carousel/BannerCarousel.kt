@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -72,7 +73,8 @@ fun BannerCard(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String,
-    imageUrl: String,
+    imageResource: DrawableResource? = null,
+    imageUrl: String? = null,
     onClick: () -> Unit
 ) {
 
@@ -89,6 +91,7 @@ fun BannerCard(
 
             AppImage(
                 imageURL = imageUrl,
+                imageResource = imageResource,
                 contentDescription = title,
                 modifier = Modifier.fillMaxSize()
             )
@@ -100,7 +103,7 @@ fun BannerCard(
                         brush = Brush.verticalGradient(
                             colors = listOf(
                                 Color.Transparent,
-                                Color.Unspecified.copy(alpha = 0.8f)
+                                Color.Black.copy(alpha = 0.8f)
                             ),
                             startY = 300f
                         )

@@ -114,13 +114,13 @@ fun DLearnTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    if (darkTheme) darkScheme else lightScheme
+    val colorScheme = if (darkTheme) darkScheme else lightScheme
 
     CompositionLocalProvider(
         LocalExtendedColorScheme provides extendedColors
     ) {
         MaterialTheme(
-            colorScheme = darkScheme,
+            colorScheme = colorScheme,
             typography = DLearnTypography(),
             shapes = Shapes,
         ) {

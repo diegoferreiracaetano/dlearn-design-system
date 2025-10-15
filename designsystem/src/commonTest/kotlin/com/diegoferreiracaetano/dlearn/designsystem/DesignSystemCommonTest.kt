@@ -3,7 +3,7 @@ package com.diegoferreiracaetano.dlearn.designsystem
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ComposeAppCommonTest {
+class DesignSystemCommonTest {
 
     @Test
     fun example() {

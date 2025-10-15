@@ -27,7 +27,9 @@ data class AppTopBar(
     val onBack: () -> Unit = {},
     val onFavorite: () -> Unit = {},
     val backgroundColor: Color = Color.Unspecified,
-    val useTransparent: Boolean = false
+    val useTransparent: Boolean = false,
+    val navigationIcon: @Composable (() -> Unit)? = null,
+    val actions: @Composable (() -> Unit)? = null
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,7 +51,9 @@ object AppTopBarFactory {
             AppTopBarDefault(
                 title = config.title,
                 onBack = config.onBack,
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                navigationIcon = config.navigationIcon,
+                actions = config.actions
             )
         }
     }
@@ -60,7 +64,9 @@ object AppTopBarFactory {
 fun AppTopBarDefault(
     title: String,
     onBack: () -> Unit,
-    scrollBehavior: TopAppBarScrollBehavior? = null
+    scrollBehavior: TopAppBarScrollBehavior? = null,
+    navigationIcon: @Composable (() -> Unit)? = null,
+    actions: @Composable (() -> Unit)? = null
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -71,7 +77,7 @@ fun AppTopBarDefault(
             )
         },
 
-        navigationIcon = {
+        navigationIcon = navigationIcon ?: {
             IconButton(onClick = onBack) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -79,6 +85,7 @@ fun AppTopBarDefault(
                 )
             }
         },
+        actions = { actions?.invoke() },
         scrollBehavior = scrollBehavior,
     )
 }

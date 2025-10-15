@@ -29,3 +29,4 @@ dependencyResolutionManagement {
 }
 
 include(":designsystem")
+include(":sample")

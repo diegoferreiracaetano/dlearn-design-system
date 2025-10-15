@@ -20,12 +20,11 @@ fun AppImage(
     modifier: Modifier = Modifier
 ) {
 
-    val painter = if (imageResource != null && imageURL.isNullOrEmpty())
-        painterResource(imageResource)
-    else if (!imageURL.isNullOrEmpty())
-        rememberImagePainter(imageURL)
-    else
-        painterResource(Res.drawable.banner)
+    val painter = when {
+        imageResource != null -> painterResource(imageResource)
+        !imageURL.isNullOrEmpty() -> rememberImagePainter(imageURL)
+        else -> painterResource(Res.drawable.banner)
+    }
 
     Image(
         painter = painter,

@@ -27,20 +27,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
-import com.diegoferreiracaetano.dlearn.domain.video.Video
-import com.diegoferreiracaetano.dlearn.domain.video.VideoCategory
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ContinueWatchingCarousel(
+    modifier: Modifier = Modifier,
     title: String,
-    items: List<Video>,
-    onItemClick: (Video) -> Unit
+    itemCount: Int,
+    itemContent: @Composable (index: Int) -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
-
         Text(
             text = title,
             style = MaterialTheme.typography.titleLarge,
@@ -50,16 +48,11 @@ fun ContinueWatchingCarousel(
             ),
         )
 
-       LazyRow(
+        LazyRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(items.size) { index ->
-                val item = items[index]
-                ContinueWatchingCard(
-                    item = item,
-                    modifier = Modifier.width(350.dp), // ← largura maior para cortar o 2º
-                    onClick = { onItemClick(item) }
-                )
+            items(itemCount) { index ->
+                itemContent(index)
             }
         }
     }
@@ -69,8 +62,9 @@ private const val RATIO = 16f / 9f
 
 @Composable
 fun ContinueWatchingCard(
-    item: Video,
     modifier: Modifier = Modifier,
+    title: String,
+    imageUrl: String,
     onClick: () -> Unit
 ) {
     Column(
@@ -82,8 +76,8 @@ fun ContinueWatchingCard(
                 .clip(RoundedCornerShape(8.dp))
         ) {
             AppImage(
-                imageURL = item.imageUrl,
-                contentDescription = item.title,
+                imageURL = imageUrl,
+                contentDescription = title,
                 modifier = Modifier.fillMaxSize()
             )
 
@@ -112,7 +106,7 @@ fun ContinueWatchingCard(
         }
 
         Text(
-            text = item.title,
+            text = title,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
@@ -125,47 +119,28 @@ fun ContinueWatchingCard(
 @Preview
 @Composable
 fun ContinueWatchingPreview() {
-    val dummyBanners = listOf(
-        Video(
-            id = "1",
-            title = "Introduction to Jetpack Compose",
-            subtitle = "Jetpack Compose",
-            description = "A comprehensive guide to Jetpack Compose for beginners.",
-            categories = listOf(VideoCategory.JETPACK_COMPOSE, VideoCategory.ANDROID),
-            imageUrl = "https://i3.ytimg.com/vi/n2t5_qA1Q-o/maxresdefault.jpg",
-            isFavorite = false,
-            rating = 4.5f,
-            url = "https://www.youtube.com/watch?v=n2t5_qA1Q-o"
-        ),
-        Video(
-            id = "2",
-            title = "State Management in Compose",
-            subtitle = "Jetpack Compose",
-            description = "Learn how to manage state effectively in your Compose applications.",
-            categories = listOf(VideoCategory.JETPACK_COMPOSE, VideoCategory.ANDROID),
-            imageUrl = "https://i3.ytimg.com/vi/N_9o_L4nN5E/maxresdefault.jpg",
-            isFavorite = true,
-            rating = 4.8f,
-            url = "https://www.youtube.com/watch?v=N_9o_L4nN5E"
-        ),
-        Video(
-            id = "3",
-            title = "Dagger Hilt for Dependency Injection",
-            subtitle = "Android",
-            description = "Master dependency injection in Android with Dagger Hilt.",
-            categories = listOf(VideoCategory.ANDROID, VideoCategory.ARCHITECTURE),
-            imageUrl = "https://i3.ytimg.com/vi/g-2fcfd4gVE/maxresdefault.jpg",
-            isFavorite = false,
-            rating = 4.2f,
-            url = "https://www.youtube.com/watch?v=g-2fcfd4gVE"
-        )
+    val dummyTitles = listOf(
+        "Introduction to Jetpack Compose",
+        "State Management in Compose",
+        "Dagger Hilt for Dependency Injection"
+    )
+    val dummyImageUrls = listOf(
+        "https://i3.ytimg.com/vi/n2t5_qA1Q-o/maxresdefault.jpg",
+        "https://i3.ytimg.com/vi/N_9o_L4nN5E/maxresdefault.jpg",
+        "https://i3.ytimg.com/vi/g-2fcfd4gVE/maxresdefault.jpg"
     )
 
     DLearnTheme {
         ContinueWatchingCarousel(
             title = "Continue Watching",
-            items = dummyBanners,
-            onItemClick = {}
-        )
+            itemCount = dummyTitles.size,
+        ) { index ->
+            ContinueWatchingCard(
+                modifier = Modifier.width(350.dp),
+                title = dummyTitles[index],
+                imageUrl = dummyImageUrls[index],
+                onClick = {}
+            )
+        }
     }
 }

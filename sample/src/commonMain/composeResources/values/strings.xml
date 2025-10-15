@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="email_message_validation">Informe um e-mail válido.</string>
+    <string name="password_message_validation">Use uma senha válida.</string>
+
+    <string name="title_email">E-mail</string>
+    <string name="title_password">Senha</string>
+</resources>
