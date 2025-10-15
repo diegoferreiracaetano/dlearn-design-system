@@ -46,7 +46,7 @@ jobs:
 
       # 6️⃣ Gera o XCFramework para iOS
       - name: Build iOS XCFramework
-        run: ./gradlew :designsystem:assembleReleaseXCFramework -PVERSION_NAME=${{ env.VERSION_NAME }}
+        run: ./gradlew :designsystem:assembleDesignsystemReleaseXCFramework -PVERSION_NAME=${{ env.VERSION_NAME }}
 
       # 7️⃣ Cria o Package.swift dinamicamente
       - name: Create Swift Package structure

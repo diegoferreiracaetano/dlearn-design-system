@@ -16,7 +16,6 @@ kotlin {
         }
     }
 
-    val xcf = XCFramework()
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -26,7 +25,6 @@ kotlin {
                 baseName = "Sample"
                 isStatic = true
                 freeCompilerArgs += listOf("-Xbinary=bundleId=com.diegoferreiracaetano.dlearn.sample")
-                xcf.add(this)
             }
         }
     }
