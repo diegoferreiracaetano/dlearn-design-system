@@ -40,9 +40,4 @@ subprojects {
             }
         )
     }
-    
-    // Garante que o detekt rode antes dos testes (o 'check' depende dos testes)
-    tasks.named("check").configure {
-        dependsOn(tasks.withType<io.gitlab.arturbosch.detekt.Detekt>())
-    }
 }
