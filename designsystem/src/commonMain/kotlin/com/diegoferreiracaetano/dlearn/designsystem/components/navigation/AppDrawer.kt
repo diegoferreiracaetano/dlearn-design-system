@@ -23,7 +23,10 @@ fun AppDrawer(
     onItemSelected: (DrawerItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier.padding(16.dp)) {
+    Column(modifier = modifier
+        .padding(16.dp)
+        .padding(top = 60.dp)
+    ) {
         items.forEach { item ->
             NavigationDrawerItem(
                 label = { Text(item.route) },

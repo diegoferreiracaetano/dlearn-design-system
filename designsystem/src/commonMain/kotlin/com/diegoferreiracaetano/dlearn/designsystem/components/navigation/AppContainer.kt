@@ -3,6 +3,7 @@ package com.diegoferreiracaetano.dlearn.designsystem.components.navigation
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.PermanentDrawerSheet
+import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -63,7 +66,7 @@ private fun AppScaffoldContent(
             .padding(start = 8.dp, end = 8.dp)
 
         Box(
-            modifier = Modifier
+            modifier = baseModifier
                 .background(MaterialTheme.colorScheme.surface)
                 .fillMaxSize(),
             contentAlignment = Alignment.TopCenter
@@ -85,33 +88,57 @@ fun AppContainer(
     content: @Composable (Modifier) -> Unit
 ) {
     if (drawerContent != null) {
-        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-        val scope = rememberCoroutineScope()
+        BoxWithConstraints {
+            val showPermanentDrawer = maxWidth > 600.dp
 
-        val topBarWithMenu: @Composable () -> Unit = {
-            AppTopBar(
-                onMenuClick = { scope.launch { drawerState.open() } }
-            )
-        }
+            if (showPermanentDrawer) {
+                PermanentNavigationDrawer(
+                    drawerContent = {
+                        PermanentDrawerSheet {
+                            drawerContent()
+                        }
+                    },
+                    content = {
+                        AppScaffoldContent(
+                            modifier = modifier,
+                            topBar = topBar,
+                            bottomBar = bottomBar,
+                            snackBarHostState = snackBarHostState,
+                            scrollBehavior = scrollBehavior,
+                            content = content
+                        )
+                    }
+                )
+            } else {
+                val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+                val scope = rememberCoroutineScope()
 
-        ModalNavigationDrawer(
-            drawerState = drawerState,
-            drawerContent = {
-                ModalDrawerSheet {
-                    drawerContent()
+                val topBarWithMenu: @Composable () -> Unit = {
+                    AppTopBar(
+                        onMenuClick = { scope.launch { drawerState.open() } }
+                    )
                 }
-            },
-            content = {
-                AppScaffoldContent(
-                    modifier = modifier,
-                    topBar = topBarWithMenu,
-                    bottomBar = bottomBar,
-                    snackBarHostState = snackBarHostState,
-                    scrollBehavior = scrollBehavior,
-                    content = content
+
+                ModalNavigationDrawer(
+                    drawerState = drawerState,
+                    drawerContent = {
+                        ModalDrawerSheet {
+                            drawerContent()
+                        }
+                    },
+                    content = {
+                        AppScaffoldContent(
+                            modifier = modifier,
+                            topBar = topBarWithMenu,
+                            bottomBar = bottomBar,
+                            snackBarHostState = snackBarHostState,
+                            scrollBehavior = scrollBehavior,
+                            content = content
+                        )
+                    }
                 )
             }
-        )
+        }
     } else {
         AppScaffoldContent(
             modifier = modifier,
