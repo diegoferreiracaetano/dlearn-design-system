@@ -1,10 +1,8 @@
 name: Publish Release
-
-on:
+'on':
   push:
     tags:
       - '*'
-
 jobs:
   lint:
     name: Lint
