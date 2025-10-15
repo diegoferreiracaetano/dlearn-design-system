@@ -93,14 +93,47 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
+group = findProperty("GROUP") as String? ?: "com.diegoferreiracaetano.dlearn"
+version = findProperty("VERSION_NAME") as String? ?: "1.0.0"
+
 publishing {
     publications {
-        getByName<MavenPublication>("kotlinMultiplatform") {
-            groupId = "com.diegoferreiracaetano.dlearn"
-            artifactId = "designsystem"
-            version = "0.0.1"
+        // Publica apenas targets suportados no Maven (Android e JVM)
+        withType<MavenPublication>().all {
+            pom {
+                name.set("DesignSystem")
+                description.set("Design System multiplataforma para Kotlin, Android e iOS")
+                url.set("https://github.com/diegoferreiracaetano/DLearnDesignSystem")
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("https://opensource.org/licenses/MIT")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("diegoferreiracaetano")
+                        name.set("Diego Ferreira Caetano")
+                    }
+                }
+                scm {
+                    url.set("https://github.com/diegoferreiracaetano/DLearnDesignSystem")
+                }
+            }
+        }
+
+        // Cria publicação somente para Android e JVM
+        register<MavenPublication>("release") {
+            afterEvaluate {
+                listOf("androidRelease", "jvm").forEach { target ->
+                    if (components.findByName(target) != null) {
+                        from(components[target])
+                    }
+                }
+            }
         }
     }
+
     repositories {
         maven {
             name = "GitHubPackages"
