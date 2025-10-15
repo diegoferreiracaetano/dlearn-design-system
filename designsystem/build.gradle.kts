@@ -147,3 +147,8 @@ publishing {
         }
     }
 }
+
+// Desabilita explicitamente as publicações iOS no Maven
+tasks.matching { it.name.startsWith("publishIos") }.configureEach {
+    enabled = false
+}
