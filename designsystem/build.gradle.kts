@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.mavenPublish)
 }
 
 kotlin {
@@ -90,4 +91,28 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
+}
+
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.diegoferreiracaetano.dlearn"
+            artifactId = "designsystem"
+            version = "1.0.0"
+
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/diegoferreiracaetano/DLearnDesignSystem")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }
