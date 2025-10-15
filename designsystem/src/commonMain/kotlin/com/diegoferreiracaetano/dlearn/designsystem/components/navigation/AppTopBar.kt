@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -26,6 +27,7 @@ data class AppTopBar(
     val title: String,
     val onBack: () -> Unit = {},
     val onFavorite: () -> Unit = {},
+    val onMenuClick: (() -> Unit)? = null,
     val backgroundColor: Color = Color.Unspecified,
     val useTransparent: Boolean = false,
     val navigationIcon: @Composable (() -> Unit)? = null,
@@ -51,6 +53,7 @@ object AppTopBarFactory {
             AppTopBarDefault(
                 title = config.title,
                 onBack = config.onBack,
+                onMenuClick = config.onMenuClick,
                 scrollBehavior = scrollBehavior,
                 navigationIcon = config.navigationIcon,
                 actions = config.actions
@@ -64,6 +67,7 @@ object AppTopBarFactory {
 fun AppTopBarDefault(
     title: String,
     onBack: () -> Unit,
+    onMenuClick: (() -> Unit)?,
     scrollBehavior: TopAppBarScrollBehavior? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
     actions: @Composable (() -> Unit)? = null
@@ -78,11 +82,20 @@ fun AppTopBarDefault(
         },
 
         navigationIcon = navigationIcon ?: {
-            IconButton(onClick = onBack) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(Res.string.action_back)
-                )
+            if(onMenuClick != null) {
+                IconButton(onClick = onMenuClick) {
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = "Menu"
+                    )
+                }
+            } else {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(Res.string.action_back)
+                    )
+                }
             }
         },
         actions = { actions?.invoke() },
