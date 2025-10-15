@@ -16,7 +16,7 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
-        publishLibraryVariants("release", "debug")
+        publishLibraryVariants("release") // Publicar apenas a variante release
     }
 
     val xcf = XCFramework("DesignSystem")
@@ -98,41 +98,30 @@ group = findProperty("GROUP") as String? ?: "com.diegoferreiracaetano.dlearn"
 version = findProperty("VERSION_NAME") as String? ?: "1.0.2"
 
 publishing {
-    publications {
-        // Cria publicação apenas para Android e JVM
-        register<MavenPublication>("release") {
-            groupId = project.group.toString()
-            artifactId = "designsystem"
-            version = project.version.toString()
+    // Configura o POM para TODAS as publicações geradas pelo KMP
+    publications.withType<MavenPublication>().configureEach {
+        groupId = project.group.toString()
+        artifactId = "designsystem"
+        version = project.version.toString()
 
-            afterEvaluate {
-                // só adiciona componentes suportados
-                listOf("androidRelease", "jvm").forEach { target ->
-                    if (components.findByName(target) != null) {
-                        from(components[target])
-                    }
+        pom {
+            name.set("DesignSystem")
+            description.set("Design System multiplataforma para Android e iOS")
+            url.set("https://github.com/diegoferreiracaetano/dlearn-design-system")
+            licenses {
+                license {
+                    name.set("MIT License")
+                    url.set("https://opensource.org/licenses/MIT")
                 }
             }
-
-            pom {
-                name.set("DesignSystem")
-                description.set("Design System multiplataforma para Android e iOS")
+            developers {
+                developer {
+                    id.set("diegoferreiracaetano")
+                    name.set("Diego Ferreira Caetano")
+                }
+            }
+            scm {
                 url.set("https://github.com/diegoferreiracaetano/dlearn-design-system")
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://opensource.org/licenses/MIT")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("diegoferreiracaetano")
-                        name.set("Diego Ferreira Caetano")
-                    }
-                }
-                scm {
-                    url.set("https://github.com/diegoferreiracaetano/dlearn-design-system")
-                }
             }
         }
     }
