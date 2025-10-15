@@ -95,14 +95,10 @@ dependencies {
 
 publishing {
     publications {
-        register<MavenPublication>("release") {
+        getByName<MavenPublication>("kotlinMultiplatform") {
             groupId = "com.diegoferreiracaetano.dlearn"
             artifactId = "designsystem"
-            version = "1.0.0"
-
-            afterEvaluate {
-                from(components["release"])
-            }
+            version = "0.0.1"
         }
     }
     repositories {
