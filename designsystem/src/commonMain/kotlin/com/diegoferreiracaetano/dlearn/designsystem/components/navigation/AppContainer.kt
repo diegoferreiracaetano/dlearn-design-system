@@ -38,8 +38,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 private fun AppScaffoldContent(
     modifier: Modifier = Modifier,
-    topBar: AppTopBar? = null,
-    bottomBar: AppBottomNavigation? = null,
+    topBar: @Composable (() -> Unit)? = null,
+    bottomBar: @Composable (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState,
     scrollBehavior: TopAppBarScrollBehavior,
     content: @Composable (Modifier) -> Unit
@@ -51,23 +51,8 @@ private fun AppScaffoldContent(
                 hostState = snackBarHostState
             )
         },
-        topBar = {
-            topBar?.let {
-                AppTopBarFactory(
-                    config = it,
-                    scrollBehavior = scrollBehavior
-                )
-            }
-        },
-        bottomBar = {
-            bottomBar?.let {
-                AppBottomNavigationBar(
-                    items = it.items,
-                    onTabSelected = it.onTabSelected,
-                    selectedRoute = it.selectedRoute
-                )
-            }
-        }
+        topBar = { topBar?.invoke() },
+        bottomBar = { bottomBar?.invoke() }
     ) { innerPadding ->
 
         val baseModifier = modifier
@@ -88,14 +73,13 @@ private fun AppScaffoldContent(
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppContainer(
     modifier: Modifier = Modifier,
-    topBar: AppTopBar? = null,
+    topBar: @Composable (() -> Unit)? = null,
     drawerContent: @Composable (ColumnScope.() -> Unit)? = null,
-    bottomBar: AppBottomNavigation? = null,
+    bottomBar: @Composable (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState()),
     content: @Composable (Modifier) -> Unit
@@ -103,6 +87,12 @@ fun AppContainer(
     if (drawerContent != null) {
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val scope = rememberCoroutineScope()
+
+        val topBarWithMenu: @Composable () -> Unit = {
+            AppTopBar(
+                onMenuClick = { scope.launch { drawerState.open() } }
+            )
+        }
 
         ModalNavigationDrawer(
             drawerState = drawerState,
@@ -114,7 +104,7 @@ fun AppContainer(
             content = {
                 AppScaffoldContent(
                     modifier = modifier,
-                    topBar = topBar?.copy(onMenuClick = { scope.launch { drawerState.open() } }),
+                    topBar = topBarWithMenu,
                     bottomBar = bottomBar,
                     snackBarHostState = snackBarHostState,
                     scrollBehavior = scrollBehavior,
@@ -134,18 +124,19 @@ fun AppContainer(
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun AppTopBarPreview() {
     DLearnTheme(darkTheme = true) {
         AppContainer(
-            topBar = AppTopBar(
-                title = "Create",
-                backgroundColor = MaterialTheme.colorScheme.background,
-                onBack = {}
-            ),
+            topBar = {
+                AppTopBar(
+                    title = "Create",
+                    backgroundColor = MaterialTheme.colorScheme.background,
+                    onBack = {}
+                )
+            }
         ) {
             Text(
                 text = "Container",

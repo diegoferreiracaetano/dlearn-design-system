@@ -87,8 +87,6 @@ private val darkScheme =
         surfaceContainerHighest = surfaceContainerHighestDark,
     )
 
-
-
 val LocalExtendedColorScheme = staticCompositionLocalOf<ExtendedColorScheme> {
     error("No ExtendedColorScheme provided")
 }

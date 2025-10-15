@@ -31,15 +31,18 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.otp_error_default
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.otp_resend_in
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.otp_resend_now
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.otp_resend_prompt
+import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+private const val TIMEOUT = 1000L
+private const val COUNTDOWN = 59
 
 @Composable
 fun AppOtpVerification(
@@ -51,13 +54,13 @@ fun AppOtpVerification(
     onOtpTextChange: (text: String, isComplete: Boolean) -> Unit,
     onResendClick: () -> Unit,
 ) {
-    var countdown by remember { mutableStateOf(59) }
+    var countdown by remember { mutableStateOf(COUNTDOWN) }
     var isTimerRunning by remember { mutableStateOf(true) }
 
     LaunchedEffect(key1 = isTimerRunning) {
         if (isTimerRunning) {
             while (countdown > 0) {
-                delay(1000)
+                delay(TIMEOUT)
                 countdown--
             }
             isTimerRunning = false
@@ -65,7 +68,7 @@ fun AppOtpVerification(
     }
 
     val restartTimer = {
-        countdown = 59
+        countdown = COUNTDOWN
         isTimerRunning = true
     }
 
@@ -81,9 +84,9 @@ fun AppOtpVerification(
                 }
             },
             keyboardOptions =
-                KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.NumberPassword,
-                ),
+            KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.NumberPassword,
+            ),
             visualTransformation = VisualTransformation.None,
             decorationBox = {
                 Row(horizontalArrangement = Arrangement.Center) {
@@ -108,9 +111,9 @@ fun AppOtpVerification(
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
             )
         }
 
@@ -138,10 +141,10 @@ fun AppOtpVerification(
                 Text(
                     text = stringResource(Res.string.otp_resend_now),
                     modifier =
-                        Modifier.clickable {
-                            onResendClick()
-                            restartTimer()
-                        },
+                    Modifier.clickable {
+                        onResendClick()
+                        restartTimer()
+                    },
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary,
@@ -171,11 +174,11 @@ private fun CharView(
 
     Box(
         modifier =
-            Modifier
-                .width(50.dp)
-                .height(56.dp)
-                .border(1.dp, borderColor, shape)
-                .padding(4.dp),
+        Modifier
+            .width(50.dp)
+            .height(56.dp)
+            .border(1.dp, borderColor, shape)
+            .padding(4.dp),
         contentAlignment = Alignment.Center,
     ) {
         Text(

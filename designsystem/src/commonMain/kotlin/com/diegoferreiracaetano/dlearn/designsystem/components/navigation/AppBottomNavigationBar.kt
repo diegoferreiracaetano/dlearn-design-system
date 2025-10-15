@@ -29,6 +29,10 @@ import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.diegoferreiracaetano.dlearn.designsystem.util.isIOS
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+private val NavBarHeightSingleLine = 80.dp
+private val NavBarHeightTwoLines = 90.dp
+private val NavBarIosInsets = 28.dp
+
 data class AppBottomNavigation(
     val selectedRoute: String = tabList.first().route,
     val items: List<AppNavigationTab> = tabList,
@@ -42,67 +46,60 @@ data class AppNavigationTab(
     val unselectedIcon: ImageVector
 )
 
-
 @Composable
 fun AppBottomNavigationBar(
+    modifier: Modifier = Modifier,
     items: List<AppNavigationTab>,
     selectedRoute: String,
     onTabSelected: (String) -> Unit,
-    modifier: Modifier = Modifier
 ) {
+    NavigationBar(
+        modifier = modifier.height(if (isIOS) NavBarHeightTwoLines else NavBarHeightSingleLine),
+        windowInsets =
+        if (isIOS) WindowInsets(bottom = NavBarIosInsets) else NavigationBarDefaults.windowInsets
+    ) {
+        val customColors: NavigationBarItemColors = NavigationBarItemDefaults.colors(
+            indicatorColor = Color.Transparent
+        )
 
-        NavigationBar(
-            modifier = modifier.height(if (isIOS) 90.dp else 80.dp),
-            windowInsets =
-                if (isIOS) WindowInsets(bottom =  28.dp) else NavigationBarDefaults.windowInsets
-        ) {
-
-            val customColors: NavigationBarItemColors = NavigationBarItemDefaults.colors(
-                indicatorColor = Color.Transparent
+        items.forEach { tab ->
+            val isSelected = tab.route == selectedRoute
+            NavigationBarItem(
+                selected = isSelected,
+                onClick = { if (!isSelected) onTabSelected(tab.route) },
+                icon = {
+                    Icon(
+                        imageVector = if (isSelected) tab.selectedIcon else tab.unselectedIcon,
+                        contentDescription = tab.label,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                },
+                label = {
+                    Text(
+                        text = tab.label,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        style = if (isSelected) {
+                            MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.ExtraBold)
+                        } else {
+                            MaterialTheme.typography.labelSmall
+                        },
+                    )
+                },
+                colors = customColors
             )
-
-            items.forEach { tab ->
-                val isSelected = tab.route == selectedRoute
-                NavigationBarItem(
-                    selected = isSelected,
-                    onClick = {
-                        if (!isSelected) {
-                            onTabSelected(tab.route)
-                        }
-                    },
-                    icon = {
-                        Icon(
-                            imageVector = if (isSelected) tab.selectedIcon else tab.unselectedIcon,
-                            contentDescription = tab.label,
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    },
-                    label = {
-                        Text(
-                            text = tab.label,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            style = if (isSelected)
-                                MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.ExtraBold)
-                            else
-                                MaterialTheme.typography.labelSmall,
-                        )
-                    },
-                    colors = customColors
-                )
-            }
         }
-
+    }
 }
 
-enum class TabItem(
+private enum class TabItem(
     val route: String,
     val label: String,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector
 ) {
-    HOME("Home", "Home", Icons.Filled.Home, Icons.Outlined.Home),
+    Home("Home", "Home", Icons.Filled.Home, Icons.Outlined.Home),
     New(
-      "New",
+        "New",
         "Novidades",
         Icons.Filled.Fireplace,
         Icons.Outlined.Fireplace
@@ -121,7 +118,7 @@ enum class TabItem(
     )
 }
 
-val tabList = TabItem.entries.map {
+private val tabList = TabItem.entries.map {
     AppNavigationTab(
         route = it.route,
         label = it.label,
@@ -137,9 +134,7 @@ fun BottomNavigationBarPreview() {
         AppBottomNavigationBar(
             items = tabList,
             selectedRoute = "Home",
-            onTabSelected = { selectedTab ->
-                println("Selecionado: ${selectedTab}")
-            }
+            onTabSelected = {}
         )
     }
 }

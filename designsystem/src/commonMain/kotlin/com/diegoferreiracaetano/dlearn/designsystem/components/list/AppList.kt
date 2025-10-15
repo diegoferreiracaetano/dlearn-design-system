@@ -24,9 +24,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.chip.AppChip
 import com.diegoferreiracaetano.dlearn.designsystem.components.chip.AppChipGroup
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.chip_label_categories
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.chip_label_movies
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.chip_label_series
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import kotlinx.coroutines.flow.distinctUntilChanged
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+private val ListItemPadding = 8.dp
+private const val NUMBER_OF_LINES = 100
 
 @Composable
 fun AppList(
@@ -34,7 +42,6 @@ fun AppList(
     collapsibleContent: @Composable (() -> Unit)? = null,
     content: LazyListScope.() -> Unit
 ) {
-
     val listState = rememberLazyListState()
     var collapsibleContentVisible by remember { mutableStateOf(true) }
 
@@ -88,19 +95,20 @@ fun AppList(
 @Composable
 @Preview
 fun AppListPreview() {
+
     DLearnTheme {
         AppList(
             collapsibleContent = {
                 AppChipGroup(
                     items = listOf(
                         AppChip(
-                            label = "Séries"
+                            label = stringResource(Res.string.chip_label_series)
                         ),
                         AppChip(
-                            label = "Filmes"
+                            label = stringResource(Res.string.chip_label_movies)
                         ),
                         AppChip(
-                            label = "Categorias",
+                            label = stringResource(Res.string.chip_label_categories),
                             hasDropDown = true,
                             isFilter = false
                         )
@@ -109,15 +117,14 @@ fun AppListPreview() {
                 )
             }
         ) {
-            items(100) { index ->
+            items(  NUMBER_OF_LINES) { index ->
                 Text(
                     text = "Item $index",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Normal,
-                    modifier = Modifier.padding(vertical = 8.dp)
+                    modifier = Modifier.padding(vertical = ListItemPadding)
                 )
             }
         }
     }
 }
-

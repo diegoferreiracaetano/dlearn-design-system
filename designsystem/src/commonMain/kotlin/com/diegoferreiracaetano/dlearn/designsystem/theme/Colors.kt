@@ -55,7 +55,6 @@ val onWarningDark = Color(0xFFFFFFFF)
 val warningContainerDark = Color(0xFF1E1E1E)
 val onWarningContainerDark = Color(0xFFFF8700)
 
-
 // Light Theme Colors - White Based
 val primaryLight = Color(0xFF12CDD9) // Keep accent
 val onPrimaryLight = Color(0xFFFFFFFF)
@@ -98,8 +97,7 @@ val surfaceContainerLight = Color(0xFFF0F0F0)
 val surfaceContainerHighLight = Color(0xFFEAEAEA)
 val surfaceContainerHighestLight = Color(0xFFE0E0E0)
 
-
-//@Immutable
+// @Immutable
 data class ColorFamily(
     val color: Color,
     val onColor: Color,

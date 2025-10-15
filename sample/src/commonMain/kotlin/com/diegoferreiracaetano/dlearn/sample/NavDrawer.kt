@@ -71,14 +71,15 @@ fun ComponentGalleryApp(themeViewModel: ThemeViewModel) {
 
     AppContainer(
         snackBarHostState = snackbarHostState,
-        topBar = AppTopBar(
+        topBar = {AppTopBar(
             title = currentDestination.route,
             actions = {
                 IconButton(onClick = { themeViewModel.toggleTheme() }) {
                     Icon(Icons.Default.Palette, contentDescription = "Theme")
                 }
             }
-        ),
+        )
+        },
         drawerContent = {
             AppDrawer(
                 items = Destination.entries.map { DrawerItem(it.route, it.icon) },

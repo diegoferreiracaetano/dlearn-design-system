@@ -25,4 +25,4 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run Detekt
-        run: ./gradlew detekt
+        run: ./gradlew detektAll

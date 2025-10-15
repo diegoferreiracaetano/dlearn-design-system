@@ -31,11 +31,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
-import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner1
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner2
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner3
+import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -215,7 +215,6 @@ private fun RatingBadge(
         )
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

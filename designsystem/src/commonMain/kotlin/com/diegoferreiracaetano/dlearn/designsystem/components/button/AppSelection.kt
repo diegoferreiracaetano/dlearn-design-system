@@ -25,9 +25,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.selection_option_a_z
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.selection_option_highest_number
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.selection_option_lowest_number
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.selection_option_z_a
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.diegoferreiracaetano.dlearn.designsystem.util.contrastTextColor
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+private val DropdownItemPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+private val NoPadding = 0.dp
+private val PreviewPadding = 16.dp
+private val PreviewSpacing = 16.dp
 
 data class AppSelectionOption(
     val label: String,
@@ -39,20 +50,25 @@ data class AppSelectionOption(
 fun AppSelectionSimple(
     modifier: Modifier = Modifier,
     list: List<String>,
-    selected: (Int, AppSelectionOption) -> Unit,
+    onSelectionChanged: (AppSelectionOption) -> Unit,
     color: Color = MaterialTheme.colorScheme.onBackground
 ) {
+    val options = remember(list, color) {
+        list.map { AppSelectionOption(it, it, color) }
+    }
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOption by remember { mutableStateOf(options.first()) }
 
     AppSelection(
         modifier = modifier,
-        list = list.map {
-            AppSelectionOption(
-                it,
-                it,
-                color
-            )
-        },
-        selected = selected
+        expanded = expanded,
+        selectedOption = selectedOption,
+        options = options,
+        onExpandedChange = { expanded = it },
+        onOptionSelected = {
+            selectedOption = it
+            onSelectionChanged(it)
+        }
     )
 }
 
@@ -60,22 +76,21 @@ fun AppSelectionSimple(
 @Composable
 fun AppSelection(
     modifier: Modifier = Modifier,
-    list: List<AppSelectionOption>,
-    selected: (Int, AppSelectionOption) -> Unit,
+    expanded: Boolean,
+    selectedOption: AppSelectionOption,
+    options: List<AppSelectionOption>,
+    onExpandedChange: (Boolean) -> Unit,
+    onOptionSelected: (AppSelectionOption) -> Unit
 ) {
-    var expanded by remember { mutableStateOf(false) }
-    var selectedOption by remember { mutableStateOf(list.first()) }
-
-
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = { expanded = !expanded },
+        onExpandedChange = onExpandedChange,
         modifier = modifier
             .clip(MaterialTheme.shapes.extraLarge)
             .background(MaterialTheme.colorScheme.background)
     ) {
         TextField(
-            onValueChange = {  },
+            onValueChange = {},
             value = selectedOption.label,
             readOnly = true,
             maxLines = 1,
@@ -105,15 +120,14 @@ fun AppSelection(
 
         ExposedDropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
+            onDismissRequest = { onExpandedChange(false) },
+            modifier = Modifier.background(MaterialTheme.colorScheme.background)
         ) {
-            list.forEachIndexed { int, option ->
+            options.forEach { option ->
                 DropdownMenuItem(
                     modifier = Modifier
                         .background(option.color)
-                        .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
+                        .padding(DropdownItemPadding),
                     text = {
                         Text(
                             text = option.label,
@@ -121,16 +135,15 @@ fun AppSelection(
                         )
                     },
                     onClick = {
-                        selectedOption = option
-                        expanded = false
-                        selected(int, option)
+                        onOptionSelected(option)
+                        onExpandedChange(false)
                     },
                     colors = MenuDefaults.itemColors(
                         textColor = option.color.contrastTextColor(),
                         leadingIconColor = option.color.contrastTextColor(),
                         trailingIconColor = option.color.contrastTextColor(),
                     ),
-                    contentPadding = PaddingValues(0.dp)
+                    contentPadding = PaddingValues(NoPadding)
                 )
             }
         }
@@ -142,34 +155,26 @@ fun AppSelection(
 fun AppSelectionDropdownPreview() {
     DLearnTheme {
         Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(PreviewSpacing),
             modifier = Modifier
-                .padding(16.dp)
+                .padding(PreviewPadding)
                 .fillMaxWidth()
         ) {
-
             AppSelectionSimple(
-                list = listOf("Menor número", "Maior número"),
-                selected = { index, selected ->
-                    println("Opção selecionada: $selected")
-                }
+                list = listOf(
+                    stringResource(Res.string.selection_option_lowest_number),
+                    stringResource(Res.string.selection_option_highest_number)
+                ),
+                onSelectionChanged = { /* No-op for preview */ }
             )
 
             AppSelectionSimple(
-                list = listOf("A-Z", "Z-A"),
-                selected = { index, selected ->
-                    println("Opção selecionada: $selected")
-                }
+                list = listOf(
+                    stringResource(Res.string.selection_option_a_z),
+                    stringResource(Res.string.selection_option_z_a)
+                ),
+                onSelectionChanged = { /* No-op for preview */ }
             )
-
-//            AppSelection(
-//                list = pokemonList.map {
-//                    AppSelectionOption(it.label(), it.name, it.color)
-//                },
-//                selected = { index, selected ->
-//                    println("Opção selecionada: $selected")
-//                }
-//            )
         }
     }
 }

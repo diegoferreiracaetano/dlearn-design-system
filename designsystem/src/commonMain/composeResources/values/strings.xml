@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">DLearn</string>
-    <string name="app_subtitle">Learning Platform</string>"
+    <string name="app_subtitle">Learning Platform</string>
 
     <string name="title_email">E-mail</string>
     <string name="title_password">Senha</string>
@@ -23,7 +23,19 @@
 
     <string name="action_back">Voltar</string>
     <string name="action_favorite">Favoritar</string>
+    <string name="action_menu">Menu</string>
 
     <string name="action_watch">Assistir</string>
     <string name="action_add_to_list">Minha lista</string>
+
+    <string name="chip_action_clear_selection">Limpar seleção</string>
+    <string name="chip_label_series">Séries</string>
+    <string name="chip_label_movies">Filmes</string>
+    <string name="chip_label_categories">Categorias</string>
+    <string name="chip_description_dropdown">Abrir opções</string>
+
+    <string name="selection_option_lowest_number">Menor número</string>
+    <string name="selection_option_highest_number">Maior número</string>
+    <string name="selection_option_a_z">A-Z</string>
+    <string name="selection_option_z_a">Z-A</string>
 </resources>

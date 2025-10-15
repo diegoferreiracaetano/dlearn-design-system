@@ -6,10 +6,6 @@ enum class PlatformType {
     Other
 }
 
-interface Platform {
-    val name: String
-}
-
 expect val currentPlatform: PlatformType
 
 val isIOS = currentPlatform == PlatformType.IOS

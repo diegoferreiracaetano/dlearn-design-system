@@ -41,10 +41,11 @@ fun PageIndicator(
             )
 
             val color by animateColorAsState(
-                targetValue = if (isSelected)
+                targetValue = if (isSelected) {
                     MaterialTheme.colorScheme.primary
-                else
-                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
+                },
                 animationSpec = tween(durationMillis = 300),
                 label = ""
             )

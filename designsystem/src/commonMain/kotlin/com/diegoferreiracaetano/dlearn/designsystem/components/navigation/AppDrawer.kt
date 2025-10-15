@@ -20,15 +20,14 @@ data class DrawerItem(
 fun AppDrawer(
     items: List<DrawerItem>,
     selectedRoute: String,
-    onItemSelected: (DrawerItem) -> Unit
+    onItemSelected: (DrawerItem) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = Modifier.padding(16.dp)
-    ) {
+    Column(modifier = modifier.padding(16.dp)) {
         items.forEach { item ->
             NavigationDrawerItem(
                 label = { Text(item.route) },
-                icon = { Icon(item.icon, contentDescription = null) },
+                icon = { Icon(item.icon, contentDescription = item.route) },
                 selected = item.route == selectedRoute,
                 onClick = { onItemSelected(item) },
                 modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)

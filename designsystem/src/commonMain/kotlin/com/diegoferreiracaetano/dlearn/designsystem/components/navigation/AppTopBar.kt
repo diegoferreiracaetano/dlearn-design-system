@@ -1,5 +1,6 @@
 package com.diegoferreiracaetano.dlearn.designsystem.components.navigation
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -17,125 +18,128 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.diegoferreiracaetano.dlearn.designsystem.util.contrastTextColor
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_back
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_favorite
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_menu
+import com.diegoferreiracaetano.dlearn.designsystem.util.contrastTextColor
 import org.jetbrains.compose.resources.stringResource
 
-data class AppTopBar(
-    val title: String,
-    val onBack: () -> Unit = {},
-    val onFavorite: () -> Unit = {},
-    val onMenuClick: (() -> Unit)? = null,
-    val backgroundColor: Color = Color.Unspecified,
-    val useTransparent: Boolean = false,
-    val navigationIcon: @Composable (() -> Unit)? = null,
-    val actions: @Composable (() -> Unit)? = null
-)
+private const val MAX_TITLE_LINES = 1
 
 @OptIn(ExperimentalMaterial3Api::class)
-object AppTopBarFactory {
-
-    @Composable
-    operator fun invoke(
-        config: AppTopBar,
-        scrollBehavior: TopAppBarScrollBehavior? = null
-    ) {
-        if (config.useTransparent) {
-            AppTopBarTransparent(
-                backgroundColor = config.backgroundColor,
-                onBack = config.onBack,
-                onFavorite = config.onFavorite,
-                scrollBehavior = scrollBehavior,
-            )
-        } else {
-            AppTopBarDefault(
-                title = config.title,
-                onBack = config.onBack,
-                onMenuClick = config.onMenuClick,
-                scrollBehavior = scrollBehavior,
-                navigationIcon = config.navigationIcon,
-                actions = config.actions
-            )
-        }
+@Composable
+fun AppTopBar(
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    onBack: (() -> Unit)? = null,
+    onFavorite: (() -> Unit)? = null,
+    onMenuClick: (() -> Unit)? = null,
+    backgroundColor: Color = Color.Unspecified,
+    useTransparent: Boolean = false,
+    scrollBehavior: TopAppBarScrollBehavior? = null,
+    actions: @Composable RowScope.() -> Unit = {},
+) {
+    if (useTransparent) {
+        AppTopBarTransparent(
+            modifier = modifier,
+            backgroundColor = backgroundColor,
+            onBack = onBack,
+            onFavorite = onFavorite,
+            scrollBehavior = scrollBehavior,
+        )
+    } else {
+        AppTopBarDefault(
+            modifier = modifier,
+            title = title,
+            onBack = onBack,
+            onMenuClick = onMenuClick,
+            scrollBehavior = scrollBehavior,
+            actions = actions,
+        )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppTopBarDefault(
-    title: String,
-    onBack: () -> Unit,
+private fun AppTopBarDefault(
+    modifier: Modifier = Modifier,
+    title: String?,
+    onBack: (() -> Unit)?,
     onMenuClick: (() -> Unit)?,
-    scrollBehavior: TopAppBarScrollBehavior? = null,
-    navigationIcon: @Composable (() -> Unit)? = null,
-    actions: @Composable (() -> Unit)? = null
+    scrollBehavior: TopAppBarScrollBehavior?,
+    actions: @Composable RowScope.() -> Unit,
 ) {
     CenterAlignedTopAppBar(
+        modifier = modifier,
         title = {
-            Text(
-                title,
-                maxLines = 1,
-                style = MaterialTheme.typography.labelLarge
-            )
+            if (title != null) {
+                Text(
+                    text = title,
+                    maxLines = MAX_TITLE_LINES,
+                    style = MaterialTheme.typography.labelLarge,
+                )
+            }
         },
-
-        navigationIcon = navigationIcon ?: {
-            if(onMenuClick != null) {
+        navigationIcon = {
+            if (onMenuClick != null) {
                 IconButton(onClick = onMenuClick) {
                     Icon(
                         imageVector = Icons.Default.Menu,
-                        contentDescription = "Menu"
+                        contentDescription = stringResource(Res.string.action_menu),
                     )
                 }
-            } else {
+            } else if (onBack != null) {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(Res.string.action_back)
+                        contentDescription = stringResource(Res.string.action_back),
                     )
                 }
             }
         },
-        actions = { actions?.invoke() },
+        actions = actions,
         scrollBehavior = scrollBehavior,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppTopBarTransparent(
+private fun AppTopBarTransparent(
+    modifier: Modifier = Modifier,
     backgroundColor: Color,
-    onBack: () -> Unit,
-    onFavorite: () -> Unit,
-    scrollBehavior: TopAppBarScrollBehavior? = null
+    onBack: (() -> Unit)?,
+    onFavorite: (() -> Unit)?,
+    scrollBehavior: TopAppBarScrollBehavior?,
 ) {
     TopAppBar(
+        modifier = modifier.fillMaxWidth(),
         title = {},
         navigationIcon = {
-            IconButton(onClick = onBack) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(Res.string.action_back),
-                    tint = backgroundColor.contrastTextColor()
-                )
+            if (onBack != null) {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(Res.string.action_back),
+                        tint = backgroundColor.contrastTextColor(),
+                    )
+                }
             }
         },
         actions = {
-            IconButton(onClick = onFavorite) {
-                Icon(
-                    imageVector = Icons.Default.FavoriteBorder,
-                    contentDescription = stringResource(Res.string.action_favorite),
-                    tint = backgroundColor.contrastTextColor()
-                )
+            if (onFavorite != null) {
+                IconButton(onClick = onFavorite) {
+                    Icon(
+                        imageVector = Icons.Default.FavoriteBorder,
+                        contentDescription = stringResource(Res.string.action_favorite),
+                        tint = backgroundColor.contrastTextColor(),
+                    )
+                }
             }
-
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Transparent
+            containerColor = Color.Transparent,
         ),
-        modifier = Modifier.fillMaxWidth(),
         scrollBehavior = scrollBehavior,
     )
 }

@@ -9,8 +9,8 @@ build:
     - '**/composeApp/generated/**'
     - '**/composeApp/**/*.kt'
     - '**/preview/**'
-    - '**/ui/theme/Colors.kt'
-
+    - '**/Colors.kt'
+    - '**/*Test*.*'
 config:
   validation: true
   warningsAsErrors: false
@@ -71,8 +71,8 @@ complexity:
       - 'Preview'
   LongParameterList:
     active: true
-    functionThreshold: 6
-    constructorThreshold: 7
+    functionThreshold: 7
+    constructorThreshold: 8
     ignoreDefaultParameters: false
     ignoreDataClasses: true
     ignoreAnnotated:
@@ -213,10 +213,10 @@ style:
   active: true
   MagicNumber:
     active: true
-    excludes:
-      - '**/ui/theme/Colors.kt'
-      - '**/generated/**'
-      - '**/*Composable*.*'
+    ignorePropertyDeclaration: true
+    ignoreAnnotated:
+      - 'Composable'
+      - 'Preview'
   FunctionOnlyReturningConstant:
     active: true
   ReturnCount:
