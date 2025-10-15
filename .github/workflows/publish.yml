@@ -53,7 +53,7 @@ jobs:
           mkdir -p SwiftPackage
           cp -R designsystem/build/XCFrameworks/release/DesignSystem.xcframework SwiftPackage/
 
-          VERSION=$(git describe --tags --always || echo "0.0.1")
+          VERSION=$(git describe --tags --always || echo "1.0.1")
 
           cat <<EOF > SwiftPackage/Package.swift
           // swift-tools-version:5.9
