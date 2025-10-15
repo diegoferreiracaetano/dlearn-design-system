@@ -38,11 +38,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # 5️⃣ Publica a lib KMP com a versão dinâmica
-      - name: Publish KMP Library to GitHub Packages
-        run: ./gradlew :designsystem:publish -PVERSION_NAME=${{ env.VERSION_NAME }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      # 5️⃣ Publica a lib KMP com a versão dinâmica
+#      - name: Publish KMP Library to GitHub Packages
+#        run: ./gradlew :designsystem:publish -PVERSION_NAME=${{ env.VERSION_NAME }}
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # 6️⃣ Gera o XCFramework para iOS
       - name: Build iOS XCFramework

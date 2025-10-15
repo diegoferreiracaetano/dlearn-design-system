@@ -16,7 +16,7 @@ kotlin {
         }
     }
 
-    val xcf = XCFramework("Sample")
+    val xcf = XCFramework()
     listOf(
         iosArm64(),
         iosSimulatorArm64()

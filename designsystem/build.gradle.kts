@@ -19,7 +19,7 @@ kotlin {
         publishLibraryVariants("release") // Publicar apenas a variante release
     }
 
-    val xcf = XCFramework("DesignSystem")
+    val xcf = XCFramework()
     listOf(
         iosArm64(),
         iosSimulatorArm64()
