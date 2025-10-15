@@ -16,6 +16,7 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
+        publishLibraryVariants("release", "debug")
     }
 
     val xcf = XCFramework("DesignSystem")
@@ -100,9 +101,9 @@ publishing {
     publications {
         // Cria publicação apenas para Android e JVM
         register<MavenPublication>("release") {
-            groupId = "com.diegoferreiracaetano.dlearn"
+            groupId = project.group.toString()
             artifactId = "designsystem"
-            version = "1.0.0"
+            version = project.version.toString()
 
             afterEvaluate {
                 // só adiciona componentes suportados
@@ -139,7 +140,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/diegoferreiracaetano/DLearnDesignSystem")
+            url = uri("https://maven.pkg.github.com/diegoferreiracaetano/dlearndesignsystem")
             credentials {
                 username = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.user") as String?
                 password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key") as String?
