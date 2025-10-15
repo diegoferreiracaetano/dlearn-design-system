@@ -7,120 +7,82 @@ on:
 
 jobs:
   lint:
-    - name: Build iOS XCFramework
-      run: ./gradlew :designsystem:assembleDesignsystemReleaseXCFramework -PVERSION_NAME=${{ env.VERSION_NAME }}
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Run Detekt
+        run: ./gradlew detekt
 
-    - name: Prepare Swift Package (root level)
-      run: |
-        # Copia o XCFramework para a raiz
-        cp -R designsystem/build/XCFrameworks/release/DesignSystem.xcframework .
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Run tests
+        run: ./gradlew testDebugUnitTest
 
-        # Gera o Package.swift na raiz
-        cat <<EOF > Package.swift
-        // swift-tools-version:5.9
-        import PackageDescription
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build
+        run: ./gradlew assembleDebug
 
-        let package = Package(
-            name: "DesignSystem",
-            platforms: [.iOS(.v14)],
-            products: [
-                .library(name: "DesignSystem", targets: ["DesignSystem"])
-            ],
-            targets: [
-                .binaryTarget(
-                    name: "DesignSystem",
-                    path: "./DesignSystem.xcframework"
-                )
-            ]
-        )
-        EOF
-
-    - name: Commit and Push Package.swift
-      run: |
-        git config --global user.email "action@github.com"
-        git config --global user.name "GitHub Action"
-        git add Package.swift
-        git add DesignSystem.xcframework
-        git commit -m "Update Package.swift for CI build for version ${{ env.VERSION_NAME }}"
-        git push
-      continue-on-error: true
-
-#    name: Lint
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#      - name: Set up JDK 17
-#        uses: actions/setup-java@v4
-#        with:
-#          java-version: '17'
-#          distribution: 'temurin'
-#          cache: gradle
-#      - name: Grant execute permission for gradlew
-#        run: chmod +x gradlew
-#      - name: Run Detekt
-#        run: ./gradlew detekt
-#
-#  test:
-#    name: Test
-#    runs-on: ubuntu-latest
-#    needs: lint
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#      - name: Set up JDK 17
-#        uses: actions/setup-java@v4
-#        with:
-#          java-version: '17'
-#          distribution: 'temurin'
-#          cache: gradle
-#      - name: Grant execute permission for gradlew
-#        run: chmod +x gradlew
-#      - name: Run tests
-#        run: ./gradlew testDebugUnitTest
-#
-#  build:
-#    name: Build
-#    runs-on: ubuntu-latest
-#    needs: test
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#      - name: Set up JDK 17
-#        uses: actions/setup-java@v4
-#        with:
-#          java-version: '17'
-#          distribution: 'temurin'
-#          cache: gradle
-#      - name: Grant execute permission for gradlew
-#        run: chmod +x gradlew
-#      - name: Build
-#        run: ./gradlew assembleDebug
-#
-#  publish:
-#    name: Publish Snapshot
-#    runs-on: ubuntu-latest
-#    needs: build
-#    permissions:
-#      contents: read
-#      packages: write
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#        with:
-#          fetch-depth: 0 # Necessário para o git describe
-#      - name: Set up JDK 17
-#        uses: actions/setup-java@v4
-#        with:
-#          java-version: '17'
-#          distribution: 'temurin'
-#          cache: gradle
-#      - name: Grant execute permission for gradlew
-#        run: chmod +x gradlew
-#      - name: Determine Version
-#        id: version
-#        run: echo "VERSION_NAME=$(git describe --tags --always)-SNAPSHOT" >> $GITHUB_ENV
-#      - name: Publish KMP Library to GitHub Packages
-#        run: ./gradlew :designsystem:publish -PVERSION_NAME=${{ env.VERSION_NAME }}
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  publish:
+    name: Publish Snapshot
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Necessário para o git describe
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Determine Version
+        id: version
+        run: echo "VERSION_NAME=$(git describe --tags --always)-SNAPSHOT" >> $GITHUB_ENV
+      - name: Publish KMP Library to GitHub Packages
+        run: ./gradlew :designsystem:publish -PVERSION_NAME=${{ env.VERSION_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
