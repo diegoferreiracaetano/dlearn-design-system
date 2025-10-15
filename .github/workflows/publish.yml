@@ -30,7 +30,7 @@ jobs:
 
       # 4️⃣ Build da lib KMP
       - name: Build KMP Library
-        run: ./gradlew :designsystem:build
+        run: ./gradlew :designsystem:assembleDebug
 
       # 5️⃣ Publica a lib KMP (por exemplo, no GitHub Packages)
       - name: Publish KMP Library to GitHub Packages
