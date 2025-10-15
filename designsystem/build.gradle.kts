@@ -98,10 +98,24 @@ version = findProperty("VERSION_NAME") as String? ?: "1.0.0"
 
 publishing {
     publications {
-        withType<MavenPublication>().all {
+        // Cria publicação apenas para Android e JVM
+        register<MavenPublication>("release") {
+            groupId = "com.diegoferreiracaetano.dlearn"
+            artifactId = "designsystem"
+            version = "1.0.0"
+
+            afterEvaluate {
+                // só adiciona componentes suportados
+                listOf("androidRelease", "jvm").forEach { target ->
+                    if (components.findByName(target) != null) {
+                        from(components[target])
+                    }
+                }
+            }
+
             pom {
                 name.set("DesignSystem")
-                description.set("Design System multiplataforma para Kotlin, Android e iOS")
+                description.set("Design System multiplataforma para Android e iOS")
                 url.set("https://github.com/diegoferreiracaetano/DLearnDesignSystem")
                 licenses {
                     license {
@@ -120,15 +134,6 @@ publishing {
                 }
             }
         }
-        register<MavenPublication>("release") {
-            afterEvaluate {
-                listOf("androidRelease", "jvm").forEach { target ->
-                    if (components.findByName(target) != null) {
-                        from(components[target])
-                    }
-                }
-            }
-        }
     }
 
     repositories {
@@ -136,8 +141,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/diegoferreiracaetano/DLearnDesignSystem")
             credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+                username = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.user") as String?
+                password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key") as String?
             }
         }
     }
