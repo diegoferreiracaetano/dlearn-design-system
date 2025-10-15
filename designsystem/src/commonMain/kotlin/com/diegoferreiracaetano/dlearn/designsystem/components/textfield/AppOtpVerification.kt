@@ -32,11 +32,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
-import dlearn.designsystem.generated.resources.Res
-import dlearn.designsystem.generated.resources.otp_error_default
-import dlearn.designsystem.generated.resources.otp_resend_in
-import dlearn.designsystem.generated.resources.otp_resend_now
-import dlearn.designsystem.generated.resources.otp_resend_prompt
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.otp_error_default
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.otp_resend_in
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.otp_resend_now
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.otp_resend_prompt
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview

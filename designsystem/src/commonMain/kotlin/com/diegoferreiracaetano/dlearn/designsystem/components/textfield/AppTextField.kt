@@ -24,11 +24,11 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
-import dlearn.designsystem.generated.resources.Res
-import dlearn.designsystem.generated.resources.email_message_validation
-import dlearn.designsystem.generated.resources.password_message_validation
-import dlearn.designsystem.generated.resources.title_email
-import dlearn.designsystem.generated.resources.title_password
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.email_message_validation
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.password_message_validation
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.title_email
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.title_password
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview

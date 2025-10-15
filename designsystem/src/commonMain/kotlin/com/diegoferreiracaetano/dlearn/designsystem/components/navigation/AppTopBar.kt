@@ -18,9 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.diegoferreiracaetano.dlearn.designsystem.util.contrastTextColor
-import dlearn.designsystem.generated.resources.Res
-import dlearn.designsystem.generated.resources.action_back
-import dlearn.designsystem.generated.resources.action_favorite
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_back
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_favorite
 import org.jetbrains.compose.resources.stringResource
 
 data class AppTopBar(

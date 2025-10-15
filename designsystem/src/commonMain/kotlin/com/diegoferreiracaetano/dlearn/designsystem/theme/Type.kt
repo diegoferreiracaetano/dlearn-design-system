@@ -6,11 +6,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import dlearn.designsystem.generated.resources.Res
-import dlearn.designsystem.generated.resources.montserrat_bold
-import dlearn.designsystem.generated.resources.montserrat_medium
-import dlearn.designsystem.generated.resources.montserrat_regular
-import dlearn.designsystem.generated.resources.montserrat_semibold
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.montserrat_bold
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.montserrat_medium
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.montserrat_regular
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.montserrat_semibold
 import org.jetbrains.compose.resources.Font
 
 @Composable

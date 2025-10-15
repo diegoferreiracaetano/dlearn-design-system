@@ -98,7 +98,6 @@ version = findProperty("VERSION_NAME") as String? ?: "1.0.0"
 
 publishing {
     publications {
-        // Publica apenas targets suportados no Maven (Android e JVM)
         withType<MavenPublication>().all {
             pom {
                 name.set("DesignSystem")
@@ -121,8 +120,6 @@ publishing {
                 }
             }
         }
-
-        // Cria publicação somente para Android e JVM
         register<MavenPublication>("release") {
             afterEvaluate {
                 listOf("androidRelease", "jvm").forEach { target ->
