@@ -144,11 +144,6 @@ publishing {
     }
 }
 
-// Desabilita explicitamente as publicações do iOS no Maven,
-// pois a distribuição é feita via XCFramework.
-tasks.withType<PublishToMavenRepository>().configureEach {
-    val pubName = publication?.name
-    if (pubName?.startsWith("ios") == true || pubName == "js" || pubName == "wasmJs") {
-        enabled = false
-    }
+tasks.matching { it.name.startsWith("publishIos") || it.name.startsWith("publishWasm") }.configureEach {
+    enabled = false
 }
