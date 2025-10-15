@@ -95,7 +95,7 @@ dependencies {
 }
 
 group = findProperty("GROUP") as String? ?: "com.diegoferreiracaetano.dlearn"
-version = findProperty("VERSION_NAME") as String? ?: "1.0.1"
+version = findProperty("VERSION_NAME") as String? ?: "1.0.2"
 
 publishing {
     publications {

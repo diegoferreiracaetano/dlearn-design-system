@@ -5,7 +5,7 @@ on:
     branches:
       - main
     tags:
-      - '*'  # também executa quando for criada uma tag de versão
+      - '*'
 
 jobs:
   publish:
@@ -20,42 +20,41 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # Necessário para o git describe funcionar corretamente
 
-      # 2️⃣ Configura JDK (use 17, que é o padrão atual do KMP)
+      # 2️⃣ Configura JDK
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+          
+      # 3️⃣ Determina a versão a partir das tags Git e a exporta
+      - name: Determine Version
+        id: version
+        run: echo "VERSION_NAME=$(git describe --tags --always)" >> $GITHUB_ENV
 
-      # 3️⃣ Permite execução do Gradle
+      # 4️⃣ Permite execução do Gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # 4️⃣ Build da lib KMP
-#      - name: Build KMP Library
-#        run: |
-#          ./gradlew kotlinUpgradeYarnLock
-#          ./gradlew :designsystem:assembleDebug
-
-      # 5️⃣ Publica a lib KMP (por exemplo, no GitHub Packages)
+      # 5️⃣ Publica a lib KMP com a versão dinâmica
       - name: Publish KMP Library to GitHub Packages
-        run: ./gradlew :designsystem:publish
+        run: ./gradlew :designsystem:publish -PVERSION_NAME=${{ env.VERSION_NAME }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # 6️⃣ Gera o XCFramework para iOS
       - name: Build iOS XCFramework
-        run: ./gradlew :designsystem:assembleReleaseXCFramework
+        run: ./gradlew :designsystem:assembleReleaseXCFramework -PVERSION_NAME=${{ env.VERSION_NAME }}
 
-      # 7️⃣ Cria o Package.swift dinamicamente (se não existir)
+      # 7️⃣ Cria o Package.swift dinamicamente
       - name: Create Swift Package structure
         run: |
           mkdir -p SwiftPackage
           cp -R designsystem/build/XCFrameworks/release/DesignSystem.xcframework SwiftPackage/
 
-          VERSION=$(git describe --tags --always)
+          echo "Package.swift generated for version ${{ env.VERSION_NAME }}"
 
           cat <<EOF > SwiftPackage/Package.swift
           // swift-tools-version:5.9
@@ -76,17 +75,15 @@ jobs:
           )
           EOF
 
-          echo "Package.swift generated for version $VERSION"
-
-      # 8️⃣ Commit opcional (apenas se desejar manter o Package.swift versionado)
+      # 8️⃣ Commit do Package.swift
       - name: Commit and Push Package.swift
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git add SwiftPackage/Package.swift
-          git commit -m "Update Package.swift for CI build"
+          git commit -m "Update Package.swift for CI build for version ${{ env.VERSION_NAME }}"
           git push
-        continue-on-error: true  # evita falha caso não haja mudanças
+        continue-on-error: true
 
       # 9️⃣ Publica o XCFramework como artefato e release no GitHub
       - name: Upload XCFramework as Artifact
