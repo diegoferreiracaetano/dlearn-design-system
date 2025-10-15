@@ -1,4 +1,4 @@
-name: Publish Design System
+name: Publish Release
 
 on:
   push:
@@ -8,47 +8,47 @@ on:
       - '*'
 
 jobs:
-  publish:
-    name: Build & Publish DesignSystem (KMP + SPM)
+  release:
+    name: Lint, Test, Build & Publish
     runs-on: macos-latest
     permissions:
       contents: write
       packages: write
 
     steps:
-      # 1️⃣ Checkout do repositório com histórico completo
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Necessário para o git describe funcionar corretamente
+          fetch-depth: 0
 
-      # 2️⃣ Configura JDK
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-          
-      # 3️⃣ Determina a versão a partir das tags Git e a exporta
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Run Detekt
+        run: ./gradlew detekt
+
+      - name: Run tests
+        run: ./gradlew check
+
       - name: Determine Version
         id: version
         run: echo "VERSION_NAME=$(git describe --tags --always)" >> $GITHUB_ENV
 
-      # 4️⃣ Permite execução do Gradle
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Publish KMP Library to GitHub Packages
+        run: ./gradlew :designsystem:publish -PVERSION_NAME=${{ env.VERSION_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-#      # 5️⃣ Publica a lib KMP com a versão dinâmica
-#      - name: Publish KMP Library to GitHub Packages
-#        run: ./gradlew :designsystem:publish -PVERSION_NAME=${{ env.VERSION_NAME }}
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # 6️⃣ Gera o XCFramework para iOS
       - name: Build iOS XCFramework
         run: ./gradlew :designsystem:assembleDesignsystemReleaseXCFramework -PVERSION_NAME=${{ env.VERSION_NAME }}
 
-      # 7️⃣ Cria o Package.swift dinamicamente
       - name: Create Swift Package structure
         run: |
           mkdir -p SwiftPackage
@@ -75,7 +75,6 @@ jobs:
           )
           EOF
 
-      # 8️⃣ Commit do Package.swift
       - name: Commit and Push Package.swift
         run: |
           git config --global user.email "action@github.com"
@@ -84,13 +83,6 @@ jobs:
           git commit -m "Update Package.swift for CI build for version ${{ env.VERSION_NAME }}"
           git push
         continue-on-error: true
-
-      # 9️⃣ Publica o XCFramework como artefato e release no GitHub
-      - name: Upload XCFramework as Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: DesignSystem.xcframework
-          path: SwiftPackage/DesignSystem.xcframework
 
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')

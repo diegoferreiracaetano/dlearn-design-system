@@ -1,0 +1,39 @@
+name: Publish Snapshot
+
+on:
+  workflow_run:
+    workflows: ["Lint", "Build and Test"]
+    types:
+      - completed
+
+jobs:
+  publish_snapshot:
+    name: Publish Snapshot
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch != 'main' }}
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Determine Version
+        id: version
+        run: echo "VERSION_NAME=$(git describe --tags --always)-SNAPSHOT" >> $GITHUB_ENV
+
+      - name: Publish KMP Library to GitHub Packages
+        run: ./gradlew :designsystem:publish -PVERSION_NAME=${{ env.VERSION_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

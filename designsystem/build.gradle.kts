@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.mavenPublish)
+    alias(libs.plugins.detekt)
 }
 
 kotlin {
@@ -95,7 +96,7 @@ dependencies {
 }
 
 group = findProperty("GROUP") as String? ?: "com.diegoferreiracaetano.dlearn"
-version = findProperty("VERSION_NAME") as String? ?: "1.0.2"
+version = findProperty("VERSION_NAME") as String
 
 publishing {
     publications.withType<MavenPublication>().configureEach { 
@@ -147,4 +148,3 @@ publishing {
 tasks.matching { it.name.startsWith("publishIos") || it.name.startsWith("publishWasm") }.configureEach {
     enabled = false
 }
-
