@@ -98,10 +98,17 @@ group = findProperty("GROUP") as String? ?: "com.diegoferreiracaetano.dlearn"
 version = findProperty("VERSION_NAME") as String? ?: "1.0.2"
 
 publishing {
-    // Configura o POM para TODAS as publicações geradas pelo KMP
     publications.withType<MavenPublication>().configureEach {
-        groupId = project.group.toString()
+        // Adiciona um sufixo ao artifactId para diferenciar as publicações de cada plataforma,
+        // exceto para a publicação principal que contém apenas os metadados.
+        if (name != "kotlinMultiplatform") {
+            artifactId = "designsystem-$name"
+        } else {
+            artifactId = "designsystem"
+        }
+
         artifactId = "designsystem"
+        groupId = project.group.toString()
         version = project.version.toString()
 
         pom {
