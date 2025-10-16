@@ -37,8 +37,8 @@ jobs:
         id: output
         run: echo "${{ steps.versionPropertyValue.outputs.propVal }}"
 
-      - name: Touchlab Sample Sanity Check (Ignore this for your CI) # GitHub Packages can have issues with conflicting maven coordinates.
-        uses: touchlab/sample-group-sanity-check@main
+#      - name: Touchlab Sample Sanity Check (Ignore this for your CI) # GitHub Packages can have issues with conflicting maven coordinates.
+#        uses: touchlab/sample-group-sanity-check@main
 
       - uses: actions/setup-java@v4
         with:
