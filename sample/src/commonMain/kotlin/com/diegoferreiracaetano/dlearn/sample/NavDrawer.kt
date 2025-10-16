@@ -10,10 +10,12 @@ import androidx.compose.material.icons.filled.Navigation
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material.icons.filled.Title
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -62,6 +64,7 @@ fun ComponentGalleryApp(themeViewModel: ThemeViewModel) {
     var currentDestination by remember { mutableStateOf(Destination.Overview) }
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
     val onShowSnackbar: (String, SnackbarType) -> Unit = { message, type ->
         scope.launch {
@@ -80,6 +83,7 @@ fun ComponentGalleryApp(themeViewModel: ThemeViewModel) {
             }
         )
         },
+        drawerState = drawerState,
         drawerContent = {
             AppDrawer(
                 items = Destination.entries.map { DrawerItem(it.route, it.icon) },
@@ -88,6 +92,7 @@ fun ComponentGalleryApp(themeViewModel: ThemeViewModel) {
                     val destination = Destination.entries.find { d -> d.route == it.route }
                     if (destination != null) {
                         currentDestination = destination
+                        scope.launch { drawerState.close() }
                     }
                 }
             )
