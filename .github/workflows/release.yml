@@ -82,10 +82,10 @@ jobs:
           NEW_TAG="v$MAJOR.$MINOR.$NEW_PATCH"
           echo "tag=$NEW_TAG" >> $GITHUB_OUTPUT
 
-      - name: Publish KMP Library to GitHub Packages
-        run: ./gradlew :designsystem:publish -PVERSION_NAME=${{ steps.versioning.outputs.tag }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Publish KMP Library to GitHub Packages
+#        run: ./gradlew :designsystem:publish -PVERSION_NAME=${{ steps.versioning.outputs.tag }}
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build iOS XCFramework
         run: ./gradlew :designsystem:assembleDesignsystemReleaseXCFramework -PVERSION_NAME=${{ steps.versioning.outputs.tag }}
