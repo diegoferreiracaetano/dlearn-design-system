@@ -5,16 +5,46 @@ on:
     branches:
       - main
 
-# Ensures that only one workflow runs at a time for the main branch.
-# Cancels any running workflows for the same branch when a new push occurs.
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Run Detekt
+        run: ./gradlew detekt
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Run tests
+        run: ./gradlew testDebugUnitTest
+
   publish:
     name: Publish
     runs-on: macos-latest
+    needs: test
     permissions:
       contents: write
       packages: write
@@ -22,7 +52,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # Fetch all history for all branches and tags for version calculation and pushing
           fetch-depth: 0
 
       - name: Set up JDK 17
@@ -38,8 +67,7 @@ jobs:
       - name: Calculate new version
         id: versioning
         run: |
-          git fetch --tags
-          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1` 2>/dev/null || echo "v0.0.0")
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
           VERSION=${LATEST_TAG#v}
           IFS='.' read -r -a VERSION_PARTS <<< "$VERSION"
           MAJOR=${VERSION_PARTS[0]:-0}
@@ -47,15 +75,15 @@ jobs:
           PATCH=${VERSION_PARTS[2]:-0}
           NEW_PATCH=$((PATCH + 1))
           NEW_TAG="v$MAJOR.$MINOR.$NEW_PATCH"
-          echo "TAG=$NEW_TAG" >> $GITHUB_OUTPUT
+          echo "tag=$NEW_TAG" >> $GITHUB_OUTPUT
 
       - name: Publish KMP Library to GitHub Packages
-        run: ./gradlew :designsystem:publish -PVERSION_NAME=${{ steps.versioning.outputs.TAG }}
+        run: ./gradlew :designsystem:publish -PVERSION_NAME=${{ steps.versioning.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build iOS XCFramework
-        run: ./gradlew :designsystem:assembleDesignsystemReleaseXCFramework -PVERSION_NAME=${{ steps.versioning.outputs.TAG }}
+        run: ./gradlew :designsystem:assembleDesignsystemReleaseXCFramework -PVERSION_NAME=${{ steps.versioning.outputs.tag }}
 
       - name: Package XCFramework
         run: |
@@ -63,44 +91,55 @@ jobs:
           zip -r ../../../../../DesignSystem.xcframework.zip DesignSystem.xcframework
           cd ../../../../../
 
+      - name: Set up Swift
+        run: |
+          xcode-select --install || true
+          swift --version    
+
       - name: Calculate checksum
         id: checksum
         run: echo "CHECKSUM=$(swift package compute-checksum DesignSystem.xcframework.zip)" >> $GITHUB_ENV
 
-      - name: Create Git Tag and Push
+      - name: Generate Package.swift
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git tag ${{ steps.versioning.outputs.TAG }}
-          git push origin ${{ steps.versioning.outputs.TAG }}
+          cat <<EOF > Package.swift
+          // swift-tools-version:5.9
+          import PackageDescription
 
-      - name: Create Release and Upload Asset
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.versioning.outputs.TAG }}
-          name: Release ${{ steps.versioning.outputs.TAG }}
-          body: "Automatic release for version ${{ steps.versioning.outputs.TAG }}"
-          files: DesignSystem.xcframework.zip
+          let package = Package(
+              name: "DesignSystem",
+              platforms: [.iOS(.v14)],
+              products: [
+                  .library(name: "DesignSystem", targets: ["DesignSystem"])
+              ],
+              targets: [
+                  .binaryTarget(
+                      name: "DesignSystem",
+                      url: "https://github.com/${{ github.repository }}/releases/download/${{ steps.versioning.outputs.tag }}/DesignSystem.xcframework.zip",
+                      checksum: "${{ env.CHECKSUM }}"
+                  )
+              ]
+          )
+          EOF
+
+      - name: Create Git Tag
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git tag ${{ steps.versioning.outputs.tag }} -m "Release ${{ steps.versioning.outputs.tag }}"
+          git push origin ${{ steps.versioning.outputs.tag }}
+
+      - name: Verify XCFramework zip
+        run: |
+          echo "📦 Checking for XCFramework zip..."
+          ls -lh DesignSystem.xcframework.zip || (echo "❌ File not found!" && exit 1)
+
+      - name: Create Release and Upload Assets via gh CLI
+        run: |
+          echo "🚀 Creating release ${{ steps.versioning.outputs.tag }}..."
+          gh release create ${{ steps.versioning.outputs.tag }} \
+            DesignSystem.xcframework.zip Package.swift \
+            --title "Release ${{ steps.versioning.outputs.tag }}" \
+            --notes "Automatic release for version ${{ steps.versioning.outputs.tag }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Update Package.swift
-        run: |
-          RELEASE_URL="https://github.com/${{ github.repository }}/releases/download/${{ steps.versioning.outputs.TAG }}/DesignSystem.xcframework.zip"
-          # Use a different separator for sed to avoid issues with slashes in the URL
-          sed -i.bak "s~url: \".*\"~url: \"$RELEASE_URL\"~" Package.swift
-          sed -i.bak "s~checksum: \".*\"~checksum: \"${{ env.CHECKSUM }}\"~" Package.swift
-          rm Package.swift.bak
-
-      - name: Commit and Push Package.swift
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add Package.swift
-          # Check if there are changes to commit
-          if git diff --staged --quiet; then
-            echo "No changes to commit in Package.swift."
-          else
-            git commit -m "Update Package.swift for release ${{ steps.versioning.outputs.TAG }} [skip ci]"
-            git push origin main
-          fi
