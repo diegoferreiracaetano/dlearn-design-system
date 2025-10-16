@@ -1,4 +1,4 @@
-[![Latest Release](https://img.shields.io/github/v/release/diegoferreiracaetano/DLearnDesignSystem)](https://github.com/diegoferreiracaetano/DLearnDesignSystem/releases)
+[![Latest Release](https://img.shields.io/github/v/release/diegoferreiracaetano/dlearn-design-system)](https://github.com/diegoferreiracaetano/dlearn-design-system/releases)
 
 This is a Kotlin Multiplatform project targeting Android, iOS, Web.
 
