@@ -61,7 +61,7 @@ jobs:
 
   publish:
     name: Publish Snapshot
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     needs: build
     permissions:
       contents: read
@@ -86,32 +86,3 @@ jobs:
         run: ./gradlew :designsystem:publish -PVERSION_NAME=${{ env.VERSION_NAME }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build iOS XCFramework
-        run: ./gradlew :designsystem:assembleDesignsystemReleaseXCFramework -PVERSION_NAME=${{ env.VERSION_NAME }}
-      - name: Prepare Swift Package for Snapshot
-        run: |
-          mkdir -p swift-package-snapshot
-          cp -R designsystem/build/XCFrameworks/release/DesignSystem.xcframework swift-package-snapshot/
-          cat <<EOF > swift-package-snapshot/Package.swift
-          // swift-tools-version:5.9
-          import PackageDescription
-
-          let package = Package(
-              name: "DesignSystem",
-              platforms: [.iOS(.v14)],
-              products: [
-                  .library(name: "DesignSystem", targets: ["DesignSystem"])
-              ],
-              targets: [
-                  .binaryTarget(
-                      name: "DesignSystem",
-                      path: "./DesignSystem.xcframework"
-                  )
-              ]
-          )
-          EOF
-      - name: Upload snapshot artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: DesignSystem-Snapshot-Package-${{ env.VERSION_NAME }}
-          path: swift-package-snapshot/
