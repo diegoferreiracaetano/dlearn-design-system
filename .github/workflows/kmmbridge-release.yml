@@ -21,7 +21,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build and publish
+      - name: Build and publish KMMBridge
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :designsystem:kmmBridgePublish
+        run: ./gradlew :designsystem:kmmBridgePublish --stacktrace --info
