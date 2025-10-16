@@ -9,3 +9,6 @@ jobs:
     uses: ./.github/workflows/base.yml
     with:
       build-debug: false
+    permissions:
+      contents: write   # permite criar Releases
+      packages: write   # permite enviar pacotes
