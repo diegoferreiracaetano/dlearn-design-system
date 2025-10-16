@@ -4,9 +4,8 @@ on:
     branches-ignore:
       - 'main'
 
-
 jobs:
   call-publish:
-    uses: ./.github/workflows/Base-Publish.yml
+    uses: ./.github/workflows/base.yml
     with:
       build-debug: false
