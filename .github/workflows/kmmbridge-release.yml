@@ -2,7 +2,7 @@ name: KMMBridge Release
 
 on:
   push:
-    branches:
+  branches-ignore:
       - main
 
 jobs:
