@@ -55,7 +55,7 @@ jobs:
         run: |
           VERSION_NAME=$(grep 'VERSION_NAME' gradle.properties | cut -d'=' -f2)
           echo "version=$VERSION_NAME" >> $GITHUB_OUTPUT
-          echo "tag=v$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "tag=$VERSION_NAME" >> $GITHUB_OUTPUT
 
   publish:
     name: Publish
@@ -92,11 +92,6 @@ jobs:
         run: |
           mkdir -p $GITHUB_WORKSPACE/build
           chmod -R 777 $GITHUB_WORKSPACE/build
-
-      - name: Set up Swift
-        run: |
-          xcode-select --install || true
-          swift --version   
 
       - name: Validate XCFramework exists
         run: |
