@@ -85,6 +85,12 @@ jobs:
       - name: Build iOS XCFramework
         run: ./gradlew :designsystem:assembleDesignsystemReleaseXCFramework -PVERSION_NAME=${{ steps.versioning.outputs.tag }}
 
+      - name: Prepare workspace
+        run: |
+          echo "📂 Ensuring workspace is writable"
+          mkdir -p $GITHUB_WORKSPACE/build
+          chmod -R 777 $GITHUB_WORKSPACE/build
+
       - name: Set up Swift
         run: |
           xcode-select --install || true
