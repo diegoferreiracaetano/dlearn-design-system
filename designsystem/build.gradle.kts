@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.mavenPublish)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.touchlab.kmmbridge)
 }
 
 kotlin {
@@ -20,7 +21,7 @@ kotlin {
         publishLibraryVariants("release") // Publicar apenas a variante release
     }
 
-    val xcf = XCFramework("DesignSystem")
+//    val xcf = XCFramework("DesignSystem")
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -30,7 +31,7 @@ kotlin {
                 baseName = "DesignSystem"
                 isStatic = true
                 freeCompilerArgs += listOf("-Xbinary=bundleId=com.diegoferreiracaetano.dlearn.designsystem")
-                xcf.add(this)
+        //        xcf.add(this)
             }
         }
     }
@@ -148,3 +149,13 @@ publishing {
 tasks.matching { it.name.startsWith("publishIos") || it.name.startsWith("publishWasm") }.configureEach {
     enabled = false
 }
+
+kmmbridge {
+    spm()
+}
+
+gitHubReleaseArtifacts(
+    repository = "diegoferreiracaetano/dlearn-design-system",
+    releasString = version.toString(),
+    useExistingRelease = false
+)

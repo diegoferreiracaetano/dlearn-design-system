@@ -14,6 +14,7 @@ junit = "4.13.2"
 kotlin = "2.2.20"
 imageLoader = "1.10.0"
 detekt = "1.23.8"
+swiftBridge = "1.2.1"
 
 [libraries]
 image-loader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "imageLoader" }
@@ -36,3 +37,4 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 mavenPublish = { id = "maven-publish" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+touchlab-kmmbridge = { id = "co.touchlab.kmmbridge.github", version.ref = "swiftBridge" }
