@@ -10,7 +10,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "DesignSystem",
-            path: "./DesignSystem.xcframework"
+            url: "URL_PLACEHOLDER",
+            checksum: "CHECKSUM_PLACEHOLDER"
         )
     ]
 )
