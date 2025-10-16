@@ -85,16 +85,33 @@ jobs:
       - name: Build iOS XCFramework
         run: ./gradlew :designsystem:assembleDesignsystemReleaseXCFramework -PVERSION_NAME=${{ steps.versioning.outputs.tag }}
 
+      - name: Set up Swift
+        run: |
+          xcode-select --install || true
+          swift --version   
+
+      - name: Validate XCFramework exists
+        run: |
+          echo "📦 Checking for XCFramework zip..."
+          if [ ! -d "designsystem/build/XCFrameworks/release/DesignSystem.xcframework" ]; then
+            echo "❌ File not found!"
+            ls -R designsystem/build/XCFrameworks || true
+            exit 1
+          fi
+
       - name: Package XCFramework
         run: |
+          echo "📦 Checking for XCFramework zip..."
+          ls -R designsystem/build/XCFrameworks
           cd designsystem/build/XCFrameworks/release
           zip -r ../../../../../DesignSystem.xcframework.zip DesignSystem.xcframework
           cd ../../../../../
 
-      - name: Set up Swift
+      - name: Verify XCFramework zip
         run: |
-          xcode-select --install || true
-          swift --version    
+          echo "📦 Checking for XCFramework zip..."
+          ls -lh DesignSystem.xcframework.zip || (echo "❌ File not found!" && exit 1)
+      
 
       - name: Calculate checksum
         id: checksum
@@ -120,7 +137,7 @@ jobs:
                   )
               ]
           )
-          EOF
+          EOF    
 
       - name: Create Git Tag
         run: |
@@ -128,11 +145,6 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git tag ${{ steps.versioning.outputs.tag }} -m "Release ${{ steps.versioning.outputs.tag }}"
           git push origin ${{ steps.versioning.outputs.tag }}
-
-      - name: Verify XCFramework zip
-        run: |
-          echo "📦 Checking for XCFramework zip..."
-          ls -lh DesignSystem.xcframework.zip || (echo "❌ File not found!" && exit 1)
 
       - name: Create Release and Upload Assets via gh CLI
         run: |
