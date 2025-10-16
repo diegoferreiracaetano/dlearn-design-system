@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -82,6 +83,7 @@ fun AppContainer(
     modifier: Modifier = Modifier,
     topBar: @Composable (() -> Unit)? = null,
     drawerContent: @Composable (ColumnScope.() -> Unit)? = null,
+    drawerState: DrawerState? = null,
     bottomBar: @Composable (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState()),
@@ -110,17 +112,17 @@ fun AppContainer(
                     }
                 )
             } else {
-                val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+                val rememberDrawerState = drawerState ?: rememberDrawerState(initialValue = DrawerValue.Closed)
                 val scope = rememberCoroutineScope()
 
                 val topBarWithMenu: @Composable () -> Unit = {
                     AppTopBar(
-                        onMenuClick = { scope.launch { drawerState.open() } }
+                        onMenuClick = { scope.launch { rememberDrawerState.open() } }
                     )
                 }
 
                 ModalNavigationDrawer(
-                    drawerState = drawerState,
+                    drawerState = rememberDrawerState,
                     drawerContent = {
                         ModalDrawerSheet {
                             drawerContent()
