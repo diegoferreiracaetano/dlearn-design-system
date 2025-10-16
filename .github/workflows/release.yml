@@ -115,8 +115,8 @@ jobs:
           echo "📦 Checking for XCFramework zip..."
           ls -R designsystem/build/XCFrameworks
           cd designsystem/build/XCFrameworks/release
-          zip -r ../../../../../DesignSystem.xcframework.zip DesignSystem.xcframework
-          cd ../../../../../
+          zip -rq ../../../../DesignSystem.xcframework.zip DesignSystem.xcframework
+          cd ../../../../
 
       - name: Verify XCFramework zip
         run: |
