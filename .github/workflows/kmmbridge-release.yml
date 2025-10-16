@@ -1,6 +1,9 @@
 name: KMMBridge-Release
 on:
-  workflow_dispatch:
+  push:
+    branches-ignore:
+      - 'main'
+
 
 jobs:
   call-publish:
