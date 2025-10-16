@@ -11,10 +11,11 @@ androidx-lifecycle = "2.9.4"
 androidx-testExt = "1.3.0"
 composeMultiplatform = "1.9.0"
 junit = "4.13.2"
-kotlin = "2.2.20"
+kotlin = "2.1.0"
 imageLoader = "1.10.0"
 detekt = "1.23.8"
 swiftBridge = "1.2.1"
+skie = "0.10.6"
 
 [libraries]
 image-loader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "imageLoader" }
@@ -38,3 +39,4 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 mavenPublish = { id = "maven-publish" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 touchlab-kmmbridge = { id = "co.touchlab.kmmbridge.github", version.ref = "swiftBridge" }
+skie = { id = "co.touchlab.skie", version.ref = "skie" }

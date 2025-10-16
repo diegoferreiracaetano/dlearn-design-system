@@ -12,6 +12,8 @@ plugins {
     alias(libs.plugins.mavenPublish)
     alias(libs.plugins.detekt)
     alias(libs.plugins.touchlab.kmmbridge)
+    alias(libs.plugins.skie)
+
 }
 
 kotlin {
@@ -22,7 +24,7 @@ kotlin {
         publishLibraryVariants("release") // Publicar apenas a variante release
     }
 
-//    val xcf = XCFramework("DesignSystem")
+   // val xcf = XCFramework("DesignSystem")
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -32,7 +34,7 @@ kotlin {
                 baseName = "DesignSystem"
                 isStatic = true
                 freeCompilerArgs += listOf("-Xbinary=bundleId=com.diegoferreiracaetano.dlearn.designsystem")
-        //        xcf.add(this)
+             //   xcf.add(this)
             }
         }
     }
@@ -155,5 +157,11 @@ kmmbridge {
     gitHubReleaseArtifacts()
     spm(swiftToolVersion = "5.8") {
         iOS { v("14") }
+    }
+}
+
+skie {
+    build {
+        produceDistributableFramework()
     }
 }

@@ -8,6 +8,8 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.touchlab.kmmbridge) apply false
+    alias(libs.plugins.skie) apply false
+
 }
 
 subprojects {
