@@ -31,7 +31,7 @@ jobs:
         id: versionPropertyValue
         with:
           file: ./gradle.properties
-          property: LIBRARY_VERSION # The release version. Defined in gradle.properties.
+          property: VERSION # The release version. Defined in gradle.properties.
 
       - name: Print versionPropertyValue
         id: output
