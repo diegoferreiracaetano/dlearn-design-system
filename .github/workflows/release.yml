@@ -1,131 +1,159 @@
-name: Publish Release
-
-on:
-  push:
-    branches-ignore:
-      - 'main'
-
-jobs:
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: gradle
-      - run: chmod +x gradlew
-      - run: ./gradlew detekt
-
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    needs: lint
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: gradle
-      - run: chmod +x gradlew
-      - run: ./gradlew testDebugUnitTest
-
-  version:
-    name: Get Version
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.versioning.outputs.version }}
-      tag: ${{ steps.versioning.outputs.tag }}
-    steps:
-      - uses: actions/checkout@v4
-      - id: versioning
-        run: |
-          VERSION_NAME=$(grep 'VERSION_NAME' gradle.properties | cut -d'=' -f2)
-          echo "version=$VERSION_NAME" >> $GITHUB_OUTPUT
-          echo "tag=$VERSION_NAME" >> $GITHUB_OUTPUT   # tag = 1.0.0 sem 'v'
-
-  publish:
-    name: Publish
-    runs-on: macos-latest
-    needs: [lint, test, version]
-    permissions:
-      contents: write
-      packages: write
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: gradle
-
-      - run: chmod +x gradlew
-
-      # 1️⃣ Build KMP library
-      - run: ./gradlew :designsystem:publish -PVERSION_NAME=${{ needs.version.outputs.version }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # 2️⃣ Build iOS XCFramework
-      - run: ./gradlew :designsystem:assembleDesignsystemReleaseXCFramework -PVERSION_NAME=${{ needs.version.outputs.version }}
-
-      # 3️⃣ Package XCFramework
-      - run: |
-          cd designsystem/build/XCFrameworks/release
-          zip -rq ../../../../DesignSystem.xcframework.zip DesignSystem.xcframework
-          cd ../../../../
-
-      # 4️⃣ Calculate checksum
-      - id: checksum
-        run: |
-          echo "CHECKSUM=$(swift package compute-checksum DesignSystem.xcframework.zip)" >> $GITHUB_ENV
-
-      # 5️⃣ Generate Package.swift in root
-      - run: |
-          cat <<EOF > Package.swift
-          // swift-tools-version:5.9
-          import PackageDescription
-
-          let package = Package(
-              name: "DesignSystem",
-              platforms: [.iOS(.v14)],
-              products: [
-                  .library(name: "DesignSystem", targets: ["DesignSystem"])
-              ],
-              targets: [
-                  .binaryTarget(
-                      name: "DesignSystem",
-                      url: "https://github.com/${{ github.repository }}/releases/download/${{ needs.version.outputs.tag }}/DesignSystem.xcframework.zip",
-                      checksum: "${{ env.CHECKSUM }}"
-                  )
-              ]
-          )
-          EOF
-
-      # 6️⃣ Commit Package.swift
-      - run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add Package.swift
-          git commit -m "Add Package.swift for version ${{ needs.version.outputs.version }}" || echo "No changes to commit"
-          git push origin HEAD
-
-      # 7️⃣ Create Git Tag without 'v'
-      - run: |
-          git tag ${{ needs.version.outputs.tag }} -m "Release ${{ needs.version.outputs.tag }}"
-          git push origin ${{ needs.version.outputs.tag }}
-
-      # 8️⃣ Create Release and Upload Assets
-      - run: |
-          gh release create ${{ needs.version.outputs.tag }} \
-            DesignSystem.xcframework.zip \
-            --title "Release ${{ needs.version.outputs.tag }}" \
-            --notes "Automatic release for version ${{ needs.version.outputs.tag }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#name: Publish Release
+#
+#on:
+#  push:
+#    branches-ignore:
+#      - 'main'
+#
+#jobs:
+#  lint:
+#    name: Lint
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#      - name: Set up JDK 17
+#        uses: actions/setup-java@v4
+#        with:
+#          java-version: '17'
+#          distribution: 'temurin'
+#          cache: gradle
+#      - name: Grant execute permission for gradlew
+#        run: chmod +x gradlew
+#      - name: Run Detekt
+#        run: ./gradlew detekt
+#
+#  test:
+#    name: Test
+#    runs-on: ubuntu-latest
+#    needs: lint
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#      - name: Set up JDK 17
+#        uses: actions/setup-java@v4
+#        with:
+#          java-version: '17'
+#          distribution: 'temurin'
+#          cache: gradle
+#      - name: Grant execute permission for gradlew
+#        run: chmod +x gradlew
+#      - name: Run tests
+#        run: ./gradlew testDebugUnitTest
+#
+#  version:
+#    name: Get Version
+#    runs-on: ubuntu-latest
+#    outputs:
+#      version: ${{ steps.versioning.outputs.version }}
+#      tag: ${{ steps.versioning.outputs.tag }}
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#      - name: Get version from gradle.properties
+#        id: versioning
+#        run: |
+#          VERSION_NAME=$(grep 'VERSION_NAME' gradle.properties | cut -d'=' -f2)
+#          echo "version=$VERSION_NAME" >> $GITHUB_OUTPUT
+#          echo "tag=$VERSION_NAME" >> $GITHUB_OUTPUT   # <- sem 'v'
+#
+#  publish:
+#    name: Publish
+#    runs-on: macos-latest
+#    needs: [lint, test, version]
+#    permissions:
+#      contents: write
+#      packages: write
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#        with:
+#          fetch-depth: 0
+#
+#      - name: Set up JDK 17
+#        uses: actions/setup-java@v4
+#        with:
+#          java-version: '17'
+#          distribution: 'temurin'
+#          cache: gradle
+#
+#      - name: Grant execute permission for gradlew
+#        run: chmod +x gradlew
+#
+#      - name: Publish KMP Library to GitHub Packages
+#        run: ./gradlew :designsystem:publish -PVERSION_NAME=${{ needs.version.outputs.version }}
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#
+#      - name: Build iOS XCFramework
+#        run: ./gradlew :designsystem:assembleDesignsystemReleaseXCFramework -PVERSION_NAME=${{ needs.version.outputs.version }}
+#
+#      - name: Prepare workspace
+#        run: |
+#          mkdir -p $GITHUB_WORKSPACE/build
+#          chmod -R 777 $GITHUB_WORKSPACE/build
+#
+#      - name: Validate XCFramework exists
+#        run: |
+#          if [ ! -d "designsystem/build/XCFrameworks/release/DesignSystem.xcframework" ]; then
+#            echo "❌ File not found!"
+#            ls -R designsystem/build/XCFrameworks || true
+#            exit 1
+#          fi
+#
+#      - name: Package XCFramework
+#        run: |
+#          cd designsystem/build/XCFrameworks/release
+#          zip -rq ../../../../DesignSystem.xcframework.zip DesignSystem.xcframework
+#          cd ../../../../
+#
+#      - name: Verify XCFramework zip
+#        run: ls -lh DesignSystem.xcframework.zip || (echo "❌ File not found!" && exit 1)
+#
+#      - name: Calculate checksum
+#        id: checksum
+#        run: echo "CHECKSUM=$(swift package compute-checksum DesignSystem.xcframework.zip)" >> $GITHUB_ENV
+#
+#      - name: Generate Package.swift
+#        run: |
+#          cat <<EOF > Package.swift
+#          // swift-tools-version:5.9
+#          import PackageDescription
+#
+#          let package = Package(
+#              name: "DesignSystem",
+#              platforms: [.iOS(.v14)],
+#              products: [
+#                  .library(name: "DesignSystem", targets: ["DesignSystem"])
+#              ],
+#              targets: [
+#                  .binaryTarget(
+#                      name: "DesignSystem",
+#                      url: "https://github.com/${{ github.repository }}/releases/download/${{ needs.version.outputs.tag }}/DesignSystem.xcframework.zip",
+#                      checksum: "${{ env.CHECKSUM }}"
+#                  )
+#              ]
+#          )
+#          EOF
+#
+#      - name: Commit Package.swift
+#        run: |
+#          git config --global user.name "github-actions[bot]"
+#          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+#          git add Package.swift
+#          git commit -m "Add Package.swift for version ${{ needs.version.outputs.version }}" || echo "No changes to commit"
+#          git push origin HEAD
+#
+#      - name: Create Git Tag
+#        run: |
+#          git tag ${{ needs.version.outputs.tag }} -m "Release ${{ needs.version.outputs.tag }}"
+#          git push origin ${{ needs.version.outputs.tag }}
+#
+#      - name: Create Release and Upload Assets via gh CLI
+#        run: |
+#          gh release create ${{ needs.version.outputs.tag }} \
+#            DesignSystem.xcframework.zip \
+#            --title "Release ${{ needs.version.outputs.tag }}" \
+#            --notes "Automatic release for version ${{ needs.version.outputs.tag }}"
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

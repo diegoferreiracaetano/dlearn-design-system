@@ -1,6 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
@@ -10,6 +11,11 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.mavenPublish)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.touchlab.kmmbridge)
+    alias(libs.plugins.skie)
+    `maven-publish`
+    id("com.google.devtools.ksp") version "1.9.23-1.0.20"
+
 }
 
 kotlin {
@@ -17,10 +23,11 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
-        publishLibraryVariants("release") // Publicar apenas a variante release
+     //   publishLibraryVariants("release") // Publicar apenas a variante release
+        publishAllLibraryVariants()
     }
 
-    val xcf = XCFramework("DesignSystem")
+   // val xcf = XCFramework("DesignSystem")
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -30,7 +37,7 @@ kotlin {
                 baseName = "DesignSystem"
                 isStatic = true
                 freeCompilerArgs += listOf("-Xbinary=bundleId=com.diegoferreiracaetano.dlearn.designsystem")
-                xcf.add(this)
+             //   xcf.add(this)
             }
         }
     }
@@ -98,8 +105,13 @@ dependencies {
 group = findProperty("GROUP") as String? ?: "com.diegoferreiracaetano.dlearn"
 version = findProperty("VERSION_NAME") as String
 
+val LIBRARY_VERSION: String by project
+
+version = LIBRARY_VERSION
+group = "com.example.newsreaderkmp.workshop"
+
 publishing {
-    publications.withType<MavenPublication>().configureEach { 
+    publications.withType<MavenPublication>().configureEach {
         // Adiciona um sufixo ao artifactId para diferenciar as publicações de cada plataforma,
         // exceto para a publicação principal que contém apenas os metadados.
         if (name != "kotlinMultiplatform") {
@@ -110,7 +122,7 @@ publishing {
 
         groupId = project.group.toString()
         version = project.version.toString()
-        
+
         pom {
             name.set("DesignSystem")
             description.set("Design System multiplataforma para Android e iOS")
@@ -145,6 +157,24 @@ publishing {
     }
 }
 
-tasks.matching { it.name.startsWith("publishIos") || it.name.startsWith("publishWasm") }.configureEach {
-    enabled = false
+//tasks.matching { it.name.startsWith("publishIos") || it.name.startsWith("publishWasm") }.configureEach {
+//    enabled = false
+//}
+
+
+
+kmmbridge {
+
+    spm(swiftToolVersion = "5.8") {
+        iOS { v("14") }
+    }
+
+
+}
+
+addGithubPackagesRepository()
+
+kmmbridge {
+    gitHubReleaseArtifacts()
+    spm()
 }
