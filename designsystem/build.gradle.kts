@@ -18,6 +18,7 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
         }
+        publishAllLibraryVariants()
 //        publishLibraryVariants("release") // Publicar apenas a variante release
     }
 
@@ -151,9 +152,13 @@ kmmbridge {
 //}
 //
 //
-//tasks.matching { it.name.startsWith("publishIos") || it.name.contentEquals("Js") }.configureEach {
-//    enabled = false
-//}
+tasks.matching {
+            it.name.startsWith("publishIos") ||
+            it.name.startsWith("publishWasm") ||
+            it.name.startsWith("publishJs")
+}.configureEach {
+    enabled = false
+}
 //
 //
 //publishing {
