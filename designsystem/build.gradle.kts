@@ -16,7 +16,7 @@ plugins {
 kotlin {
     androidTarget {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_21)
         }
 //        publishLibraryVariants("release") // Publicar apenas a variante release
     }
@@ -27,9 +27,9 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries {
             framework {
-                baseName = "DesignSystem"
+        //        baseName = "DesignSystem"
                 isStatic = true
-                freeCompilerArgs += listOf("-Xbinary=bundleId=com.diegoferreiracaetano.dlearn.designsystem")
+          //      freeCompilerArgs += listOf("-Xbinary=bundleId=com.diegoferreiracaetano.dlearn.designsystem")
             }
         }
     }
@@ -85,8 +85,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 }
 
@@ -94,8 +94,6 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
-group = findProperty("GROUP") as String? ?: "com.diegoferreiracaetano.dlearn"
-version = findProperty("VERSION_NAME") as String
 
 
 kmmbridge {

@@ -11,6 +11,10 @@ plugins {
 }
 
 subprojects {
+
+    group = findProperty("GROUP") as String? ?: "com.diegoferreiracaetano.dlearn"
+    version = findProperty("VERSION_NAME") as String? ?: "0.0.1"
+
     apply(plugin = "io.gitlab.arturbosch.detekt")
 
     configure<io.gitlab.arturbosch.detekt.extensions.DetektExtension> {
