@@ -18,8 +18,8 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
         }
-        publishAllLibraryVariants()
-//        publishLibraryVariants("release") // Publicar apenas a variante release
+      //  publishAllLibraryVariants()
+        publishLibraryVariants("release") // Publicar apenas a variante release
     }
 
     listOf(

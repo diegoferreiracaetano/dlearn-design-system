@@ -25,7 +25,7 @@ subprojects {
     }
 
     tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-        jvmTarget = "17"
+        jvmTarget = "21"
         exclude("**/build/**")
 
         reports {
