@@ -50,7 +50,7 @@ jobs:
   publish:
     name: Publish
     runs-on: macos-latest
-   # needs: [lint, test, version]
+    needs: [version]
     permissions:
       contents: write
       packages: write
@@ -74,6 +74,8 @@ jobs:
 
       # 2️⃣ Build iOS XCFramework
       - run: ./gradlew :designsystem:assembleDesignsystemReleaseXCFramework -PVERSION_NAME=${{ needs.version.outputs.version }}
+        env:
+          GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
 
       # 3️⃣ Package XCFramework
       - run: |
