@@ -151,6 +151,6 @@ publishing {
     }
 }
 
-//tasks.matching { it.name.startsWith("publishIos") || it.name.startsWith("publishWasm") }.configureEach {
-//    enabled = false
-//}
+tasks.matching { it.name.startsWith("publishIos") || it.name.startsWith("publishWasm") }.configureEach {
+    enabled = false
+}
