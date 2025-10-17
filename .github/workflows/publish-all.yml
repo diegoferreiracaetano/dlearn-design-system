@@ -1,4 +1,4 @@
-name: Publish All
+name: Publish All 1
 on:
   workflow_dispatch:
 
