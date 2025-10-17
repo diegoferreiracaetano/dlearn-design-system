@@ -23,7 +23,8 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
-        publishLibraryVariants("release") // Publicar apenas a variante release
+     //   publishLibraryVariants("release") // Publicar apenas a variante release
+        publishAllLibraryVariants()
     }
 
    // val xcf = XCFramework("DesignSystem")
@@ -104,59 +105,66 @@ dependencies {
 group = findProperty("GROUP") as String? ?: "com.diegoferreiracaetano.dlearn"
 version = findProperty("VERSION_NAME") as String
 
-//publishing {
-//    publications.withType<MavenPublication>().configureEach {
-//        // Adiciona um sufixo ao artifactId para diferenciar as publicações de cada plataforma,
-//        // exceto para a publicação principal que contém apenas os metadados.
-//        if (name != "kotlinMultiplatform") {
-//            artifactId = "designsystem-$name"
-//        } else {
-//            artifactId = "designsystem"
-//        }
-//
-//        groupId = project.group.toString()
-//        version = project.version.toString()
-//
-//        pom {
-//            name.set("DesignSystem")
-//            description.set("Design System multiplataforma para Android e iOS")
-//            url.set("https://github.com/diegoferreiracaetano/dlearn-design-system")
-//            licenses {
-//                license {
-//                    name.set("MIT License")
-//                    url.set("https://opensource.org/licenses/MIT")
-//                }
-//            }
-//            developers {
-//                developer {
-//                    id.set("diegoferreiracaetano")
-//                    name.set("Diego Ferreira Caetano")
-//                }
-//            }
-//            scm {
-//                url.set("https://github.com/diegoferreiracaetano/dlearn-design-system")
-//            }
-//        }
-//    }
-//
-//    repositories {
-//        maven {
-//            name = "GitHubPackages"
-//            url = uri("https://maven.pkg.github.com/diegoferreiracaetano/dlearn-design-system")
-//            credentials {
-//                username = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.user") as String?
-//                password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key") as String?
-//            }
-//        }
-//    }
-//}
+val LIBRARY_VERSION: String by project
+
+version = LIBRARY_VERSION
+group = "com.example.newsreaderkmp.workshop"
+
+publishing {
+    publications.withType<MavenPublication>().configureEach {
+        // Adiciona um sufixo ao artifactId para diferenciar as publicações de cada plataforma,
+        // exceto para a publicação principal que contém apenas os metadados.
+        if (name != "kotlinMultiplatform") {
+            artifactId = "designsystem-$name"
+        } else {
+            artifactId = "designsystem"
+        }
+
+        groupId = project.group.toString()
+        version = project.version.toString()
+
+        pom {
+            name.set("DesignSystem")
+            description.set("Design System multiplataforma para Android e iOS")
+            url.set("https://github.com/diegoferreiracaetano/dlearn-design-system")
+            licenses {
+                license {
+                    name.set("MIT License")
+                    url.set("https://opensource.org/licenses/MIT")
+                }
+            }
+            developers {
+                developer {
+                    id.set("diegoferreiracaetano")
+                    name.set("Diego Ferreira Caetano")
+                }
+            }
+            scm {
+                url.set("https://github.com/diegoferreiracaetano/dlearn-design-system")
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/diegoferreiracaetano/dlearn-design-system")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.user") as String?
+                password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key") as String?
+            }
+        }
+    }
+}
 
 //tasks.matching { it.name.startsWith("publishIos") || it.name.startsWith("publishWasm") }.configureEach {
 //    enabled = false
 //}
 
+
+
 kmmbridge {
-    gitHubReleaseArtifacts()
+
     spm(swiftToolVersion = "5.8") {
         iOS { v("14") }
     }
@@ -164,11 +172,9 @@ kmmbridge {
 
 }
 
-skie {
-    build {
-        produceDistributableFramework()
-    }
-}
-
-
 addGithubPackagesRepository()
+
+kmmbridge {
+    gitHubReleaseArtifacts()
+    spm()
+}
