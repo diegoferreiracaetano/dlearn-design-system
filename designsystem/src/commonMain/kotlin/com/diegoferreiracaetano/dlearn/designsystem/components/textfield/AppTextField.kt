@@ -29,6 +29,7 @@ import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.password
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.title_email
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.title_password
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
+import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -39,6 +40,7 @@ enum class TextFieldType {
     NONE,
 }
 
+@ComposeUIViewController
 @Composable
 fun AppTextField(
     value: String,

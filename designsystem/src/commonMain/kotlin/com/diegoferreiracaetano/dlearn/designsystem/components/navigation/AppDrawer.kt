@@ -10,12 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 
 data class DrawerItem(
     val route: String,
     val icon: ImageVector,
 )
 
+@ComposeUIViewController
 @Composable
 fun AppDrawer(
     items: List<DrawerItem>,

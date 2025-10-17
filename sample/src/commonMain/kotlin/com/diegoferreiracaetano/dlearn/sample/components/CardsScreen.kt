@@ -12,10 +12,10 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.carousel.Carousel
 import com.diegoferreiracaetano.dlearn.designsystem.components.carousel.CarouselItem
 import com.diegoferreiracaetano.dlearn.designsystem.components.carousel.FullScreenBanner
 import com.diegoferreiracaetano.dlearn.designsystem.components.carousel.FullScreenVideo
-import dlearn.sample.generated.resources.Res
-import dlearn.sample.generated.resources.banner1
-import dlearn.sample.generated.resources.banner2
-import dlearn.sample.generated.resources.banner3
+import com.diegoferreiracaetano.dlearn.sample.generated.resources.Res
+import com.diegoferreiracaetano.dlearn.sample.generated.resources.banner1
+import com.diegoferreiracaetano.dlearn.sample.generated.resources.banner2
+import com.diegoferreiracaetano.dlearn.sample.generated.resources.banner3
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val RATING_1 = 4.5f

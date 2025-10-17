@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.dlearn_logo
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
+import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
@@ -25,6 +26,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 private val DefaultMaxSize = 200.dp
 private const val PREVIEW_WEIGHT = 0.4f
 
+@ComposeUIViewController
 @Composable
 fun CircularImage(
     resource: DrawableResource,

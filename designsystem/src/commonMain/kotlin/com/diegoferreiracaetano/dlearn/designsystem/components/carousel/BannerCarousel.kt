@@ -23,9 +23,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
+import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+@ComposeUIViewController
 @Composable
 fun BannerCarousel(
     modifier: Modifier = Modifier,
@@ -68,6 +70,7 @@ fun BannerCarousel(
 
 private const val RATIO = 16f / 9f
 
+@ComposeUIViewController
 @Composable
 fun BannerCard(
     modifier: Modifier = Modifier,

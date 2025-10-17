@@ -1,4 +1,4 @@
-package com.diegoferreiracaetano.dlearn.designsystem.components.button // Use o seu pacote correto
+package com.diegoferreiracaetano.dlearn.designsystem.components.button
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,11 +14,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
+import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private val PreviewPadding = 16.dp
 private val PreviewSpacing = 16.dp
 
+@ComposeUIViewController
 @Composable
 fun AppSwitcher(
     modifier: Modifier = Modifier,

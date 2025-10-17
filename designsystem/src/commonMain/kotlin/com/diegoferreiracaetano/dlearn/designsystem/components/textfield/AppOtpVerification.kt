@@ -37,6 +37,7 @@ import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.otp_rese
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.otp_resend_now
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.otp_resend_prompt
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
+import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -44,6 +45,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 private const val TIMEOUT = 1000L
 private const val COUNTDOWN = 59
 
+@ComposeUIViewController
 @Composable
 fun AppOtpVerification(
     modifier: Modifier = Modifier,

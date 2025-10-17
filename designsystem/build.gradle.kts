@@ -10,7 +10,14 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.detekt)
     alias(libs.plugins.touchlab.kmmbridge)
-    `maven-publish`
+    alias(libs.plugins.mavenPublish)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.composeuiviewcontroller)
+}
+
+ComposeUiViewController {
+    iosAppName = "iosApp"
+    targetName = "iosApp"
 }
 
 kotlin {
@@ -28,9 +35,9 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries {
             framework {
-        //        baseName = "DesignSystem"
+                baseName = "DesignSystem"
                 isStatic = true
-          //      freeCompilerArgs += listOf("-Xbinary=bundleId=com.diegoferreiracaetano.dlearn.designsystem")
+                freeCompilerArgs += listOf("-Xbinary=bundleId=com.diegoferreiracaetano.dlearn.designsystem")
             }
         }
     }
@@ -103,6 +110,7 @@ kmmbridge {
         iOS { v("14") }
     }
 }
+
 
 //publishing {
 //    publications.withType<MavenPublication>().configureEach {
