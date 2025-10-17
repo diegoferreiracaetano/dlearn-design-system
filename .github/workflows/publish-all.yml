@@ -1,6 +1,11 @@
 name: Publish All 1
+
 on:
   workflow_dispatch:
+  push:
+    branches-ignore:
+      - 'main'
+
 
 jobs:
   kmmbridgepublish:
