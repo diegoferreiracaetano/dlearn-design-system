@@ -128,7 +128,6 @@ fun FullScreenVideo(
     }
 }
 
-@ComposeUIViewController
 @Composable
 fun FullScreenBanner(
     modifier: Modifier = Modifier,
