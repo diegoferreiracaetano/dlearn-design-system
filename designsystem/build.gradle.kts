@@ -8,9 +8,9 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.mavenPublish)
     alias(libs.plugins.detekt)
     alias(libs.plugins.touchlab.kmmbridge)
+    `maven-publish`
 }
 
 kotlin {
@@ -18,7 +18,7 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
-        publishLibraryVariants("release") // Publicar apenas a variante release
+//        publishLibraryVariants("release") // Publicar apenas a variante release
     }
 
     listOf(
@@ -97,11 +97,12 @@ dependencies {
 group = findProperty("GROUP") as String? ?: "com.diegoferreiracaetano.dlearn"
 version = findProperty("VERSION_NAME") as String
 
-addGithubPackagesRepository()
 
 kmmbridge {
     gitHubReleaseArtifacts()
-    spm()
+    spm(swiftToolVersion = "5.8") {
+        iOS { v("14") }
+    }
 }
 
 //publishing {
@@ -151,6 +152,22 @@ kmmbridge {
 //    }
 //}
 //
-//tasks.matching { it.name.startsWith("publishIos") || it.name.startsWith("publishWasm") }.configureEach {
+//
+//tasks.matching { it.name.startsWith("publishIos") || it.name.contentEquals("Js") }.configureEach {
 //    enabled = false
 //}
+//
+//
+//publishing {
+//    repositories {
+//        maven {
+//            name = "GitHubPackages"
+//            url = uri("https://maven.pkg.github.com/diegoferreiracaetano/dlearn-design-system")
+//            credentials {
+//                username = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.user") as String?
+//                password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key") as String?
+//            }
+//        }
+//    }
+//}
+//
