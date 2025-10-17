@@ -13,6 +13,8 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.touchlab.kmmbridge)
     alias(libs.plugins.skie)
+    `maven-publish`
+    id("com.google.devtools.ksp") version "1.9.23-1.0.20"
 
 }
 
@@ -158,6 +160,8 @@ kmmbridge {
     spm(swiftToolVersion = "5.8") {
         iOS { v("14") }
     }
+
+
 }
 
 skie {
@@ -165,3 +169,6 @@ skie {
         produceDistributableFramework()
     }
 }
+
+
+addGithubPackagesRepository()
