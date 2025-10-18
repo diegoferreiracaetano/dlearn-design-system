@@ -18,10 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
-import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@ComposeUIViewController
 @Composable
 fun PageIndicator(
     totalPages: Int,

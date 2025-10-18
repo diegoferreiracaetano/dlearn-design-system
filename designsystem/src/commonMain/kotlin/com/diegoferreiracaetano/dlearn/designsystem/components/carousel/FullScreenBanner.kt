@@ -33,14 +33,12 @@ import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner1
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner2
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner3
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
-import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val RATIO = 12f / 16f
 
-@ComposeUIViewController
 @Composable
 fun FullScreenVideo(
     modifier: Modifier = Modifier,

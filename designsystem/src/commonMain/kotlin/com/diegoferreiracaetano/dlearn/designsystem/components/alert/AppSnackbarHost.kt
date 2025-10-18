@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.theme.extendedColors
-import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -23,7 +22,6 @@ enum class SnackbarType {
     WARNING
 }
 
-@ComposeUIViewController
 @Composable
 fun AppSnackbarHost(
     hostState: SnackbarHostState,

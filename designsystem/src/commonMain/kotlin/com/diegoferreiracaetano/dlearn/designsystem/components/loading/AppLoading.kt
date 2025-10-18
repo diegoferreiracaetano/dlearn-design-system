@@ -15,9 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
-import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 
-@ComposeUIViewController
 @Composable
 fun AppLoading(
     modifier: Modifier = Modifier,

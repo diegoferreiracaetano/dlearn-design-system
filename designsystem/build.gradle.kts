@@ -8,16 +8,9 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.mavenPublish)
     alias(libs.plugins.detekt)
     alias(libs.plugins.touchlab.kmmbridge)
-    alias(libs.plugins.mavenPublish)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.composeuiviewcontroller)
-}
-
-ComposeUiViewController {
-    iosAppName = "iosApp"
-    targetName = "iosApp"
 }
 
 kotlin {
@@ -25,7 +18,6 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
         }
-      //  publishAllLibraryVariants()
         publishLibraryVariants("release") // Publicar apenas a variante release
     }
 

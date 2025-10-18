@@ -35,7 +35,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.alert.AppSnackbarHost
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
-import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 

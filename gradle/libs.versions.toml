@@ -15,8 +15,6 @@ kotlin = "2.2.20"
 imageLoader = "1.10.0"
 detekt = "1.23.8"
 swiftBridge = "1.2.1"
-composeuiviewcontroller = "2.2.20-1.9.0"
-ksp = "2.2.10-2.0.2"
 
 [libraries]
 image-loader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "imageLoader" }
@@ -40,5 +38,3 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 mavenPublish = { id = "maven-publish" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 touchlab-kmmbridge = { id = "co.touchlab.kmmbridge.github", version.ref = "swiftBridge" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-composeuiviewcontroller = { id = "io.github.guilhe.kmp.plugin-composeuiviewcontroller", version.ref = "composeuiviewcontroller" }

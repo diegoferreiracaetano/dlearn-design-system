@@ -23,12 +23,10 @@ import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_b
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_favorite
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_menu
 import com.diegoferreiracaetano.dlearn.designsystem.util.contrastTextColor
-import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 import org.jetbrains.compose.resources.stringResource
 
 private const val MAX_TITLE_LINES = 1
 
-@ComposeUIViewController
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar(

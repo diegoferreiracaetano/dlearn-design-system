@@ -33,7 +33,6 @@ import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.chip_lab
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.chip_label_series
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.diegoferreiracaetano.dlearn.designsystem.theme.Shapes
-import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -49,13 +48,12 @@ data class AppChip(
     val isFilter: Boolean = true
 )
 
-@ComposeUIViewController
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppChipGroup(
     modifier: Modifier = Modifier,
     items: List<AppChip>,
-    onFilterChanged: (String) -> Unit
+    onFilterChanged: (String?) -> Unit
 ) {
     var selectedFilterLabel by remember { mutableStateOf<String?>(null) }
 
@@ -75,7 +73,7 @@ fun AppChipGroup(
         if (selectedFilterLabel != null) {
             IconButton(onClick = {
                 selectedFilterLabel = null
-                onFilterChanged("")
+                onFilterChanged(null)
             }) {
                 Icon(
                     imageVector = Icons.Default.Close,
@@ -97,7 +95,7 @@ fun AppChipGroup(
                         if (chip.isFilter) {
                             val newFilter = if (isSelected) null else chip.label
                             selectedFilterLabel = newFilter
-                            onFilterChanged(newFilter.orEmpty())
+                            onFilterChanged(newFilter)
                         }
                         chip.onClick()
                     },

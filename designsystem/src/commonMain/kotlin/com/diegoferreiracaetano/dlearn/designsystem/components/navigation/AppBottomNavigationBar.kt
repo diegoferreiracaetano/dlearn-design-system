@@ -27,7 +27,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.diegoferreiracaetano.dlearn.designsystem.util.isIOS
-import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private val NavBarHeightSingleLine = 80.dp
@@ -47,7 +46,6 @@ data class AppNavigationTab(
     val unselectedIcon: ImageVector
 )
 
-@ComposeUIViewController
 @Composable
 fun AppBottomNavigationBar(
     modifier: Modifier = Modifier,

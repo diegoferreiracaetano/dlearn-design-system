@@ -32,7 +32,6 @@ import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.selectio
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.selection_option_z_a
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.diegoferreiracaetano.dlearn.designsystem.util.contrastTextColor
-import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -47,7 +46,6 @@ data class AppSelectionOption(
     val color: Color,
 )
 
-@ComposeUIViewController
 @Composable
 fun AppSelectionSimple(
     modifier: Modifier = Modifier,
@@ -74,7 +72,6 @@ fun AppSelectionSimple(
     )
 }
 
-@ComposeUIViewController
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppSelection(

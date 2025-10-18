@@ -8,14 +8,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner
-import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 import com.seiko.imageloader.rememberImagePainter
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
 private val DefaultImageSize = 120.dp
 
-@ComposeUIViewController
 @Composable
 fun AppImage(
     modifier: Modifier = Modifier,

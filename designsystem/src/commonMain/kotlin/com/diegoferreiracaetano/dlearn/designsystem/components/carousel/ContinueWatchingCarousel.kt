@@ -27,10 +27,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
-import com.github.guilhe.kmp.composeuiviewcontroller.ComposeUIViewController
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@ComposeUIViewController
 @Composable
 fun ContinueWatchingCarousel(
     modifier: Modifier = Modifier,
@@ -62,7 +60,6 @@ fun ContinueWatchingCarousel(
 
 private const val RATIO = 16f / 9f
 
-@ComposeUIViewController
 @Composable
 fun ContinueWatchingCard(
     modifier: Modifier = Modifier,
