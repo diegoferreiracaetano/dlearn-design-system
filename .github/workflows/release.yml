@@ -1,6 +1,7 @@
 name: Publish Release
 
 on:
+  workflow_dispatch:
   push:
     branches-ignore:
       - 'main'
@@ -33,7 +34,8 @@ jobs:
       - run: chmod +x gradlew
       - run: ./gradlew testDebugUnitTest
 
-  kmmbridgepublish:
+  publish:
+    name: Publish
     permissions:
       contents: write
       packages: write
@@ -72,8 +74,13 @@ jobs:
             ~/.konan
           key: ${{ runner.os }}-v1-${{ hashFiles('**/libs.versions.toml') }}
 
-      - name: Build Main
+      - name: Publish Android
         run: ./gradlew :designsystem:publish -PENABLE_PUBLISHING=true -PGITHUB_PUBLISH_TOKEN=${{ secrets.GITHUB_TOKEN }} -PGITHUB_REPO=${{ github.repository }} --no-daemon --stacktrace
+        env:
+          GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
+
+      - name: Publish Ios
+        run: ./gradlew :designsystem:kmmBridgePublish -PENABLE_PUBLISHING=true -PGITHUB_PUBLISH_TOKEN=${{ secrets.GITHUB_TOKEN }} -PGITHUB_REPO=${{ github.repository }} --no-daemon --stacktrace
         env:
           GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
 
@@ -83,5 +90,4 @@ jobs:
           commitMessage: "KMP SPM package release for ${{ steps.versionPropertyValue.outputs.propVal }}"
           tagMessage: "KMP release version ${{ steps.versionPropertyValue.outputs.propVal }}"
           tagVersion: ${{ steps.versionPropertyValue.outputs.propVal }}
-
 

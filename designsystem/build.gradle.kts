@@ -103,6 +103,8 @@ kmmbridge {
     }
 }
 
+addGithubPackagesRepository()
+
 tasks.matching {
             it.name.startsWith("publishIos") ||
             it.name.startsWith("publishWasm") ||
