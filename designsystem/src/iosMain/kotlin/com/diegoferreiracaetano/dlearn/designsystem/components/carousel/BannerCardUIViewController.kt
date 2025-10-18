@@ -2,7 +2,7 @@ package com.diegoferreiracaetano.dlearn.designsystem.components.carousel
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.ComposeUIViewController
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.DrawableResource
+import org.jetbrains.compose.resources.DrawableResource
 import platform.UIKit.UIViewController
 
 object BannerCardUIViewController {

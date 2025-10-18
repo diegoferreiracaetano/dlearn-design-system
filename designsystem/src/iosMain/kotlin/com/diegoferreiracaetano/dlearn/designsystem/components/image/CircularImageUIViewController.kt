@@ -12,7 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ComposeUIViewController
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.DrawableResource
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import platform.UIKit.UIViewController
 
