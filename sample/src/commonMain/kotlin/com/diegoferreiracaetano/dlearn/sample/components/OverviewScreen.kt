@@ -19,10 +19,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import dlearn.sample.generated.resources.Res
-import dlearn.sample.generated.resources.overview_description
-import dlearn.sample.generated.resources.overview_explore
-import dlearn.sample.generated.resources.overview_welcome_title
+import com.diegoferreiracaetano.dlearn.sample.generated.resources.Res
+import com.diegoferreiracaetano.dlearn.sample.generated.resources.overview_description
+import com.diegoferreiracaetano.dlearn.sample.generated.resources.overview_explore
+import com.diegoferreiracaetano.dlearn.sample.generated.resources.overview_welcome_title
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

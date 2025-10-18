@@ -7,9 +7,14 @@ plugins {
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.detekt) apply false
+    alias(libs.plugins.touchlab.kmmbridge) apply false
 }
 
 subprojects {
+
+    group = findProperty("GROUP") as String? ?: "com.diegoferreiracaetano.dlearn"
+    version = findProperty("VERSION_NAME") as String? ?: "0.0.1"
+
     apply(plugin = "io.gitlab.arturbosch.detekt")
 
     configure<io.gitlab.arturbosch.detekt.extensions.DetektExtension> {
@@ -20,7 +25,7 @@ subprojects {
     }
 
     tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-        jvmTarget = "17"
+        jvmTarget = "21"
         exclude("**/build/**")
 
         reports {

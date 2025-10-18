@@ -8,9 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.CircularImage
-import dlearn.sample.generated.resources.Res
-import dlearn.sample.generated.resources.banner1
-import dlearn.sample.generated.resources.dlearn_logo
+import com.diegoferreiracaetano.dlearn.sample.generated.resources.Res
+import com.diegoferreiracaetano.dlearn.sample.generated.resources.banner1
+import com.diegoferreiracaetano.dlearn.sample.generated.resources.dlearn_logo
 
 @Composable
 fun ImageScreen() {

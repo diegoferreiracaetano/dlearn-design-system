@@ -13,11 +13,11 @@ import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.textfield.AppOtpVerification
 import com.diegoferreiracaetano.dlearn.designsystem.components.textfield.AppTextField
 import com.diegoferreiracaetano.dlearn.designsystem.components.textfield.TextFieldType
-import dlearn.sample.generated.resources.Res
-import dlearn.sample.generated.resources.email_message_validation
-import dlearn.sample.generated.resources.password_message_validation
-import dlearn.sample.generated.resources.title_email
-import dlearn.sample.generated.resources.title_password
+import com.diegoferreiracaetano.dlearn.sample.generated.resources.Res
+import com.diegoferreiracaetano.dlearn.sample.generated.resources.email_message_validation
+import com.diegoferreiracaetano.dlearn.sample.generated.resources.password_message_validation
+import com.diegoferreiracaetano.dlearn.sample.generated.resources.title_email
+import com.diegoferreiracaetano.dlearn.sample.generated.resources.title_password
 
 @Composable
 fun TextFieldsScreen() {
