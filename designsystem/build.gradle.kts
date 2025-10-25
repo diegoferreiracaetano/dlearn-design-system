@@ -22,13 +22,14 @@ kotlin {
     }
 
     listOf(
+        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries {
             framework {
                 baseName = "DesignSystem"
-                isStatic = true
+                isStatic = false
                 freeCompilerArgs += listOf("-Xbinary=bundleId=com.diegoferreiracaetano.dlearn.designsystem")
             }
         }
@@ -98,7 +99,10 @@ dependencies {
 
 kmmbridge {
     gitHubReleaseArtifacts()
-    spm(swiftToolVersion = "5.8") {
+    spm(
+        swiftToolVersion = "5.8",
+        useCustomPackageFile = true
+    ) {
         iOS { v("14") }
     }
 }
@@ -112,3 +116,4 @@ tasks.matching {
 }.configureEach {
     enabled = false
 }
+
