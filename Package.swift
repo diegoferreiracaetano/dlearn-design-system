@@ -4,6 +4,7 @@ import PackageDescription
 let packageName = "DesignSystem"
 let packageNameUI = "DesignSystemUI"
 
+
 let package = Package(
     name: packageName,
     platforms: [
@@ -18,8 +19,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: packageName,
-            path: "./designsystem/build/XCFrameworks/release/\(packageName).xcframework"
-        ),
+            path: "./designsystem/build/XCFrameworks/debug/\(packageName).xcframework"
+        )
         .target(
             name: packageNameUI,
             dependencies: [],
