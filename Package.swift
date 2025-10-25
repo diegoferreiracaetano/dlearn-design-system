@@ -4,6 +4,8 @@ import PackageDescription
 let packageName = "DesignSystem"
 let packageNameUI = "DesignSystemUI"
 
+// BEGIN KMMBRIDGE VARIABLES BLOCK (do not edit)
+// END KMMBRIDGE BLOCK
 
 let package = Package(
     name: packageName,
