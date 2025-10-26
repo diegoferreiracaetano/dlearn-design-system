@@ -2,7 +2,9 @@
 import PackageDescription
 
 // BEGIN KMMBRIDGE VARIABLES BLOCK (do not edit)
-let binaryPath = "WILL_BE_REPLACED_BY_KMMBRIDGE"
+let remoteKotlinUrl = "https://api.github.com/repos/diegoferreiracaetano/dlearn-design-system/releases/assets/309005210.zip"
+let remoteKotlinChecksum = "5c5f9dd6bde10b1b47e4878da78947eec6cbaea96c4caa3baba6a3b6d25dbc1a"
+let packageName = "DesignSystem"
 // END KMMBRIDGE BLOCK
 
 let packageName = "DesignSystem"
