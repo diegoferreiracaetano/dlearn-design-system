@@ -58,7 +58,7 @@ jobs:
 
       - name: Print version
         id: output
-        run: echo "Version: ${{ steps.versionPropertyValue.outputs.propVal }}"
+        run: echo "${{ steps.versionPropertyValue.outputs.propVal }}"
 
       # ✅ Setup Java & Gradle
       - uses: actions/setup-java@v4
