@@ -36,31 +36,34 @@ jobs:
 
   publish:
     name: Publish Release
+    runs-on: macos-latest
+    needs: test
     permissions:
       contents: write
       packages: write
-    runs-on: macos-latest
-    needs: test
     steps:
-      - name: Checkout the repo with tags
+      # ✅ Checkout
+      - name: Checkout repo with tags
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           fetch-tags: true
 
+      # ✅ Ler versão
       - uses: touchlab/read-property@0.1
         id: versionPropertyValue
         with:
           file: ./gradle.properties
           property: VERSION_NAME
 
-      - name: Print versionPropertyValue
+      - name: Print version
         id: output
-        run: echo "${{ steps.versionPropertyValue.outputs.propVal }}"
+        run: echo "Version: ${{ steps.versionPropertyValue.outputs.propVal }}"
 
-      - uses: actions/setup-java@v2
+      # ✅ Setup Java & Gradle
+      - uses: actions/setup-java@v4
         with:
-          distribution: "adopt"
+          distribution: temurin
           java-version: 21
 
       - uses: gradle/actions/setup-gradle@v4
@@ -70,29 +73,31 @@ jobs:
       - name: Cache KMP tooling
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.konan
+          path: ~/.konan
           key: ${{ runner.os }}-v1-${{ hashFiles('**/libs.versions.toml') }}
 
-#      - name: Publish Android
-#        run: ./gradlew :designsystem:publish -PENABLE_PUBLISHING=true -PGITHUB_PUBLISH_TOKEN=${{ secrets.GITHUB_TOKEN }} -PGITHUB_REPO=${{ github.repository }} --no-daemon --stacktrace
-#        env:
-#          GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
-
-      - name: Print BUILD_TYPE
-        run: echo "BUILD_TYPE is $BUILD_TYPE"
-
-      - name: Publish iOS
-        run: ./gradlew :designsystem:kmmBridgePublish -PENABLE_PUBLISHING=true -PGITHUB_PUBLISH_TOKEN=${{ secrets.GITHUB_TOKEN }} -PGITHUB_REPO=${{ github.repository }} --no-daemon --stacktrace
-
+      # ✅ Publish Android
+      - name: Publish Android
+        run: ./gradlew :designsystem:publish -PENABLE_PUBLISHING=true \
+          -PGITHUB_PUBLISH_TOKEN=${{ secrets.GITHUB_TOKEN }} \
+          -PGITHUB_REPO=${{ github.repository }} \
+          --no-daemon --stacktrace
         env:
-          BUILD_TYPE: ${{ env.BUILD_TYPE }}
           GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
 
+      # ✅ Publish iOS via KMMBridge
+      - name: Publish iOS
+        run: ./gradlew :designsystem:kmmBridgePublish -PENABLE_PUBLISHING=true \
+          -PGITHUB_PUBLISH_TOKEN=${{ secrets.GITHUB_TOKEN }} \
+          -PGITHUB_REPO=${{ github.repository }} \
+          --no-daemon --stacktrace
+        env:
+          GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
+
+      # ✅ Atualiza tag da release
       - uses: touchlab/ga-update-release-tag@v1
         id: update-release-tag
         with:
           commitMessage: "KMP SPM package release for ${{ steps.versionPropertyValue.outputs.propVal }}"
           tagMessage: "KMP release version ${{ steps.versionPropertyValue.outputs.propVal }}"
           tagVersion: ${{ steps.versionPropertyValue.outputs.propVal }}
-

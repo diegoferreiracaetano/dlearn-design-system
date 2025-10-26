@@ -1,8 +1,6 @@
 // swift-tools-version:5.8
 import PackageDescription
 
-// ✅ PASSO 1: Adicione este bloco.
-// O KMMBridge irá substituir a linha 'let binaryPath' automaticamente.
 // BEGIN KMMBRIDGE VARIABLES BLOCK (do not edit)
 let binaryPath = "WILL_BE_REPLACED_BY_KMMBRIDGE"
 // END KMMBRIDGE BLOCK
@@ -25,7 +23,6 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: packageName,
-        // ✅ PASSO 2: Use a variável do bloco KMMBridge aqui
             path: binaryPath
         ),
         .target(
