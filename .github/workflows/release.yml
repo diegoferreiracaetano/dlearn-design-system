@@ -79,9 +79,17 @@ jobs:
 #        env:
 #          GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
 
-      - name: Publish Ios
-        run: ./gradlew :designsystem:kmmBridgePublish -PENABLE_PUBLISHING=true -PGITHUB_PUBLISH_TOKEN=${{ secrets.GITHUB_TOKEN }} -PGITHUB_REPO=${{ github.repository }} --no-daemon --stacktrace
+      - name: Print BUILD_TYPE
+        run: echo "BUILD_TYPE is $BUILD_TYPE"
+
+      - name: Publish iOS
+        run: ./gradlew :designsystem:kmmBridgePublish \
+          -PENABLE_PUBLISHING=true \
+          -PGITHUB_PUBLISH_TOKEN=${{ secrets.GITHUB_TOKEN }} \
+          -PGITHUB_REPO=${{ github.repository }} \
+          --no-daemon --stacktrace
         env:
+          BUILD_TYPE: ${{ env.BUILD_TYPE }}
           GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
 
       - uses: touchlab/ga-update-release-tag@v1

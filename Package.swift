@@ -4,8 +4,8 @@ import PackageDescription
 let packageName = "DesignSystem"
 let packageNameUI = "DesignSystemUI"
 
-// BEGIN KMMBRIDGE VARIABLES BLOCK (do not edit)
-// END KMMBRIDGE BLOCK
+let buildType = ProcessInfo.processInfo.environment["BUILD_TYPE"] ?? "debug"
+let path = "./designsystem/build/XCFrameworks/\(buildType)/\(packageName).xcframework"
 
 let package = Package(
     name: packageName,
@@ -21,7 +21,7 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: packageName,
-            path: "./designsystem/build/XCFrameworks/release/\(packageName).xcframework"
+            path: path
         )
         .target(
             name: packageNameUI,
