@@ -84,12 +84,6 @@ jobs:
         env:
           GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
 
-      # Copiar Release para Debug (caminho esperado pelo Package.swift)
-      - name: Ajustar XCFramework para Package.swift
-        run: |
-          mkdir -p designsystem/build/XCFrameworks/Debug
-          cp -R designsystem/build/XCFrameworks/Release/DesignSystem.xcframework designsystem/build/XCFrameworks/Debug/DesignSystem.xcframework
-
       - uses: touchlab/ga-update-release-tag@v1
         id: update-release-tag
         with:

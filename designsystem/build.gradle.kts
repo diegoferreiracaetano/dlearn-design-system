@@ -101,7 +101,8 @@ kmmbridge {
     gitHubReleaseArtifacts()
     spm(
         swiftToolVersion = "5.8",
-        useCustomPackageFile = true
+        useCustomPackageFile = true,
+        perModuleVariablesBlock = false
     ) {
         iOS { v("14") }
     }
