@@ -7,9 +7,11 @@ let swiftSourcePath = "designsystem/src/iosMain/swift"
 
 // BEGIN KMMBRIDGE VARIABLES BLOCK (do not edit)
 let packageName = "DesignSystem"
+let remoteKotlinUrl = "remoteKotlinUrl"
+let remoteKotlinChecksum = "remoteKotlinChecksum"
 // END KMMBRIDGE BLOCK
 
-let binaryPath = "./designsystem/build/XCFrameworks/release/\(packageName).xcframework"
+let binaryPath = "designsystem/build/XCFrameworks/release/\(packageName).xcframework"
 
 let package = Package(
     name: packageName,
@@ -25,7 +27,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: packageName,
-            path: binaryPath
+            url: remoteKotlinUrl,
+            checksum: remoteKotlinChecksum
         ),
         .target(
             name: packageNameUI,
