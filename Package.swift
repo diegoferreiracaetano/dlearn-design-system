@@ -1,13 +1,15 @@
 // swift-tools-version:5.8
 import PackageDescription
 
-// BEGIN KMMBRIDGE VARIABLES BLOCK (do not edit)
-let binaryPath = "WILL_BE_REPLACED_BY_KMMBRIDGE"
-// END KMMBRIDGE BLOCK
 
 let packageName = "DesignSystem"
 let packageNameUI = "DesignSystemUI"
 let swiftSourcePath = "designsystem/src/iosMain/swift"
+
+// BEGIN KMMBRIDGE VARIABLES BLOCK (do not edit)
+let binaryPath = "./designsystem/build/XCFrameworks/debug/\(packageName).xcframework"
+// END KMMBRIDGE BLOCK
+
 
 let package = Package(
     name: packageName,
