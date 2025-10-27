@@ -2,14 +2,14 @@
 import PackageDescription
 
 
-let packageName = "DesignSystem"
 let packageNameUI = "DesignSystemUI"
 let swiftSourcePath = "designsystem/src/iosMain/swift"
 
 // BEGIN KMMBRIDGE VARIABLES BLOCK (do not edit)
-let binaryPath = "./designsystem/build/XCFrameworks/release/\(packageName).xcframework"
+let packageName = "DesignSystem"
 // END KMMBRIDGE BLOCK
 
+let binaryPath = "./designsystem/build/XCFrameworks/release/\(packageName).xcframework"
 
 let package = Package(
     name: packageName,
