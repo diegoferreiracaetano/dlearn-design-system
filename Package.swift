@@ -7,7 +7,7 @@ let packageNameUI = "DesignSystemUI"
 let swiftSourcePath = "designsystem/src/iosMain/swift"
 
 // BEGIN KMMBRIDGE VARIABLES BLOCK (do not edit)
-let binaryPath = "./designsystem/build/XCFrameworks/debug/\(packageName).xcframework"
+let binaryPath = "./designsystem/build/XCFrameworks/release/\(packageName).xcframework"
 // END KMMBRIDGE BLOCK
 
 
