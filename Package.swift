@@ -1,17 +1,11 @@
 // swift-tools-version:5.8
 import PackageDescription
 
-
-let packageNameUI = "DesignSystemUI"
-let swiftSourcePath = "designsystem/src/iosMain/swift"
-
 // BEGIN KMMBRIDGE VARIABLES BLOCK (do not edit)
+let remoteKotlinUrl = "https://api.github.com/repos/diegoferreiracaetano/dlearn-design-system/releases/assets/309065035.zip"
+let remoteKotlinChecksum = "573fa7b8f7576a04c8d4b5fdf8a0392834a60ec160acd1565ac1114c43ec480b"
 let packageName = "DesignSystem"
-let remoteKotlinUrl = "remoteKotlinUrl"
-let remoteKotlinChecksum = "remoteKotlinChecksum"
 // END KMMBRIDGE BLOCK
-
-let binaryPath = "designsystem/build/XCFrameworks/release/\(packageName).xcframework"
 
 let package = Package(
     name: packageName,
@@ -21,7 +15,7 @@ let package = Package(
     products: [
         .library(
             name: packageName,
-            targets: [packageName, packageNameUI]
+            targets: [packageName]
         ),
     ],
     targets: [
@@ -29,13 +23,7 @@ let package = Package(
             name: packageName,
             url: remoteKotlinUrl,
             checksum: remoteKotlinChecksum
-        ),
-        .target(
-            name: packageNameUI,
-            dependencies: [
-                .target(name: packageName)
-            ],
-            path: swiftSourcePath
         )
+        ,
     ]
 )
