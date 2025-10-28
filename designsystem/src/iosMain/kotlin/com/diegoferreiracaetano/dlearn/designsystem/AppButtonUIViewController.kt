@@ -5,20 +5,18 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.button.AppButton
 import com.diegoferreiracaetano.dlearn.designsystem.components.button.ButtonType
 import platform.UIKit.UIViewController
 
-object AppButtonUIViewController {
-    operator fun invoke(
-        text: String,
-        onClick: () -> Unit,
-        type: ButtonType = ButtonType.PRIMARY,
-        enabled: Boolean = true
-    ): UIViewController {
-        return ComposeUIViewController {
-            AppButton(
-                text = text,
-                onClick = onClick,
-                type = type,
-                enabled = enabled
-            )
-        }
+fun createAppButtonUIViewController(
+    text: String,
+    onClick: () -> Unit,
+    type: ButtonType,
+    enabled: Boolean
+): UIViewController {
+    return ComposeUIViewController {
+        AppButton(
+            text = text,
+            onClick = onClick,
+            type = type,
+            enabled = enabled
+        )
     }
 }
