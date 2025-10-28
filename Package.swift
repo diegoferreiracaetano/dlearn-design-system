@@ -11,7 +11,7 @@ let remoteKotlinUrl = "remoteKotlinUrl"
 let remoteKotlinChecksum = "remoteKotlinChecksum"
 // END KMMBRIDGE BLOCK
 
-let binaryPath = "designsystem/build/XCFrameworks/release/\(packageName).xcframework"
+let binaryPath = "designsystem/build/XCFrameworks/debug/\(packageName).xcframework"
 
 let package = Package(
     name: packageName,
