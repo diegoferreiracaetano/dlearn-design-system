@@ -107,11 +107,11 @@ kmmbridge {
 
 addGithubPackagesRepository()
 
-tasks.matching {
-            it.name.startsWith("publishIos") ||
-            it.name.startsWith("publishWasm") ||
-            it.name.startsWith("publishJs")
-}.configureEach {
-    enabled = false
-}
+//tasks.matching {
+//            it.name.startsWith("publishIos") ||
+//            it.name.startsWith("publishWasm") ||
+//            it.name.startsWith("publishJs")
+//}.configureEach {
+//    enabled = false
+//}
 
