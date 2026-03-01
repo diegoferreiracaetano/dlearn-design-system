@@ -33,12 +33,27 @@ private val NavBarHeightSingleLine = 80.dp
 private val NavBarHeightTwoLines = 90.dp
 private val NavBarIosInsets = 28.dp
 
+/**
+ * Data class representing the state of the bottom navigation bar.
+ *
+ * @property selectedRoute The currently selected route.
+ * @property items The list of navigation tabs.
+ * @property onTabSelected Callback when a tab is selected.
+ */
 data class AppBottomNavigation(
     val selectedRoute: String = tabList.first().route,
     val items: List<AppNavigationTab> = tabList,
     val onTabSelected: (String) -> Unit,
 )
 
+/**
+ * Data class representing a single tab in the bottom navigation bar.
+ *
+ * @property route The route identifier for this tab.
+ * @property label The display text for the tab.
+ * @property selectedIcon The icon to show when the tab is selected.
+ * @property unselectedIcon The icon to show when the tab is not selected.
+ */
 data class AppNavigationTab(
     val route: String,
     val label: String,
@@ -46,6 +61,15 @@ data class AppNavigationTab(
     val unselectedIcon: ImageVector
 )
 
+/**
+ * A custom [NavigationBar] for the application.
+ * It adjusts its height and insets based on the platform (iOS vs Android).
+ *
+ * @param modifier The [Modifier] to be applied to the navigation bar.
+ * @param items The list of [AppNavigationTab] to display.
+ * @param selectedRoute The route of the currently selected tab.
+ * @param onTabSelected Callback when a tab is clicked.
+ */
 @Composable
 fun AppBottomNavigationBar(
     modifier: Modifier = Modifier,

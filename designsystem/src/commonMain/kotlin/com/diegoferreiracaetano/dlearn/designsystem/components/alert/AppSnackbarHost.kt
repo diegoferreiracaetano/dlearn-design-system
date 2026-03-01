@@ -16,12 +16,21 @@ import kotlinx.coroutines.launch
 private val SnackbarPadding = 16.dp
 private const val SNACKBAR_TYPE_DELIMITER = ":"
 
+/**
+ * Types of snackbars supported by the system.
+ */
 enum class SnackbarType {
     ERROR,
     SUCCESS,
     WARNING
 }
 
+/**
+ * A custom [SnackbarHost] that styled snackbars based on their type (Success, Error, Warning).
+ *
+ * @param hostState The state of the [SnackbarHost].
+ * @param modifier The [Modifier] to be applied to the snackbar host.
+ */
 @Composable
 fun AppSnackbarHost(
     hostState: SnackbarHostState,
@@ -31,7 +40,7 @@ fun AppSnackbarHost(
         hostState = hostState,
         modifier = modifier.padding(SnackbarPadding),
         snackbar = { data ->
-            val (type, message) = data.visuals.message.split(SNACKBAR_TYPE_DELIMITER, limit = 2)
+            val (type, _) = data.visuals.message.split(SNACKBAR_TYPE_DELIMITER, limit = 2)
             val snackbarType = SnackbarType.valueOf(type)
 
             val (containerColor, contentColor) = when (snackbarType) {
@@ -50,6 +59,16 @@ fun AppSnackbarHost(
     )
 }
 
+/**
+ * Shows a custom snackbar using the [SnackbarHostState].
+ *
+ * @param scope The [CoroutineScope] in which to launch the snackbar.
+ * @param message The message to be displayed.
+ * @param actionLabel Optional label for the snackbar action.
+ * @param withDismissAction Whether to show a dismiss action.
+ * @param duration The duration for which the snackbar should be displayed.
+ * @param type The [SnackbarType] to determine the styling.
+ */
 fun SnackbarHostState.showAppSnackBar(
     scope: CoroutineScope,
     message: String,

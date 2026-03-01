@@ -59,7 +59,7 @@ private fun AppScaffoldContent(
         bottomBar = { bottomBar?.invoke() }
     ) { innerPadding ->
 
-        val baseModifier = modifier
+        val baseModifier = Modifier
             .fillMaxWidth()
             .padding(innerPadding)
             .consumeWindowInsets(innerPadding)
@@ -67,7 +67,7 @@ private fun AppScaffoldContent(
             .padding(start = 8.dp, end = 8.dp)
 
         Box(
-            modifier = baseModifier
+            modifier = Modifier
                 .background(MaterialTheme.colorScheme.surface)
                 .fillMaxSize(),
             contentAlignment = Alignment.TopCenter
@@ -77,6 +77,20 @@ private fun AppScaffoldContent(
     }
 }
 
+/**
+ * A root container component that provides a common layout structure including a top bar,
+ * bottom bar, navigation drawer, and snackbar host. It automatically handles responsive
+ * drawer behavior (modal for small screens, permanent for large screens).
+ *
+ * @param modifier The [Modifier] to be applied to the container.
+ * @param topBar Optional top app bar composable.
+ * @param drawerContent Optional content for the navigation drawer.
+ * @param drawerState Optional state to control the drawer.
+ * @param bottomBar Optional bottom navigation bar composable.
+ * @param snackBarHostState The [SnackbarHostState] for managing snackbars.
+ * @param scrollBehavior The [TopAppBarScrollBehavior] to coordinate with the top bar.
+ * @param content The main content of the container, receiving a [Modifier] with appropriate padding and insets.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppContainer(
@@ -95,6 +109,7 @@ fun AppContainer(
 
             if (showPermanentDrawer) {
                 PermanentNavigationDrawer(
+                    modifier = modifier,
                     drawerContent = {
                         PermanentDrawerSheet {
                             drawerContent()
@@ -102,7 +117,7 @@ fun AppContainer(
                     },
                     content = {
                         AppScaffoldContent(
-                            modifier = modifier,
+                            modifier = Modifier,
                             topBar = topBar,
                             bottomBar = bottomBar,
                             snackBarHostState = snackBarHostState,
@@ -112,17 +127,18 @@ fun AppContainer(
                     }
                 )
             } else {
-                val rememberDrawerState = drawerState ?: rememberDrawerState(initialValue = DrawerValue.Closed)
+                val currentDrawerState = drawerState ?: rememberDrawerState(initialValue = DrawerValue.Closed)
                 val scope = rememberCoroutineScope()
 
                 val topBarWithMenu: @Composable () -> Unit = {
                     AppTopBar(
-                        onMenuClick = { scope.launch { rememberDrawerState.open() } }
+                        onMenuClick = { scope.launch { currentDrawerState.open() } }
                     )
                 }
 
                 ModalNavigationDrawer(
-                    drawerState = rememberDrawerState,
+                    modifier = modifier,
+                    drawerState = currentDrawerState,
                     drawerContent = {
                         ModalDrawerSheet {
                             drawerContent()
@@ -130,7 +146,7 @@ fun AppContainer(
                     },
                     content = {
                         AppScaffoldContent(
-                            modifier = modifier,
+                            modifier = Modifier,
                             topBar = topBarWithMenu,
                             bottomBar = bottomBar,
                             snackBarHostState = snackBarHostState,

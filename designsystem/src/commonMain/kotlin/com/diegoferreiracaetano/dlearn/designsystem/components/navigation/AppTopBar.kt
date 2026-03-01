@@ -37,6 +37,22 @@ import org.jetbrains.compose.resources.stringResource
 
 private const val MAX_TITLE_LINES = 1
 
+/**
+ * A custom [TopAppBar] that can switch between a default and a transparent style.
+ * It supports a title, back button, favorite button, menu button, and integrated search.
+ *
+ * @param modifier The [Modifier] to be applied to the top bar.
+ * @param title The title text to be displayed.
+ * @param onBack Callback for the back navigation icon.
+ * @param onFavorite Callback for the favorite action icon.
+ * @param onMenuClick Callback for the menu navigation icon.
+ * @param searchValue The current value of the search field.
+ * @param onSearchValueChange Callback when the search value changes. If null, search is disabled.
+ * @param backgroundColor The background color used for contrast in transparent mode.
+ * @param useTransparent Whether to use the transparent style.
+ * @param scrollBehavior The [TopAppBarScrollBehavior] to use.
+ * @param actions Additional actions to be displayed in the top bar.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar(

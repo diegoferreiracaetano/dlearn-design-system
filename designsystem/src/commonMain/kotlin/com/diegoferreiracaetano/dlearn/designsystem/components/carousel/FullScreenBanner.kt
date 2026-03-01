@@ -39,6 +39,19 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val RATIO = 12f / 16f
 
+/**
+ * A full-screen banner component for displaying featured content (e.g., videos, courses).
+ * It includes an image, title, subtitle, and action buttons.
+ *
+ * @param modifier The [Modifier] to be applied to the banner card.
+ * @param title The title of the featured content.
+ * @param subtitle The subtitle or description of the featured content.
+ * @param imageResource Optional [DrawableResource] for the banner image.
+ * @param imageUrl Optional URL for the banner image.
+ * @param onItemClick Action when the banner itself is clicked.
+ * @param onWatchClick Action when the watch button is clicked.
+ * @param onAddToListClick Action when the add to list button is clicked.
+ */
 @Composable
 fun FullScreenVideo(
     modifier: Modifier = Modifier,
@@ -58,7 +71,7 @@ fun FullScreenVideo(
         colors = CardDefaults.cardColors(containerColor = Color.DarkGray)
     ) {
         Box(
-            modifier = modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
             AppImage(
                 imageURL = imageUrl,
@@ -126,6 +139,13 @@ fun FullScreenVideo(
     }
 }
 
+/**
+ * A horizontal pager component that displays multiple full-screen banners.
+ *
+ * @param modifier The [Modifier] to be applied to the pager container.
+ * @param pageCount The number of pages in the banner.
+ * @param pageContent The content for each page, indexed by position.
+ */
 @Composable
 fun FullScreenBanner(
     modifier: Modifier = Modifier,

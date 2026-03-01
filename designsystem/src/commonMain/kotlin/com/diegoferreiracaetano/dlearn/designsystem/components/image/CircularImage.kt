@@ -25,6 +25,14 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 private val DefaultMaxSize = 200.dp
 private const val PREVIEW_WEIGHT = 0.4f
 
+/**
+ * A circular image component that clips a [DrawableResource] into a circle.
+ *
+ * @param resource The [DrawableResource] to be displayed.
+ * @param contentDescription Optional [StringResource] for accessibility description.
+ * @param maxSize The maximum size (height) of the image.
+ * @param modifier The [Modifier] to be applied to the image container.
+ */
 @Composable
 fun CircularImage(
     resource: DrawableResource,

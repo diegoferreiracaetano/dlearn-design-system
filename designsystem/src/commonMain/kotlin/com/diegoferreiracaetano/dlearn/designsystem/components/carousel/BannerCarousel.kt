@@ -26,6 +26,14 @@ import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+/**
+ * A horizontal carousel component that displays [BannerCard] items.
+ *
+ * @param modifier The [Modifier] to be applied to the carousel container.
+ * @param title The title of the carousel section.
+ * @param pageCount The total number of pages in the carousel.
+ * @param pageContent The content for each page, indexed by position.
+ */
 @Composable
 fun BannerCarousel(
     modifier: Modifier = Modifier,
@@ -68,6 +76,16 @@ fun BannerCarousel(
 
 private const val RATIO = 16f / 9f
 
+/**
+ * A card component used within a [BannerCarousel].
+ *
+ * @param modifier The [Modifier] to be applied to the card.
+ * @param title The title text of the banner.
+ * @param subtitle The subtitle text of the banner.
+ * @param imageResource Optional [DrawableResource] for the banner image.
+ * @param imageUrl Optional URL for the banner image.
+ * @param onClick Action to be performed when the banner card is clicked.
+ */
 @Composable
 fun BannerCard(
     modifier: Modifier = Modifier,

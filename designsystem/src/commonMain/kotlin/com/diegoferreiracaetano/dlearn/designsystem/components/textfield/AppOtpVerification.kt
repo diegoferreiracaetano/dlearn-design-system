@@ -44,6 +44,18 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 private const val TIMEOUT = 1000L
 private const val COUNTDOWN = 59
 
+/**
+ * A custom OTP (One-Time Password) verification component.
+ * It displays a series of boxes for digit input and includes a resend timer.
+ *
+ * @param modifier The [Modifier] to be applied to the component.
+ * @param otpText The current text value of the OTP.
+ * @param otpCount The number of digits in the OTP.
+ * @param isError Whether the component should display an error state.
+ * @param errorText Optional error message to display when [isError] is true.
+ * @param onOtpTextChange Callback when the OTP text changes. Receives the text and whether it's complete.
+ * @param onResendClick Callback when the resend button is clicked.
+ */
 @Composable
 fun AppOtpVerification(
     modifier: Modifier = Modifier,

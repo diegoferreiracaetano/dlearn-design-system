@@ -1,4 +1,4 @@
-package com.diegoferreiracaetano.dlearn.designsystem.components.button // Use o seu pacote correto
+package com.diegoferreiracaetano.dlearn.designsystem.components.button
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +19,14 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 private val PreviewPadding = 16.dp
 private val PreviewSpacing = 16.dp
 
+/**
+ * A custom [Switch] component with styled colors.
+ *
+ * @param modifier The [Modifier] to be applied to the switcher.
+ * @param isChecked Whether the switcher is currently in the "checked" state.
+ * @param onCheckedChange Callback when the checked state changes.
+ * @param enabled Whether the switcher is enabled for interaction.
+ */
 @Composable
 fun AppSwitcher(
     modifier: Modifier = Modifier,

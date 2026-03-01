@@ -16,6 +16,7 @@ imageLoader = "1.10.0"
 detekt = "1.23.8"
 robolectric = "4.16.1"
 swiftBridge = "1.2.1"
+dokka = "2.1.0"
 
 [libraries]
 androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "composeMultiplatform" }
@@ -32,6 +33,7 @@ androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecyc
 androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "composeMultiplatform" }
+dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -42,3 +44,4 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 mavenPublish = { id = "maven-publish" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 touchlab-kmmbridge = { id = "co.touchlab.kmmbridge.github", version.ref = "swiftBridge" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }

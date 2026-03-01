@@ -41,6 +41,14 @@ private val CHIP_GROUP_PADDING_HORIZONTAL = 16.dp
 private val CHIP_SPACING = 8.dp
 private const val CHIP_BORDER_ALPHA = 0.5f
 
+/**
+ * Data class representing a chip item in an [AppChipGroup].
+ *
+ * @property label The text to be displayed on the chip.
+ * @property onClick Action to be performed when the chip is clicked.
+ * @property hasDropDown Whether the chip should display a dropdown icon.
+ * @property isFilter Whether the chip acts as a filter that can be selected.
+ */
 data class AppChip(
     val label: String,
     val onClick: () -> Unit = {},
@@ -48,6 +56,13 @@ data class AppChip(
     val isFilter: Boolean = true
 )
 
+/**
+ * A group of chips that can be used for filtering or selection.
+ *
+ * @param modifier The [Modifier] to be applied to the chip group.
+ * @param items The list of [AppChip] items to be displayed.
+ * @param onFilterChanged Callback invoked when the selected filter changes.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppChipGroup(
@@ -84,6 +99,7 @@ fun AppChipGroup(
         }
 
         LazyRow(
+            modifier = Modifier.weight(1f),
             horizontalArrangement = Arrangement.spacedBy(CHIP_SPACING)
         ) {
             items(visibleChips) { chip ->

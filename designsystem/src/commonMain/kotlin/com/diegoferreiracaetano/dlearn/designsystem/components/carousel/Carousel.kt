@@ -39,6 +39,19 @@ import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+/**
+ * Data class representing an item in a [Carousel].
+ *
+ * @property title The title of the item.
+ * @property subtitle Optional subtitle for the item.
+ * @property rating The rating of the item (0.0 to 5.0).
+ * @property imageResource Optional [DrawableResource] for the item image.
+ * @property imageUrl Optional URL for the item image.
+ * @property primaryInfo Optional primary info tag text (e.g., "New").
+ * @property secondaryInfo Optional secondary info tag text.
+ * @property rank Optional rank number for "Top 10" style carousels.
+ * @property onClick Action to be performed when the item is clicked.
+ */
 data class CarouselItem(
     val title: String,
     val subtitle: String? = null,
@@ -51,6 +64,14 @@ data class CarouselItem(
     val onClick: () -> Unit = {}
 )
 
+/**
+ * A horizontal carousel component that displays a list of [CarouselItem].
+ * It supports both a standard list style and a "Top 10" ranked style.
+ *
+ * @param modifier The [Modifier] to be applied to the carousel container.
+ * @param title The title of the carousel section.
+ * @param items The list of [CarouselItem] to be displayed.
+ */
 @Composable
 fun Carousel(
     modifier: Modifier = Modifier,

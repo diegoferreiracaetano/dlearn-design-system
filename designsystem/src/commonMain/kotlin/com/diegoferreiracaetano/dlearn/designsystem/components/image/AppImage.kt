@@ -14,6 +14,15 @@ import org.jetbrains.compose.resources.painterResource
 
 private val DefaultImageSize = 120.dp
 
+/**
+ * A flexible image component that can load images from a URL, a [DrawableResource],
+ * or a default placeholder.
+ *
+ * @param modifier The [Modifier] to be applied to the image.
+ * @param imageURL Optional URL of the image to load.
+ * @param imageResource Optional [DrawableResource] to display.
+ * @param contentDescription Optional accessibility description for the image.
+ */
 @Composable
 fun AppImage(
     modifier: Modifier = Modifier,

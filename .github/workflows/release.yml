@@ -19,6 +19,13 @@ jobs:
           cache: gradle
       - run: chmod +x gradlew
       - run: ./gradlew detekt
+      - name: Run Dokka
+        run: ./gradlew :designsystem:dokkaHtml
+      - name: Upload Dokka HTML
+        uses: actions/upload-artifact@v4
+        with:
+          name: dokka-html-release
+          path: designsystem/build/dokka/html
 
   test:
     name: Test

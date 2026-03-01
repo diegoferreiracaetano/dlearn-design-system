@@ -39,12 +39,26 @@ private val ButtonBorderWidth = 1.dp
 private val PreviewPadding = 16.dp
 private val PreviewSpacing = 12.dp
 
+/**
+ * Types of buttons available in the design system.
+ */
 enum class ButtonType {
     PRIMARY,
     SECONDARY,
     TERTIARY,
 }
 
+/**
+ * A custom button component that supports different styles (Primary, Secondary, Tertiary)
+ * and an optional leading image.
+ *
+ * @param modifier The [Modifier] to be applied to the button.
+ * @param text The text to be displayed on the button.
+ * @param onClick Callback when the button is clicked.
+ * @param type The [ButtonType] to determine the button's style.
+ * @param image Optional [DrawableResource] to be displayed as a leading icon.
+ * @param enabled Whether the button is enabled for interaction.
+ */
 @Composable
 fun AppButton(
     modifier: Modifier = Modifier,

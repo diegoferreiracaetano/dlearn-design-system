@@ -10,6 +10,12 @@ import androidx.compose.ui.Modifier
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+/**
+ * A full-screen loading component that displays an [AppLoading] indicator centered on the screen.
+ * It uses the surface variant background color from the current theme.
+ *
+ * @param modifier The [Modifier] to be applied to the loading screen.
+ */
 @Composable
 fun ScreenLoading(
     modifier: Modifier = Modifier

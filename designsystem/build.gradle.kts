@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.mavenPublish)
     alias(libs.plugins.detekt)
     alias(libs.plugins.touchlab.kmmbridge)
+    alias(libs.plugins.dokka)
 }
 
 kotlin {

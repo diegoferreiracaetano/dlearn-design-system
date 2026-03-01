@@ -20,6 +20,13 @@ import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+/**
+ * A horizontal page indicator used with pagers to show the current position and total pages.
+ *
+ * @param totalPages The total number of pages.
+ * @param currentPage The index of the currently active page.
+ * @param modifier The [Modifier] to be applied to the indicator row.
+ */
 @Composable
 fun PageIndicator(
     totalPages: Int,

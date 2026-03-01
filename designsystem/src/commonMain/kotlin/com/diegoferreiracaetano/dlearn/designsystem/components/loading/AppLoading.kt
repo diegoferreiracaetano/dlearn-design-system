@@ -16,6 +16,13 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 
+/**
+ * A custom loading indicator that displays a rotating arc.
+ *
+ * @param modifier The [Modifier] to be applied to the loading indicator.
+ * @param color The color of the loading arc.
+ * @param strokeWidth The width of the arc stroke.
+ */
 @Composable
 fun AppLoading(
     modifier: Modifier = Modifier,

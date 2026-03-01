@@ -40,12 +40,27 @@ private val NoPadding = 0.dp
 private val PreviewPadding = 16.dp
 private val PreviewSpacing = 16.dp
 
+/**
+ * Data class representing an option in a selection component.
+ *
+ * @property label The display text for the option.
+ * @property value The underlying value associated with the option.
+ * @property color The background color for this option.
+ */
 data class AppSelectionOption(
     val label: String,
     val value: Any,
     val color: Color,
 )
 
+/**
+ * A simplified selection component that takes a list of strings and manages its own state.
+ *
+ * @param modifier The [Modifier] to be applied to the selection component.
+ * @param list The list of string options to display.
+ * @param onSelectionChanged Callback when the selection changes.
+ * @param color The background color for the selection component.
+ */
 @Composable
 fun AppSelectionSimple(
     modifier: Modifier = Modifier,
@@ -72,6 +87,16 @@ fun AppSelectionSimple(
     )
 }
 
+/**
+ * A customizable selection component using an exposed dropdown menu.
+ *
+ * @param modifier The [Modifier] to be applied to the selection component.
+ * @param expanded Whether the dropdown menu is currently expanded.
+ * @param selectedOption The currently selected [AppSelectionOption].
+ * @param options The list of [AppSelectionOption] to display.
+ * @param onExpandedChange Callback when the expanded state changes.
+ * @param onOptionSelected Callback when an option is selected.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppSelection(

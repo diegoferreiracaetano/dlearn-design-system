@@ -11,11 +11,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
+/**
+ * Data class representing an item in the navigation drawer.
+ *
+ * @property route The route identifier for this item.
+ * @property icon The [ImageVector] to be displayed as an icon.
+ */
 data class DrawerItem(
     val route: String,
     val icon: ImageVector,
 )
 
+/**
+ * A custom navigation drawer content component.
+ *
+ * @param items The list of [DrawerItem] to be displayed in the drawer.
+ * @param selectedRoute The route of the currently selected item.
+ * @param onItemSelected Callback invoked when an item is clicked.
+ * @param modifier The [Modifier] to be applied to the drawer content.
+ */
 @Composable
 fun AppDrawer(
     items: List<DrawerItem>,

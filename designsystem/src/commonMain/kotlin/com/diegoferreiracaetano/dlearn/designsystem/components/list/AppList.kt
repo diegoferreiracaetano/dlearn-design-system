@@ -36,6 +36,14 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 private val ListItemPadding = 8.dp
 private const val NUMBER_OF_LINES = 100
 
+/**
+ * A custom [LazyColumn] that supports an optional collapsible header.
+ * The header hides when scrolling down and shows when scrolling up or reaching the top.
+ *
+ * @param modifier The [Modifier] to be applied to the list.
+ * @param collapsibleContent Optional composable for the header that can be collapsed.
+ * @param content The content of the [LazyColumn].
+ */
 @Composable
 fun AppList(
     modifier: Modifier = Modifier,

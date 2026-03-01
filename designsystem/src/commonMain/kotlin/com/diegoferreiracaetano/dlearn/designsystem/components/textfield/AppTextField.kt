@@ -34,12 +34,30 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+/**
+ * Types of supported text fields for specific behaviors like visual transformations.
+ */
 enum class TextFieldType {
     EMAIL,
     PASSWORD,
     NONE,
 }
 
+/**
+ * A custom [OutlinedTextField] styled for the application.
+ * It supports different types (email, password), labels, placeholders, and error states.
+ *
+ * @param value The current text value of the text field.
+ * @param onValueChange Callback when the text value changes.
+ * @param placeholder The [StringResource] to be used as a placeholder.
+ * @param label Optional [StringResource] for the field label.
+ * @param supportingText Optional [StringResource] for helper or error text below the field.
+ * @param isError Whether the field should display an error state.
+ * @param type The [TextFieldType] to determine behaviors like password masking.
+ * @param leadingIcon Optional leading icon composable.
+ * @param shape The shape of the text field's outline.
+ * @param modifier The [Modifier] to be applied to the text field container.
+ */
 @Composable
 fun AppTextField(
     value: String,
