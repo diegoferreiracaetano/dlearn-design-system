@@ -1,40 +1,73 @@
-### 1. Nome
-`BannerCarousel`
+# Carrosséis e Banners
 
-### 2. Descrição
-Componente de carrossel de banners que utiliza um `HorizontalPager` para alternar entre diferentes conteúdos de página (geralmente `BannerCard`), incluindo um indicador de página (`PageIndicator`).
+### BannerCarousel
+Carrossel horizontal padrão para exibição de banners informativos ou promocionais.
 
-### 3. Tabela de Props (Parâmetros)
-
-#### `BannerCarousel`
+**Tabela de Props**
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
-| `modifier` | `Modifier` | `Modifier` | Modificador de layout do Compose. |
-| `title` | `String` | - | Título da seção do carrossel. |
-| `pageCount` | `Int` | - | Número total de páginas no carrossel. |
-| `pageContent` | `@Composable (Int) -> Unit` | - | Conteúdo de cada página, recebe o índice da página. |
+| `items` | `List<BannerItem>` | - | Lista de itens contendo imagem e link. |
 
-#### `BannerCard`
-| Prop | Tipo | Padrão | Descrição |
-| :--- | :--- | :--- | :--- |
-| `title` | `String` | - | Título exibido no card. |
-| `subtitle` | `String` | - | Subtítulo exibido no card. |
-| `imageUrl` | `String?` | `null` | URL da imagem de fundo. |
-| `imageResource` | `DrawableResource?` | `null` | Recurso de imagem local. |
-| `onClick` | `() -> Unit` | - | Ação ao clicar no card. |
-
-### 4. Exemplo de uso
-
+**Exemplo de Uso**
 ```kotlin
 BannerCarousel(
-    title = "Destaques",
-    pageCount = 3
-) { index ->
-    BannerCard(
-        title = "Título $index",
-        subtitle = "Subtítulo",
-        imageUrl = "https://link-da-imagem.com/$index.jpg",
-        onClick = { /* ação */ }
-    )
-}
+    items = listOf(BannerItem(image = "url", link = "home"))
+)
+```
+
+---
+
+### Carousel
+Carrossel versátil com suporte a títulos de seção e diferentes tipos de itens (como Ranking/Top 10).
+
+**Tabela de Props**
+| Prop | Tipo | Padrão | Descrição |
+| :--- | :--- | :--- | :--- |
+| `title` | `String` | - | Título exibido acima do carrossel. |
+| `items` | `List<CarouselItem>` | - | Itens com imagem, título e metadados. |
+
+**Exemplo de Uso**
+```kotlin
+Carousel(
+    title = "Top 10 no Brasil hoje",
+    items = myCarouselItems
+)
+```
+
+---
+
+### ContinueWatchingCarousel
+Componente especializado para exibir o progresso de conteúdos que o usuário começou a assistir.
+
+**Tabela de Props**
+| Prop | Tipo | Padrão | Descrição |
+| :--- | :--- | :--- | :--- |
+| `items` | `List<ContinueWatchingItem>` | - | Itens com título e percentual de progresso. |
+
+**Exemplo de Uso**
+```kotlin
+ContinueWatchingCarousel(
+    items = listOf(ContinueWatchingItem(title = "Episódio 1", progress = 0.5f))
+)
+```
+
+---
+
+### FullScreenBanner
+Banner de tela cheia para destaques principais com botões de ação direta.
+
+**Tabela de Props**
+| Prop | Tipo | Padrão | Descrição |
+| :--- | :--- | :--- | :--- |
+| `title` | `String` | - | Título principal do banner. |
+| `onWatchClick` | `() -> Unit` | - | Ação do botão "Assistir". |
+| `onAddToListClick` | `() -> Unit` | - | Ação do botão "Minha Lista". |
+
+**Exemplo de Uso**
+```kotlin
+FullScreenBanner(
+    title = "O Senhor dos Anéis",
+    onWatchClick = { /* play */ },
+    onAddToListClick = { /* save */ }
+)
 ```
