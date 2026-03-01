@@ -1,4 +1,4 @@
-rootProject.name = "dlearn"
+rootProject.name = "DLearnDesingSystem"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
