@@ -1,65 +1,49 @@
+# DLearn Design System
+
 [![Latest Release](https://img.shields.io/github/v/release/diegoferreiracaetano/dlearn-design-system)](https://github.com/diegoferreiracaetano/dlearn-design-system/releases)
 
-This is a Kotlin Multiplatform project targeting Android, iOS, Web.
+Este é um projeto **Kotlin Multiplatform (KMP)** focado em Design System, atendendo Android, iOS e Web utilizando Compose Multiplatform.
 
-* [/composeApp](designsystem/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](designsystem/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](designsystem/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](designsystem/src/jvmMain/kotlin)
-    folder is the appropriate location.
+## 🚀 Componentes do Design System
 
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+Abaixo você encontra a documentação detalhada de cada componente disponível no sistema:
 
-### Build and Run Android Application
-
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :designsystem:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :designsystem:assembleDebug
-  ```
-
-### Build and Run Web Application
-
-To build and run the development version of the web app, use the run configuration from the run widget
-in your IDE's toolbar or run it directly from the terminal:
-- for the Wasm target (faster, modern browsers):
-  - on macOS/Linux
-    ```shell
-    ./gradlew :designsystem:wasmJsBrowserDevelopmentRun
-    ```
-  - on Windows
-    ```shell
-    .\gradlew.bat :designsystem:wasmJsBrowserDevelopmentRun
-    ```
-- for the JS target (slower, supports older browsers):
-  - on macOS/Linux
-    ```shell
-    ./gradlew :designsystem:jsBrowserDevelopmentRun
-    ```
-  - on Windows
-    ```shell
-    .\gradlew.bat :designsystem:jsBrowserDevelopmentRun
-    ```
-
-### Build and Run iOS Application
-
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+- 🔘 [**Button**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/button/README.md) - Botões primários, secundários e terciários.
+- 🏷️ [**Chip**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/chip/README.md) - Grupos de filtros e seleção.
+- 📜 [**List**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/list/README.md) - Listas com cabeçalhos colapsáveis.
+- ⚠️ [**Alert/Snackbar**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/alert/README.md) - Mensagens de erro, sucesso e aviso.
+- 🖼️ [**Image**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/image/README.md) - Carregamento de imagens remotas e locais.
+- 🔄 [**Loading**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/loading/README.md) - Indicadores de progresso animados.
+- 🎠 [**Carousel**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/carousel/README.md) - Carrossel de banners e destaques.
+- ✍️ [**TextField**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/textfield/README.md) - Campos de entrada de texto e senha.
+- 🗺️ [**Navigation**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/navigation/README.md) - Barra de navegação inferior adaptativa.
 
 ---
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+## 🏗️ Estrutura do Projeto
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [YouTrack](https://youtrack.jetbrains.com/newIssue?project=CMP).
+* [/designsystem](designsystem/src) - Código compartilhado do Design System.
+  - [commonMain](designsystem/src/commonMain/kotlin) - UI e lógica compartilhada entre todas as plataformas.
+  - [iosMain](designsystem/src/iosMain/kotlin) - Implementações específicas para iOS.
+  - [androidMain](designsystem/src/androidMain/kotlin) - Implementações específicas para Android.
+
+* [/iosApp](./iosApp/iosApp) - Ponto de entrada da aplicação iOS em SwiftUI.
+
+## 🛠️ Como rodar
+
+### Android
+```shell
+./gradlew :designsystem:assembleDebug
+```
+
+### Web (Wasm target)
+```shell
+./gradlew :designsystem:wasmJsBrowserDevelopmentRun
+```
+
+### iOS
+Abra o diretório [/iosApp](./iosApp) no Xcode ou use a configuração de rodar do Android Studio.
+
+---
+
+Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html) and [Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/).
