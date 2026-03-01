@@ -6,28 +6,50 @@ Este é um projeto **Kotlin Multiplatform (KMP)** focado em Design System, atend
 
 ## 🚀 Componentes do Design System
 
-Abaixo você encontra a documentação detalhada de cada componente disponível no sistema:
+Abaixo você encontra a visão geral dos componentes disponíveis. Clique no nome de cada componente para ir **diretamente para sua documentação e tabela de propriedades**.
 
-- 🔘 [**Button**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/button/README.md) - Botões primários, secundários e terciários.
-- 🏷️ [**Chip**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/chip/README.md) - Grupos de filtros e seleção.
-- 📜 [**List**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/list/README.md) - Listas com cabeçalhos colapsáveis.
-- ⚠️ [**Alert/Snackbar**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/alert/README.md) - Mensagens de erro, sucesso e aviso.
-- 🖼️ [**Image**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/image/README.md) - Carregamento de imagens remotas e locais.
-- 🔄 [**Loading**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/loading/README.md) - Indicadores de progresso animados.
-- 🎠 [**Carousel**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/carousel/README.md) - Carrossel de banners e destaques.
-- ✍️ [**TextField**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/textfield/README.md) - Campos de entrada de texto e senha.
-- 🗺️ [**Navigation**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/navigation/README.md) - Barra de navegação inferior adaptativa.
+### 🔘 Interação (Buttons & Selection)
+- [**AppButton**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/button/README.md#appbutton): Botões com estilos Primary, Secondary e Tertiary.
+- [**AppSwitcher**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/button/README.md#appswitcher): Chave de alternância (Toggle/Switch).
+- [**AppSelection**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/button/README.md#appselection): Menus de seleção e dropdowns customizados.
+
+### 🏷️ Chips & Filters
+- [**AppChipGroup**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/chip/README.md#appchipgroup): Grupo de filtros horizontais roláveis.
+
+### 🎠 Carrosséis & Banners
+- [**BannerCarousel**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/carousel/README.md#bannercarousel): Carrossel padrão com indicadores.
+- [**Carousel**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/carousel/README.md#carousel): Carrossel com numeração de ranking.
+- [**ContinueWatchingCarousel**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/carousel/README.md#continuewatchingcarousel): Otimizado para progresso de mídia.
+- [**FullScreenBanner**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/carousel/README.md#fullscreenbanner): Banners de destaque.
+
+### ✍️ Entrada de Dados (Forms)
+- [**AppTextField**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/textfield/README.md#apptextfield): Input de texto versátil.
+- [**AppOtpVerification**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/textfield/README.md#appotpverification): Campo para códigos de verificação (OTP).
+
+### 🗺️ Navegação & Estrutura
+- [**AppContainer**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/navigation/README.md#appcontainer): Scaffold base da aplicação.
+- [**AppBottomNavigationBar**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/navigation/README.md#appbottomnavigationbar): Barra inferior adaptativa.
+- [**AppTopBar**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/navigation/README.md#apptopbar): Barra superior padrão.
+- [**AppDrawer**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/navigation/README.md#appdrawer): Menu lateral.
+
+### 🖼️ Mídia & Imagens
+- [**AppImage**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/image/README.md#appimage): Carregamento de imagens.
+- [**CircularImage**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/image/README.md#circularimage): Avatares circulares.
+
+### 🔄 Feedback Visual & Listas
+- [**AppLoading**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/loading/README.md#apploading): Spinner padrão.
+- [**ScreenLoading**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/loading/README.md#screenloading): Carregamento em tela cheia.
+- [**AppSnackbarHost**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/alert/README.md#appsnackbarhost): Sistema de notificações.
+- [**AppList**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/list/README.md#applist): Listas com cabeçalhos colapsáveis.
 
 ---
 
 ## 🏗️ Estrutura do Projeto
 
 * [/designsystem](designsystem/src) - Código compartilhado do Design System.
-  - [commonMain](designsystem/src/commonMain/kotlin) - UI e lógica compartilhada entre todas as plataformas.
-  - [iosMain](designsystem/src/iosMain/kotlin) - Implementações específicas para iOS.
-  - [androidMain](designsystem/src/androidMain/kotlin) - Implementações específicas para Android.
-
-* [/iosApp](./iosApp/iosApp) - Ponto de entrada da aplicação iOS em SwiftUI.
+  - [commonMain](designsystem/src/commonMain/kotlin) - UI e lógica compartilhada.
+  - [iosMain](designsystem/src/iosMain/kotlin) - Implementações nativas iOS.
+  - [androidMain](designsystem/src/androidMain/kotlin) - Implementações nativas Android.
 
 ## 🛠️ Como rodar
 
@@ -42,7 +64,7 @@ Abaixo você encontra a documentação detalhada de cada componente disponível 
 ```
 
 ### iOS
-Abra o diretório [/iosApp](./iosApp) no Xcode ou use a configuração de rodar do Android Studio.
+Abra o diretório [/iosApp](./iosApp) no Xcode ou utilize a configuração de execução do Android Studio.
 
 ---
 

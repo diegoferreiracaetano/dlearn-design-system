@@ -1,38 +1,50 @@
-### 1. Nome
-`AppBottomNavigationBar`
+# Estrutura e Navegação
 
-### 2. Descrição
-Componente de barra de navegação inferior que adapta sua altura e insets automaticamente entre Android e iOS. Suporta ícones selecionados/não selecionados e realce de texto para a aba ativa.
+### AppContainer
+Scaffold base que organiza automaticamente a TopBar, BottomBar e o conteúdo da tela com os paddings corretos.
 
-### 3. Tabela de Props (Parâmetros)
+**Tabela de Props**
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
-| `modifier` | `Modifier` | `Modifier` | Modificador de layout do Compose. |
-| `items` | `List<AppNavigationTab>` | - | Lista de abas a serem exibidas na barra. |
-| `selectedRoute` | `String` | - | Rota da aba que deve estar selecionada. |
-| `onTabSelected` | `(String) -> Unit` | - | Callback acionado ao selecionar uma nova aba. |
+| `topBar` | `@Composable () -> Unit` | `null` | Slot para a barra superior. |
+| `bottomBar` | `@Composable () -> Unit` | `null` | Slot para a barra inferior. |
 
-#### Data Class `AppNavigationTab`
-| Prop | Tipo | Descrição |
-| :--- | :--- | :--- |
-| `route` | `String` | Identificador único da rota. |
-| `label` | `String` | Texto exibido abaixo do ícone. |
-| `selectedIcon` | `ImageVector` | Ícone exibido quando a aba está selecionada. |
-| `unselectedIcon` | `ImageVector` | Ícone exibido quando a aba não está selecionada. |
-
-### 4. Exemplo de uso
-
+**Exemplo de Uso**
 ```kotlin
-val tabs = listOf(
-    AppNavigationTab("home", "Home", Icons.Filled.Home, Icons.Outlined.Home),
-    AppNavigationTab("search", "Busca", Icons.Filled.Search, Icons.Outlined.Search)
-)
+AppContainer(
+    topBar = { AppTopBar(title = "Home") },
+    bottomBar = { AppBottomNavigationBar(...) }
+) { padding ->
+    // Conteúdo aqui
+}
+```
 
-AppBottomNavigationBar(
-    items = tabs,
-    selectedRoute = "home",
-    onTabSelected = { route ->
-        // Navegar para a rota
-    }
-)
+---
+
+### AppBottomNavigationBar
+Barra de navegação inferior que se adapta visualmente para Android e iOS.
+
+**Tabela de Props**
+| Prop | Tipo | Padrão | Descrição |
+| :--- | :--- | :--- | :--- |
+| `items` | `List<AppNavigationTab>` | - | Lista de ícones e destinos. |
+
+**Exemplo de Uso**
+```kotlin
+AppBottomNavigationBar(items = tabs, selectedRoute = currentRoute)
+```
+
+---
+
+### AppTopBar
+Barra superior padrão com suporte a título e ações.
+
+**Tabela de Props**
+| Prop | Tipo | Padrão | Descrição |
+| :--- | :--- | :--- | :--- |
+| `title` | `String` | - | Título central da barra. |
+
+**Exemplo de Uso**
+```kotlin
+AppTopBar(title = "Configurações")
 ```

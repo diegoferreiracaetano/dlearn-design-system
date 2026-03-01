@@ -1,26 +1,58 @@
-### 1. Nome
-`AppButton`
+# Componentes de Interação
 
-### 2. Descrição
-Componente de botão padrão do DLearn Design System, suportando diferentes estilos (Primary, Secondary, Tertiary), ícones e estados (habilitado/desabilitado).
+### AppButton
+Componente de botão padrão com suporte a diferentes estilos e estados.
 
-### 3. Tabela de Props (Parâmetros)
+**Tabela de Props**
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
-| `modifier` | `Modifier` | `Modifier` | Modificador de layout do Compose. |
 | `text` | `String` | - | Texto exibido no botão. |
-| `onClick` | `() -> Unit` | - | Ação executada ao clicar no botão. |
-| `type` | `ButtonType` | `ButtonType.PRIMARY` | Estilo visual do botão (PRIMARY, SECONDARY, TERTIARY). |
-| `image` | `DrawableResource?` | `null` | Ícone opcional exibido ao lado do texto. |
-| `enabled` | `Boolean` | `true` | Define se o botão está ativo para interação. |
+| `onClick` | `() -> Unit` | - | Ação ao clicar. |
+| `type` | `ButtonType` | `PRIMARY` | Estilo (PRIMARY, SECONDARY, TERTIARY). |
 
-### 4. Exemplo de uso
-
+**Exemplo de Uso**
 ```kotlin
 AppButton(
-    text = "Clique aqui",
+    text = "Confirmar",
     onClick = { /* ação */ },
-    type = ButtonType.PRIMARY,
-    image = Res.drawable.ic_check
+    type = ButtonType.PRIMARY
+)
+```
+
+---
+
+### AppSwitcher
+Chave de alternância (Toggle/Switch) para estados binários.
+
+**Tabela de Props**
+| Prop | Tipo | Padrão | Descrição |
+| :--- | :--- | :--- | :--- |
+| `isChecked` | `Boolean` | - | Estado atual da chave. |
+| `onCheckedChange` | `(Boolean) -> Unit` | - | Callback de mudança. |
+
+**Exemplo de Uso**
+```kotlin
+AppSwitcher(
+    isChecked = isChecked,
+    onCheckedChange = { isChecked = it }
+)
+```
+
+---
+
+### AppSelection
+Menu de seleção/dropdown customizado.
+
+**Tabela de Props**
+| Prop | Tipo | Padrão | Descrição |
+| :--- | :--- | :--- | :--- |
+| `options` | `List<AppSelectionOption>` | - | Lista de opções. |
+| `onOptionSelected` | `(AppSelectionOption) -> Unit` | - | Callback de seleção. |
+
+**Exemplo de Uso**
+```kotlin
+AppSelectionSimple(
+    list = listOf("Opção 1", "Opção 2"),
+    onSelectionChanged = { option -> println(option.label) }
 )
 ```
