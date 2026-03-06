@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
@@ -29,14 +28,6 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-/**
- * A carousel for content that the user is currently watching/studying.
- *
- * @param modifier The [Modifier] to be applied to the carousel container.
- * @param title The title of the carousel section.
- * @param itemCount The number of items in the carousel.
- * @param itemContent The content for each item, indexed by its position.
- */
 @Composable
 fun ContinueWatchingCarousel(
     modifier: Modifier = Modifier,
@@ -68,14 +59,6 @@ fun ContinueWatchingCarousel(
 
 private const val RATIO = 16f / 9f
 
-/**
- * A card representing a single item in a [ContinueWatchingCarousel].
- *
- * @param modifier The [Modifier] to be applied to the card.
- * @param title The title of the content.
- * @param imageUrl The URL of the thumbnail image.
- * @param onClick Action to be performed when the card is clicked.
- */
 @Composable
 fun ContinueWatchingCard(
     modifier: Modifier = Modifier,
@@ -89,7 +72,7 @@ fun ContinueWatchingCard(
         Box(
             modifier = Modifier
                 .aspectRatio(RATIO)
-                .clip(RoundedCornerShape(8.dp))
+                .clip(MaterialTheme.shapes.small)
         ) {
             AppImage(
                 imageURL = imageUrl,
@@ -97,7 +80,6 @@ fun ContinueWatchingCard(
                 modifier = Modifier.fillMaxSize()
             )
 
-            // Gradiente e ícone de play centralizado
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -105,7 +87,7 @@ fun ContinueWatchingCard(
                         Brush.verticalGradient(
                             colors = listOf(
                                 Color.Transparent,
-                                Color.Unspecified.copy(alpha = 0.8f)
+                                MaterialTheme.colorScheme.scrim.copy(alpha = 0.8f)
                             ),
                         )
                     )

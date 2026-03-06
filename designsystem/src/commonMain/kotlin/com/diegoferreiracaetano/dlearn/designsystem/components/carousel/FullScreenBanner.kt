@@ -7,12 +7,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -29,15 +28,13 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_add_to_list
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_watch
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner1
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner2
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner3
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-private const val RATIO = 12f / 16f
+private const val RATIO = 6f / 9f
 
 /**
  * A full-screen banner component for displaying featured content (e.g., videos, courses).
@@ -68,7 +65,7 @@ fun FullScreenVideo(
             .fillMaxWidth()
             .aspectRatio(RATIO)
             .clickable(onClick = onItemClick),
-        colors = CardDefaults.cardColors(containerColor = Color.DarkGray)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Box(
             modifier = Modifier.fillMaxWidth()
@@ -89,7 +86,7 @@ fun FullScreenVideo(
                         brush = Brush.verticalGradient(
                             colors = listOf(
                                 Color.Transparent,
-                                Color.Unspecified.copy(alpha = 0.85f)
+                                MaterialTheme.colorScheme.scrim.copy(alpha = 0.85f)
                             ),
                             startY = 500f
                         )
@@ -152,30 +149,11 @@ fun FullScreenBanner(
     pageCount: Int,
     pageContent: @Composable (pageIndex: Int) -> Unit
 ) {
-    val pagerState = rememberPagerState(
-        initialPage = 0,
-        pageCount = { pageCount }
+    AppCarousel(
+        pageCount = pageCount,
+        modifier = modifier,
+        pageContent = pageContent
     )
-
-    Box(
-        modifier = modifier.fillMaxWidth()
-    ) {
-        HorizontalPager(
-            state = pagerState
-        ) { pageIndex ->
-            pageContent(pageIndex)
-        }
-
-        if (pageCount > 1) {
-            PageIndicator(
-                pageCount,
-                currentPage = pagerState.currentPage,
-                modifier = Modifier
-                    .padding(bottom = 8.dp)
-                    .align(Alignment.BottomCenter)
-            )
-        }
-    }
 }
 
 @Preview
@@ -185,7 +163,7 @@ fun FullScreenVideoPreview() {
         FullScreenVideo(
             title = "Introduction to Jetpack Compose",
             subtitle = "Jetpack Compose",
-            imageResource = Res.drawable.banner1,
+            imageResource = Res.drawable.banner,
             onItemClick = { println("Clicked") },
             onWatchClick = { println("Watch Clicked") },
             onAddToListClick = { println("Add to List Clicked") }
@@ -207,9 +185,9 @@ fun FullScreenBannerPreview() {
         "Android"
     )
     val dummyImageUrls = listOf(
-        Res.drawable.banner1,
-        Res.drawable.banner2,
-        Res.drawable.banner3
+        Res.drawable.banner,
+        Res.drawable.banner,
+        Res.drawable.banner
     )
 
     DLearnTheme {

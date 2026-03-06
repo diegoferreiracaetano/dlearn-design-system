@@ -1,9 +1,9 @@
 package com.diegoferreiracaetano.dlearn.designsystem.components.button
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,9 +11,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedButton
@@ -22,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.google
@@ -57,37 +59,63 @@ enum class ButtonType {
  * @param onClick Callback when the button is clicked.
  * @param type The [ButtonType] to determine the button's style.
  * @param image Optional [DrawableResource] to be displayed as a leading icon.
+ * @param iconTint Optional tint for the icon. If null, follows the button's content color (theme aware).
+ *                 Use [Color.Unspecified] to keep original image colors (e.g., Google logo).
  * @param enabled Whether the button is enabled for interaction.
+ * @param backgroundColor Optional background color to override the default for the selected [type].
  */
 @Composable
 fun AppButton(
     modifier: Modifier = Modifier,
-    text: String,
+    text: String? = null,
     onClick: () -> Unit,
     type: ButtonType = ButtonType.PRIMARY,
     image: DrawableResource? = null,
+    iconTint: Color? = null,
     enabled: Boolean = true,
+    backgroundColor: Color? = null
 ) {
-    val (colors, border) = when (type) {
-        ButtonType.PRIMARY -> getPrimaryButtonColors() to null
-        ButtonType.SECONDARY -> getSecondaryButtonColors() to BorderStroke(
-            ButtonBorderWidth,
-            MaterialTheme.colorScheme.onSurface
-        )
+    val defaultContainerColor = when (type) {
+        ButtonType.PRIMARY -> MaterialTheme.colorScheme.primary
+        ButtonType.SECONDARY -> MaterialTheme.colorScheme.surface
+        ButtonType.TERTIARY -> MaterialTheme.colorScheme.onSurface
+    }
 
-        ButtonType.TERTIARY -> getTertiaryButtonColors() to BorderStroke(
+    val defaultContentColor = when (type) {
+        ButtonType.PRIMARY -> MaterialTheme.colorScheme.onPrimary
+        ButtonType.SECONDARY -> MaterialTheme.colorScheme.onSurface
+        ButtonType.TERTIARY -> MaterialTheme.colorScheme.surface
+    }
+
+    val finalBackgroundColor = backgroundColor ?: defaultContainerColor
+
+    val border = when (type) {
+        ButtonType.PRIMARY -> null
+        ButtonType.SECONDARY -> BorderStroke(
             ButtonBorderWidth,
-            MaterialTheme.colorScheme.surface
+            defaultContentColor
+        )
+        ButtonType.TERTIARY -> BorderStroke(
+            ButtonBorderWidth,
+            finalBackgroundColor
         )
     }
+
+    val finalColors = ButtonDefaults.buttonColors(
+        containerColor = finalBackgroundColor,
+        contentColor = defaultContentColor,
+        disabledContainerColor = Color.Gray,
+        disabledContentColor = Color.LightGray
+    )
 
     AppButtonInternal(
         modifier = modifier,
         text = text,
         onClick = onClick,
         image = image,
+        iconTint = iconTint,
         enabled = enabled,
-        colors = colors,
+        colors = finalColors,
         border = border
     )
 }
@@ -95,87 +123,77 @@ fun AppButton(
 @Composable
 private fun AppButtonInternal(
     modifier: Modifier = Modifier,
-    text: String,
+    text: String? = null,
     onClick: () -> Unit,
     image: DrawableResource?,
+    iconTint: Color?,
     enabled: Boolean,
     colors: ButtonColors,
-    border: BorderStroke?,
+    border: BorderStroke?
 ) {
+    val isIconOnly = text.isNullOrEmpty()
     val buttonModifier = modifier
         .fillMaxWidth()
         .height(ButtonHeight)
 
+    val contentPadding = if (isIconOnly) PaddingValues(ButtonContentSpacing) else ButtonDefaults.ContentPadding
+
     if (border != null) {
         OutlinedButton(
             onClick = onClick,
-            shape = Shapes.extraLarge,
+            shape = if (isIconOnly) CircleShape else Shapes.extraLarge,
             enabled = enabled,
             border = border,
             colors = colors,
             modifier = buttonModifier,
+            contentPadding = contentPadding
         ) {
-            AppButtonContent(text, image)
+            AppButtonContent(text, image, iconTint)
         }
     } else {
         Button(
             onClick = onClick,
-            shape = Shapes.extraLarge,
+            shape = if (isIconOnly) CircleShape else Shapes.extraLarge,
             enabled = enabled,
             colors = colors,
             modifier = buttonModifier,
+            contentPadding = contentPadding
         ) {
-            AppButtonContent(text, image)
+            AppButtonContent(text, image, iconTint)
         }
     }
 }
 
 @Composable
 private fun AppButtonContent(
-    text: String,
+    text: String? = null,
     image: DrawableResource?,
+    iconTint: Color?
 ) {
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         if (image != null) {
-            Image(
+            Icon(
                 painter = painterResource(image),
                 contentDescription = text,
                 modifier = Modifier.size(ButtonIconSize),
+                tint = iconTint ?: LocalContentColor.current
             )
-            Spacer(modifier = Modifier.width(ButtonContentSpacing))
+            if (!text.isNullOrEmpty()) {
+                Spacer(modifier = Modifier.width(ButtonContentSpacing))
+            }
         }
-        Text(
-            text = text,
-            style = typography.labelLarge,
-        )
+        if (!text.isNullOrEmpty()) {
+            Text(
+                text = text,
+                style = typography.labelMedium,
+            )
+        }
     }
 }
-
-@Composable
-private fun getPrimaryButtonColors() = ButtonDefaults.buttonColors(
-    containerColor = MaterialTheme.colorScheme.primary,
-    contentColor = MaterialTheme.colorScheme.onPrimary,
-    disabledContentColor = Color.LightGray,
-    disabledContainerColor = Color.Gray,
-)
-
-@Composable
-private fun getSecondaryButtonColors() = ButtonDefaults.outlinedButtonColors(
-    containerColor = MaterialTheme.colorScheme.surface,
-    contentColor = MaterialTheme.colorScheme.onSurface,
-    disabledContentColor = Color.LightGray,
-    disabledContainerColor = Color.Gray,
-)
-
-@Composable
-private fun getTertiaryButtonColors() = ButtonDefaults.outlinedButtonColors(
-    containerColor = MaterialTheme.colorScheme.onSurface,
-    contentColor = MaterialTheme.colorScheme.surface,
-    disabledContentColor = Color.LightGray,
-    disabledContainerColor = Color.Gray,
-)
 
 @Preview
 @Composable
@@ -186,30 +204,38 @@ fun AppButtonPrimaryPreview() {
             verticalArrangement = Arrangement.spacedBy(PreviewSpacing),
         ) {
             AppButton(
-                text = "Primary",
+                text = "Apple Style (Follows Theme)",
                 onClick = {},
-            )
-            AppButton(
-                text = "Primary disable",
-                onClick = {},
-                enabled = false,
-            )
-            AppButton(
-                text = "Secondary",
-                onClick = {},
-                type = ButtonType.SECONDARY,
-            )
-            AppButton(
-                text = "Secondary disable",
-                onClick = {},
-                enabled = false,
-                type = ButtonType.SECONDARY,
-            )
-            AppButton(
-                text = "Tertiary",
-                onClick = {},
-                type = ButtonType.TERTIARY,
                 image = Res.drawable.google,
+            )
+            AppButton(
+                text = "Google Style (Original Colors)",
+                onClick = {},
+                image = Res.drawable.google,
+                iconTint = Color.Unspecified
+            )
+            AppButton(
+                modifier = Modifier.size(64.dp),
+                onClick = {},
+                type = ButtonType.SECONDARY,
+                image = Res.drawable.google,
+                iconTint = Color.Unspecified
+            )
+            AppButton(
+                text = "Custom Background Only",
+                onClick = {},
+                backgroundColor = Color.Red
+            )
+            AppButton(
+                text = "Secondary Custom BG",
+                onClick = {},
+                type = ButtonType.SECONDARY,
+                backgroundColor = Color.Yellow
+            )
+            AppButton(
+                text = "Primary Disable",
+                onClick = {},
+                enabled = false,
             )
         }
     }

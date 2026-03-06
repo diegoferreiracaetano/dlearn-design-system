@@ -32,9 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner1
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner2
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner3
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -82,7 +80,7 @@ fun Carousel(
         Text(
             text = title,
             style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
         )
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -163,6 +161,7 @@ fun Carousel(
                                 style = MaterialTheme.typography.labelSmall,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
@@ -244,20 +243,20 @@ fun CarouselDefaultPreview() {
         CarouselItem(
             title = "Introduction to Jetpack Compose",
             subtitle = "Jetpack Compose",
-            imageResource = Res.drawable.banner1,
+            imageResource = Res.drawable.banner,
             rating = 4.5f,
             primaryInfo = "Novidade"
         ),
         CarouselItem(
             title = "State Management in Compose",
             subtitle = "Jetpack Compose",
-            imageResource = Res.drawable.banner2,
+            imageResource = Res.drawable.banner,
             rating = 4.8f,
         ),
         CarouselItem(
             title = "Dagger Hilt for Dependency Injection",
             subtitle = "Android",
-            imageResource = Res.drawable.banner3,
+            imageResource = Res.drawable.banner,
             rating = 4.2f,
             primaryInfo = "Novo episódio",
             secondaryInfo = "Assista já"
@@ -279,20 +278,20 @@ fun CarouselTop10Preview() {
         CarouselItem(
             rank = 1,
             title = "Introduction to Jetpack Compose",
-            imageResource = Res.drawable.banner1,
+            imageResource = Res.drawable.banner,
             rating = 4.5f,
             primaryInfo = "Novidade"
         ),
         CarouselItem(
             rank = 2,
             title = "State Management in Compose",
-            imageResource = Res.drawable.banner2,
+            imageResource = Res.drawable.banner,
             rating = 4.8f,
         ),
         CarouselItem(
             rank = 3,
             title = "Dagger Hilt for Dependency Injection",
-            imageResource = Res.drawable.banner3,
+            imageResource = Res.drawable.banner,
             rating = 4.2f,
             primaryInfo = "Novo episódio",
             secondaryInfo = "Assista já"

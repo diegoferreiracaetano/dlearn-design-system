@@ -6,11 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -26,66 +22,8 @@ import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-/**
- * A horizontal carousel component that displays [BannerCard] items.
- *
- * @param modifier The [Modifier] to be applied to the carousel container.
- * @param title The title of the carousel section.
- * @param pageCount The total number of pages in the carousel.
- * @param pageContent The content for each page, indexed by position.
- */
-@Composable
-fun BannerCarousel(
-    modifier: Modifier = Modifier,
-    title: String,
-    pageCount: Int,
-    pageContent: @Composable (pageIndex: Int) -> Unit
-) {
-    val pagerState = rememberPagerState(
-        initialPage = 0,
-        pageCount = { pageCount }
-    )
+private const val BANNER_RATIO = 16f / 9f
 
-    Column(modifier = modifier) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(
-                top = 8.dp,
-                bottom = 8.dp,
-            ),
-        )
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            HorizontalPager(state = pagerState) { pageIndex ->
-                pageContent(pageIndex)
-            }
-
-            PageIndicator(
-                pageCount,
-                pagerState.currentPage,
-                modifier = Modifier.align(Alignment.BottomCenter)
-                    .padding(bottom = 8.dp)
-            )
-        }
-    }
-}
-
-private const val RATIO = 16f / 9f
-
-/**
- * A card component used within a [BannerCarousel].
- *
- * @param modifier The [Modifier] to be applied to the card.
- * @param title The title text of the banner.
- * @param subtitle The subtitle text of the banner.
- * @param imageResource Optional [DrawableResource] for the banner image.
- * @param imageUrl Optional URL for the banner image.
- * @param onClick Action to be performed when the banner card is clicked.
- */
 @Composable
 fun BannerCard(
     modifier: Modifier = Modifier,
@@ -97,11 +35,14 @@ fun BannerCard(
 ) {
     Card(
         modifier = modifier
-            .aspectRatio(RATIO)
+            .aspectRatio(BANNER_RATIO)
             .fillMaxSize()
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.DarkGray)
+        shape = MaterialTheme.shapes.medium,
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             AppImage(
@@ -118,7 +59,7 @@ fun BannerCard(
                         brush = Brush.verticalGradient(
                             colors = listOf(
                                 Color.Transparent,
-                                Color.Black.copy(alpha = 0.8f)
+                                MaterialTheme.colorScheme.scrim.copy(alpha = 0.7f)
                             ),
                             startY = 300f
                         )
@@ -132,16 +73,36 @@ fun BannerCard(
             ) {
                 Text(
                     text = title,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = Color.White,
                     style = MaterialTheme.typography.titleLarge
                 )
                 Text(
                     text = subtitle,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = Color.White.copy(alpha = 0.8f),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
         }
+    }
+}
+
+@Composable
+fun BannerCarousel(
+    modifier: Modifier = Modifier,
+    title: String,
+    pageCount: Int,
+    pageContent: @Composable (pageIndex: Int) -> Unit
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(vertical = 8.dp),
+        )
+        AppCarousel(
+            pageCount = pageCount,
+            pageContent = pageContent
+        )
     }
 }
 

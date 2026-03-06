@@ -135,10 +135,10 @@ fun DLearnTypography() =
         labelMedium =
         TextStyle(
             fontFamily = MontserratFontFamily(),
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight.Medium,
             fontSize = 14.sp,
             lineHeight = 16.sp,
-            letterSpacing = 0.5.sp,
+            letterSpacing = 0.7.sp,
         ),
         labelSmall =
         TextStyle(

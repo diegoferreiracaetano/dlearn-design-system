@@ -1,73 +1,69 @@
 # Carrosséis e Banners
 
+Esta seção contém componentes de carrossel e banners reutilizáveis, construídos sobre uma base unificada (`AppCarousel`) para garantir consistência visual e comportamento de navegação.
+
+### AppCarousel (Base)
+O componente interno que gerencia a lógica de `HorizontalPager` e `PageIndicator`. Não deve ser usado diretamente fora do pacote de carrosséis.
+
+---
+
 ### BannerCarousel
-Carrossel horizontal padrão para exibição de banners informativos ou promocionais.
+Carrossel horizontal padrão para exibição de `BannerCard`s. Utilizado para destaques informativos ou promocionais que não ocupam a tela inteira.
 
 **Tabela de Props**
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
-| `items` | `List<BannerItem>` | - | Lista de itens contendo imagem e link. |
+| `title` | `String` | - | Título da seção do carrossel. |
+| `pageCount` | `Int` | - | Número total de páginas. |
+| `pageContent` | `Composable (Int) -> Unit` | - | Conteúdo de cada página (geralmente `BannerCard`). |
 
 **Exemplo de Uso**
 ```kotlin
 BannerCarousel(
-    items = listOf(BannerItem(image = "url", link = "home"))
-)
-```
-
----
-
-### Carousel
-Carrossel versátil com suporte a títulos de seção e diferentes tipos de itens (como Ranking/Top 10).
-
-**Tabela de Props**
-| Prop | Tipo | Padrão | Descrição |
-| :--- | :--- | :--- | :--- |
-| `title` | `String` | - | Título exibido acima do carrossel. |
-| `items` | `List<CarouselItem>` | - | Itens com imagem, título e metadados. |
-
-**Exemplo de Uso**
-```kotlin
-Carousel(
-    title = "Top 10 no Brasil hoje",
-    items = myCarouselItems
-)
-```
-
----
-
-### ContinueWatchingCarousel
-Componente especializado para exibir o progresso de conteúdos que o usuário começou a assistir.
-
-**Tabela de Props**
-| Prop | Tipo | Padrão | Descrição |
-| :--- | :--- | :--- | :--- |
-| `items` | `List<ContinueWatchingItem>` | - | Itens com título e percentual de progresso. |
-
-**Exemplo de Uso**
-```kotlin
-ContinueWatchingCarousel(
-    items = listOf(ContinueWatchingItem(title = "Episódio 1", progress = 0.5f))
-)
+    title = "Destaques",
+    pageCount = items.size
+) { index ->
+    BannerCard(
+        title = items[index].title,
+        subtitle = items[index].subtitle,
+        imageUrl = items[index].url,
+        onClick = { /* navegação */ }
+    )
+}
 ```
 
 ---
 
 ### FullScreenBanner
-Banner de tela cheia para destaques principais com botões de ação direta.
+Componente de pager para exibição de banners em tela cheia (`FullScreenVideo`), ideal para o topo de telas de início ou detalhes.
 
 **Tabela de Props**
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
-| `title` | `String` | - | Título principal do banner. |
-| `onWatchClick` | `() -> Unit` | - | Ação do botão "Assistir". |
-| `onAddToListClick` | `() -> Unit` | - | Ação do botão "Minha Lista". |
+| `pageCount` | `Int` | - | Número total de banners. |
+| `pageContent` | `Composable (Int) -> Unit` | - | Conteúdo de cada página (geralmente `FullScreenVideo`). |
 
-**Exemplo de Uso**
-```kotlin
-FullScreenBanner(
-    title = "O Senhor dos Anéis",
-    onWatchClick = { /* play */ },
-    onAddToListClick = { /* save */ }
-)
-```
+---
+
+### PageCarousel
+Carrossel especializado para fluxos de Onboarding. Possui um cartão de informações flutuante com sombra e um botão de ação principal.
+
+**Tabela de Props**
+| Prop | Tipo | Padrão | Descrição |
+| :--- | :--- | :--- | :--- |
+| `pageCount` | `Int` | - | Número total de páginas. |
+| `onFinish` | `() -> Unit` | - | Callback acionado ao clicar no botão na última página. |
+| `imageContent` | `Composable (Int) -> Unit` | - | Imagem de fundo para cada página. |
+| `infoContent` | `Composable (Int) -> Unit` | - | Conteúdo textual/informativo para cada página. |
+
+---
+
+### ContinueWatchingCarousel
+Lista horizontal (`LazyRow`) para exibir o progresso de conteúdos em andamento através de `ContinueWatchingCard`s.
+
+**Tabela de Props**
+| Prop | Tipo | Padrão | Descrição |
+| :--- | :--- | :--- | :--- |
+| `title` | `String` | - | Título da seção (ex: "Continuar Assistindo"). |
+| `itemCount` | `Int` | - | Número de itens na lista. |
+| `itemContent` | `Composable (Int) -> Unit` | - | Renderizador de cada item (geralmente `ContinueWatchingCard`). |
