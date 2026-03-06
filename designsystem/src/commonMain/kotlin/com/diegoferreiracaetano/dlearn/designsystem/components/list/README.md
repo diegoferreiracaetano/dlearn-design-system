@@ -19,8 +19,32 @@ AppList(
 
 ---
 
+# AppProfileHeader
+Cabeçalho de perfil centralizado com imagem grande, botão de edição e informações de contato.
+
+### Props
+| Prop | Tipo | Padrão | Descrição |
+| :--- | :--- | :--- | :--- |
+| `name` | `String` | - | Nome do usuário. |
+| `email` | `String` | - | E-mail do usuário. |
+| `imageURL` | `String?` | `null` | URL da imagem remota. |
+| `imageResource` | `DrawableResource?` | `Res.drawable.profile` | Recurso de imagem local. |
+| `onEditClick` | `(() -> Unit)?` | `null` | Callback para o botão de edição (usado se `onImagePicked` for nulo). |
+| `onImagePicked` | `((ByteArray) -> Unit)?` | `null` | Callback para seleção de imagem (abre diálogo de câmera/galeria). |
+
+### Usage
+```kotlin
+AppProfileHeader(
+    name = "Tiffany",
+    email = "tiffany@example.com",
+    onEditClick = { /* editar */ }
+)
+```
+
+---
+
 # AppProfileRow
-Exibe informações de perfil do usuário com suporte a uma ação de edição.
+Exibe informações de perfil do usuário em formato de linha horizontal com suporte a uma ação de edição.
 
 ### Props
 | Prop | Tipo | Padrão | Descrição |
@@ -28,7 +52,7 @@ Exibe informações de perfil do usuário com suporte a uma ação de edição.
 | `name` | `String` | - | Nome do usuário. |
 | `email` | `String` | - | E-mail ou identificador. |
 | `imageURL` | `String?` | `null` | URL para imagem remota. |
-| `onEditClick` | `() -> Unit` | - | Callback para ação de edição. |
+| `onEditClick` | `(() -> Unit)?` | - | Callback para ação de edição. |
 
 ### Usage
 ```kotlin
@@ -48,7 +72,7 @@ Uma linha flexível que exibe um rótulo e um valor opcional, com suporte a íco
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
 | `label` | `StringResource` | - | Rótulo principal. |
-| `value` | `StringResource?` | `null` | Texto de apoio. |
+| `valueString` | `String?` | `null` | Valor em texto puro. |
 | `leadingIcon` | `ImageVector?` | `null` | Ícone à esquerda. |
 | `onClick` | `(() -> Unit)?` | `null` | Ação ao clicar (exibe seta de navegação). |
 
@@ -56,7 +80,7 @@ Uma linha flexível que exibe um rótulo e um valor opcional, com suporte a íco
 ```kotlin
 AppTextRow(
     label = Res.string.language,
-    value = Res.string.language_current,
+    valueString = "Português",
     leadingIcon = Icons.Default.Language,
     onClick = { /* Abrir seleção */ }
 )

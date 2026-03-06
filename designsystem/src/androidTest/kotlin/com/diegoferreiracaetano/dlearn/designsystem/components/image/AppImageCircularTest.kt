@@ -7,18 +7,18 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.runComposeUiTest
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.dlearn_logo
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.profile
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
-class CircularImageTest {
+class AppImageCircularTest {
 
     @Test
     fun shouldDisplayCircularImageWhenRendered() = runComposeUiTest {
-        val testTag = "CircularImage"
+        val testTag = "AppImageCircular"
         setContent {
-            CircularImage(
-                resource = Res.drawable.dlearn_logo,
+            AppImageCircular(
+                imageResource = Res.drawable.profile,
                 modifier = Modifier.testTag(testTag)
             )
         }

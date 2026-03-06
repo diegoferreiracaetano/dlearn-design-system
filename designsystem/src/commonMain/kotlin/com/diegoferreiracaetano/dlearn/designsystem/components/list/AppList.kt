@@ -28,6 +28,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.banner.AppBanner
+import com.diegoferreiracaetano.dlearn.designsystem.components.profile.AppProfileHeader
+import com.diegoferreiracaetano.dlearn.designsystem.components.profile.AppProfileRow
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.app_name
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.title_email
@@ -68,6 +70,17 @@ data class TextRowItem(
 data class ProfileItem(
     val title: String,
     val description: String,
+    val imageResource: DrawableResource? = null,
+    val imageURL: String? = null,
+    val onEditClick: (() -> Unit)? = null
+) : AppListItem
+
+/**
+ * A profile header item with centered user info.
+ */
+data class ProfileHeaderItem(
+    val name: String,
+    val email: String,
     val imageResource: DrawableResource? = null,
     val imageURL: String? = null,
     val onEditClick: (() -> Unit)? = null
@@ -197,6 +210,14 @@ fun AppList(
                     onEditClick = item.onEditClick
                 )
 
+                is ProfileHeaderItem -> AppProfileHeader(
+                    name = item.name,
+                    email = item.email,
+                    imageResource = item.imageResource,
+                    imageURL = item.imageURL,
+                    onEditClick = item.onEditClick
+                )
+
                 is BannerItem -> AppBanner(
                     title = item.title,
                     description = item.description,
@@ -214,9 +235,9 @@ fun AppList(
 private fun AppProfileAndListPreview() {
     DLearnTheme(darkTheme = true) {
         val items = listOf(
-            ProfileItem(
-                title = "Tiffany",
-                description = "Tiffanyjearsey@gmail.com",
+            ProfileHeaderItem(
+                name = "Tiffany",
+                email = "Tiffanyjearsey@gmail.com",
                 onEditClick = {}
             ),
             BannerItem(

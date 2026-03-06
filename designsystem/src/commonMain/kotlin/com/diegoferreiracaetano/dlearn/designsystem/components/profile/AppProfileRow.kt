@@ -1,4 +1,4 @@
-package com.diegoferreiracaetano.dlearn.designsystem.components.list
+package com.diegoferreiracaetano.dlearn.designsystem.components.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

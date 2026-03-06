@@ -26,10 +26,15 @@ Abaixo você encontra a visão geral dos componentes disponíveis. Clique no nom
 - [**Carousel**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/carousel/README.md#carousel): Carrossel com numeração de ranking.
 - [**ContinueWatchingCarousel**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/carousel/README.md#continuewatchingcarousel): Otimizado para progresso de mídia.
 - [**FullScreenBanner**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/carousel/README.md#fullscreenbanner): Banners de destaque.
+- [**PageCarousel**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/carousel/README.md#pagecarousel): Carrossel para fluxos de Onboarding.
 
 ### ✍️ Entrada de Dados (Forms)
 - [**AppTextField**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/textfield/README.md#apptextfield): Input de texto versátil.
 - [**AppOtpVerification**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/textfield/README.md#appotpverification): Campo para códigos de verificação (OTP).
+
+### 👤 Perfil (Profile)
+- [**AppProfileHeader**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/list/README.md#appprofileheader): Cabeçalho de perfil centralizado com imagem e edição.
+- [**AppProfileRow**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/list/README.md#appprofilerow): Linha de perfil horizontal com informações e ação.
 
 ### 🗺️ Navegação & Estrutura
 - [**AppContainer**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/navigation/README.md#appcontainer): Scaffold base da aplicação.
@@ -41,9 +46,10 @@ Abaixo você encontra a visão geral dos componentes disponíveis. Clique no nom
 - [**AppImage**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/image/README.md#appimage): Carregamento de imagens.
 - [**AppImageCircular**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/image/README.md#appimagecircular): Avatares circulares.
 
-### 🔄 Feedback Visual & Listas
+### 🔄 Feedback Visual, Estados & Listas
 - [**AppLoading**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/loading/README.md#apploading): Spinner padrão.
 - [**ScreenLoading**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/loading/README.md#screenloading): Carregamento em tela cheia.
+- [**AppEmptyState**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/state/README.md#appemptystate): Feedback para ausência de dados.
 - [**AppSnackbarHost**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/alert/README.md#appsnackbarhost): Sistema de notificações.
 - [**AppList**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/list/README.md#applist): Listas com cabeçalhos colapsáveis.
 
