@@ -45,6 +45,7 @@ Abaixo você encontra a visão geral dos componentes disponíveis. Clique no nom
 ### 🖼️ Mídia & Imagens
 - [**AppImage**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/image/README.md#appimage): Carregamento de imagens.
 - [**AppImageCircular**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/image/README.md#appimagecircular): Avatares circulares.
+- [**AppHtmlText**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/html/README.md#apphtmltext): Renderização de textos com suporte a HTML básico.
 
 ### 🔄 Feedback Visual, Estados & Listas
 - [**AppLoading**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/loading/README.md#apploading): Spinner padrão.
