@@ -24,6 +24,7 @@
     <string name="action_favorite">Favoritar</string>
     <string name="action_menu">Menu</string>
     <string name="action_search">Pesquisar</string>
+    <string name="action_profile">Perfil</string>
     <string name="search_placeholder">Pesquisar...</string>
 
     <string name="action_watch">Assistir</string>

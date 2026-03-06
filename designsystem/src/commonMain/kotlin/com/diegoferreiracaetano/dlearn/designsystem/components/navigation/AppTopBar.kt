@@ -1,7 +1,11 @@
 package com.diegoferreiracaetano.dlearn.designsystem.components.navigation
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
@@ -24,25 +28,34 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageCircular
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_back
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_favorite
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_menu
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_profile
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_search
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.search_placeholder
+import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.diegoferreiracaetano.dlearn.designsystem.util.contrastTextColor
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val MAX_TITLE_LINES = 1
+private val PROFILE_IMAGE_SIZE = 32.dp
 
 /**
  * A custom [TopAppBar] that can switch between a default and a transparent style.
- * It supports a title, back button, favorite button, menu button, and integrated search.
+ * It supports a title, subtitle, back button, favorite button, menu button, and integrated search.
  *
  * @param modifier The [Modifier] to be applied to the top bar.
  * @param title The title text to be displayed.
+ * @param subtitle The subtitle text to be displayed below the title.
  * @param onBack Callback for the back navigation icon.
  * @param onFavorite Callback for the favorite action icon.
  * @param onMenuClick Callback for the menu navigation icon.
@@ -52,12 +65,16 @@ private const val MAX_TITLE_LINES = 1
  * @param useTransparent Whether to use the transparent style.
  * @param scrollBehavior The [TopAppBarScrollBehavior] to use.
  * @param actions Additional actions to be displayed in the top bar.
+ * @param profileImageUrl The URL of the profile image.
+ * @param profileImageResource The resource of the profile image.
+ * @param onProfileClick Callback when the profile image is clicked.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar(
     modifier: Modifier = Modifier,
     title: String? = null,
+    subtitle: String? = null,
     onBack: (() -> Unit)? = null,
     onFavorite: (() -> Unit)? = null,
     onMenuClick: (() -> Unit)? = null,
@@ -67,6 +84,9 @@ fun AppTopBar(
     useTransparent: Boolean = false,
     scrollBehavior: TopAppBarScrollBehavior? = null,
     actions: @Composable RowScope.() -> Unit = {},
+    profileImageUrl: String? = null,
+    profileImageResource: DrawableResource? = null,
+    onProfileClick: (() -> Unit)? = null,
 ) {
     if (useTransparent) {
         AppTopBarTransparent(
@@ -75,17 +95,24 @@ fun AppTopBar(
             onBack = onBack,
             onFavorite = onFavorite,
             scrollBehavior = scrollBehavior,
+            profileImageUrl = profileImageUrl,
+            profileImageResource = profileImageResource,
+            onProfileClick = onProfileClick,
         )
     } else {
         AppTopBarDefault(
             modifier = modifier,
             title = title,
+            subtitle = subtitle,
             onBack = onBack,
             onMenuClick = onMenuClick,
             searchValue = searchValue,
             onSearchValueChange = onSearchValueChange,
             scrollBehavior = scrollBehavior,
             actions = actions,
+            profileImageUrl = profileImageUrl,
+            profileImageResource = profileImageResource,
+            onProfileClick = onProfileClick,
         )
     }
 }
@@ -95,12 +122,16 @@ fun AppTopBar(
 private fun AppTopBarDefault(
     modifier: Modifier = Modifier,
     title: String?,
+    subtitle: String?,
     onBack: (() -> Unit)?,
     onMenuClick: (() -> Unit)?,
     searchValue: String,
     onSearchValueChange: ((String) -> Unit)?,
     scrollBehavior: TopAppBarScrollBehavior?,
     actions: @Composable RowScope.() -> Unit,
+    profileImageUrl: String?,
+    profileImageResource: DrawableResource?,
+    onProfileClick: (() -> Unit)?,
 ) {
     var isSearchActive by remember { mutableStateOf(false) }
 
@@ -128,12 +159,24 @@ private fun AppTopBarDefault(
                     textStyle = MaterialTheme.typography.labelLarge,
                     modifier = Modifier.fillMaxWidth()
                 )
-            } else if (title != null) {
-                Text(
-                    text = title,
-                    maxLines = MAX_TITLE_LINES,
-                    style = MaterialTheme.typography.labelLarge,
-                )
+            } else {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    if (title != null) {
+                        Text(
+                            text = title,
+                            maxLines = MAX_TITLE_LINES,
+                            style = MaterialTheme.typography.labelLarge,
+                        )
+                    }
+                    if (subtitle != null) {
+                        Text(
+                            text = subtitle,
+                            maxLines = MAX_TITLE_LINES,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
             }
         },
         navigationIcon = {
@@ -145,6 +188,15 @@ private fun AppTopBarDefault(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(Res.string.action_back),
+                    )
+                }
+            } else if (profileImageUrl != null || profileImageResource != null || onProfileClick != null) {
+                IconButton(onClick = { onProfileClick?.invoke() }) {
+                    AppImageCircular(
+                        modifier = Modifier.size(PROFILE_IMAGE_SIZE),
+                        imageURL = profileImageUrl,
+                        imageResource = profileImageResource,
+                        contentDescription = stringResource(Res.string.action_profile)
                     )
                 }
             } else if (onMenuClick != null) {
@@ -198,12 +250,24 @@ private fun AppTopBarTransparent(
     onBack: (() -> Unit)?,
     onFavorite: (() -> Unit)?,
     scrollBehavior: TopAppBarScrollBehavior?,
+    profileImageUrl: String?,
+    profileImageResource: DrawableResource?,
+    onProfileClick: (() -> Unit)?,
 ) {
     TopAppBar(
         modifier = modifier.fillMaxWidth(),
         title = {},
         navigationIcon = {
-            if (onBack != null) {
+            if (profileImageUrl != null || profileImageResource != null || onProfileClick != null) {
+                IconButton(onClick = { onProfileClick?.invoke() }) {
+                    AppImageCircular(
+                        modifier = Modifier.size(PROFILE_IMAGE_SIZE),
+                        imageURL = profileImageUrl,
+                        imageResource = profileImageResource,
+                        contentDescription = stringResource(Res.string.action_profile)
+                    )
+                }
+            } else if (onBack != null) {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -229,4 +293,54 @@ private fun AppTopBarTransparent(
         ),
         scrollBehavior = scrollBehavior,
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun AppTopBarComponentPreview() {
+    DLearnTheme(darkTheme = true) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            AppTopBar(
+                title = "Default Top Bar",
+                onBack = {}
+            )
+
+            AppTopBar(
+                title = "With Subtitle",
+                subtitle = "Active Now",
+                onBack = {}
+            )
+
+            AppTopBar(
+                title = "With Menu",
+                onMenuClick = {}
+            )
+
+            AppTopBar(
+                title = "With Search",
+                onBack = {},
+                onSearchValueChange = {}
+            )
+
+            AppTopBar(
+                title = "User Profile",
+                subtitle = "Online",
+                onProfileClick = {},
+                onSearchValueChange = {},
+                onMenuClick = {}
+            )
+
+            AppTopBar(
+                useTransparent = true,
+                backgroundColor = Color.Black,
+                onBack = {},
+                onFavorite = {},
+                onProfileClick = {}
+            )
+        }
+    }
 }

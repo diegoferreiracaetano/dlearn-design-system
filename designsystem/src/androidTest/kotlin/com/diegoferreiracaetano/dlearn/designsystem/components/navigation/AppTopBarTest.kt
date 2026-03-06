@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.runComposeUiTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalTestApi::class, ExperimentalMaterial3Api::class)
 class AppTopBarTest {
@@ -25,6 +26,18 @@ class AppTopBarTest {
     }
 
     @Test
+    fun shouldDisplaySubtitleWhenProvided() = runComposeUiTest {
+        val title = "Home"
+        val subtitle = "Online"
+        setContent {
+            AppTopBar(title = title, subtitle = subtitle)
+        }
+
+        onNodeWithText(title).assertIsDisplayed()
+        onNodeWithText(subtitle).assertIsDisplayed()
+    }
+
+    @Test
     fun shouldTriggerOnBackWhenBackButtonIsClicked() = runComposeUiTest {
         var backClicked = false
         setContent {
@@ -33,7 +46,7 @@ class AppTopBarTest {
 
         onNodeWithContentDescription("Voltar", ignoreCase = true).performClick()
 
-        assert(backClicked)
+        assertTrue(backClicked)
     }
 
     @Test
@@ -45,7 +58,19 @@ class AppTopBarTest {
 
         onNodeWithContentDescription("Menu", ignoreCase = true).performClick()
 
-        assert(menuClicked)
+        assertTrue(menuClicked)
+    }
+
+    @Test
+    fun shouldTriggerOnProfileClickWhenProfileIconIsClicked() = runComposeUiTest {
+        var profileClicked = false
+        setContent {
+            AppTopBar(onProfileClick = { profileClicked = true })
+        }
+
+        onNodeWithContentDescription("Perfil", ignoreCase = true).performClick()
+
+        assertTrue(profileClicked)
     }
 
     @Test
