@@ -1,34 +1,22 @@
-### 1. Nome
-`AppSnackbarHost`
-
-### 2. Descrição
+# AppSnackbarHost
 Componente que gerencia a exibição de Snackbars customizados.
 
-### 3. Tabela de Props (Parâmetros)
-
-<a name="appsnackbarhost"></a>
-#### `AppSnackbarHost`
+### Props
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
 | `hostState` | `SnackbarHostState` | - | Estado que controla a exibição do snackbar. |
 
-### 4. Exemplo de uso
+### Usage
 ```kotlin
 AppSnackbarHost(hostState = snackbarHostState)
 ```
 
 ---
 
-### 1. Nome
-`AppDialog`
-
-### 2. Descrição
+# AppDialog
 Um componente de diálogo de alerta personalizado seguindo as especificações do Material 3 e o estilo do projeto.
 
-### 3. Tabela de Props (Parâmetros)
-
-<a name="appdialog"></a>
-#### `AppDialog`
+### Props
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
 | `onDismissRequest` | `() -> Unit` | - | Callback quando o diálogo é descartado. |
@@ -41,7 +29,7 @@ Um componente de diálogo de alerta personalizado seguindo as especificações d
 | `description` | `String?` | `null` | Descrição opcional para o diálogo. |
 | `imageResource` | `DrawableResource?` | `null` | [DrawableResource] opcional a ser exibido no topo. |
 
-### 4. Exemplo de uso
+### Usage
 ```kotlin
 AppDialog(
     onDismissRequest = { /* dismiss */ },

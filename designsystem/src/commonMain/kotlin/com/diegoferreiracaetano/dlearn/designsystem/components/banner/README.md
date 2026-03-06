@@ -1,13 +1,7 @@
-### 1. Nome
-`AppBanner`
-
-### 2. Descrição
+# AppBanner
 Um componente de banner para exibir informações de destaque ou assinaturas.
 
-### 3. Tabela de Props (Parâmetros)
-
-<a name="appbanner"></a>
-#### `AppBanner`
+### Props
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
 | `title` | `String` | - | O texto do título do banner. |
@@ -16,7 +10,7 @@ Um componente de banner para exibir informações de destaque ou assinaturas.
 | `imageResource` | `DrawableResource?` | `null` | [DrawableResource] opcional a ser exibido como ícone principal. |
 | `backgroundColor` | `Color?` | `null` | Cor de fundo opcional. O padrão é laranja (tertiary). |
 
-### 4. Exemplo de uso
+### Usage
 ```kotlin
 AppBanner(
     title = "Premium Member",

@@ -1,18 +1,17 @@
-### 1. Nome
-`AppChipGroup`
+# AppChipGroup
+Componente que exibe um grupo de chips (filtros) horizontais roláveis.
 
-### 2. Descrição
-Componente que exibe um grupo de chips (filtros).
-
-### 3. Tabela de Props (Parâmetros)
-
-<a name="appchipgroup"></a>
-#### `AppChipGroup`
+### Props
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
-| `items` | `List<AppChip>` | - | Lista de chips. |
+| `items` | `List<AppChip>` | - | Lista de chips a serem exibidos. |
 
-### 4. Exemplo de uso
+### Usage
 ```kotlin
-AppChipGroup(items = listOf(AppChip(label = "Séries")))
+AppChipGroup(
+    items = listOf(
+        AppChip(label = "Séries", onClick = { /* filtro */ }),
+        AppChip(label = "Filmes", onClick = { /* filtro */ })
+    )
+)
 ```

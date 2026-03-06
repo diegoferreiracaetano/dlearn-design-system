@@ -1,24 +1,31 @@
-### 1. Nome
-`AppImage`, `CircularImage`
+# AppImage
+Componente para exibição de imagens. Suporta carregamento de URLs remotas, recursos locais ou exibe um placeholder padrão.
 
-### 2. Descrição
-Componentes para exibição de imagens.
-
-### 3. Tabela de Props (Parâmetros)
-
-<a name="appimage"></a>
-#### `AppImage`
+### Props
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
 | `imageURL` | `String?` | `null` | URL da imagem remota. |
+| `imageResource` | `DrawableResource?` | `null` | Recurso de imagem local. |
+| `contentDescription` | `String?` | `null` | Descrição de acessibilidade. |
 
-<a name="circularimage"></a>
-#### `CircularImage`
+### Usage
+```kotlin
+AppImage(imageURL = "https://example.com/image.jpg")
+```
+
+---
+
+# AppImageCircular
+Componente para exibição de imagens em formato circular. Suporta carregamento de URLs remotas, recursos locais ou exibe um placeholder padrão.
+
+### Props
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
-| `resource` | `DrawableResource` | - | Recurso de imagem local. |
+| `imageURL` | `String?` | `null` | URL da imagem remota. |
+| `imageResource` | `DrawableResource?` | `null` | Recurso de imagem local. |
+| `contentDescription` | `String?` | `null` | Descrição de acessibilidade. |
 
-### 4. Exemplo de uso
+### Usage
 ```kotlin
-CircularImage(resource = Res.drawable.user_avatar)
+AppImageCircular(imageResource = Res.drawable.user_avatar)
 ```
