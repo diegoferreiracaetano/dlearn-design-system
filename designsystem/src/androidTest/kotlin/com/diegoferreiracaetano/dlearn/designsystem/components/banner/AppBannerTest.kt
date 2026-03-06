@@ -10,18 +10,18 @@ import kotlin.test.Test
 class AppBannerTest {
 
     @Test
-    fun shouldDisplayTitleAndSubtitle() = runComposeUiTest {
+    fun shouldDisplayTitleAndDescription() = runComposeUiTest {
         val title = "Premium Member"
-        val subtitle = "New movies are coming for you"
+        val description = "New movies are coming for you"
 
         setContent {
             AppBanner(
                 title = title,
-                subtitle = subtitle
+                description = description
             )
         }
 
         onNodeWithText(title).assertIsDisplayed()
-        onNodeWithText(subtitle).assertIsDisplayed()
+        onNodeWithText(description).assertIsDisplayed()
     }
 }
