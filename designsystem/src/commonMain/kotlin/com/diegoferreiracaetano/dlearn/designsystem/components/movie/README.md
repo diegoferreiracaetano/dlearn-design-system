@@ -5,12 +5,14 @@ A collection of specialized components for displaying movies, series, and relate
 ## Components
 
 ### AppMovieItem
-The main orchestrator component. It combines `AppMoviePoster` and `AppMovieInfo` into a cohesive layout.
+The main orchestrator component. It combines `AppMoviePoster` and `AppMovieInfo` into a cohesive layout. It supports both horizontal (list) and vertical (grid/carousel) layouts.
 
 **Parameters:**
 - `movie`: `MovieItem` - The data model containing all movie information.
 - `onClick`: `() -> Unit` - Callback for when the item is clicked.
 - `type`: `MovieItemType` - Choose between `HORIZONTAL` (lists) or `VERTICAL` (grids/carousels).
+
+**Note:** In `VERTICAL` mode, if `movie.rank` is provided, the component renders a "Top 10" style item with a large rank number.
 
 ---
 
@@ -81,6 +83,7 @@ data class MovieItem(
     val type: String,
     val isPremium: Boolean,
     val primaryInfo: String? = null,
-    val secondaryInfo: String? = null
+    val secondaryInfo: String? = null,
+    val rank: Int? = null
 )
 ```

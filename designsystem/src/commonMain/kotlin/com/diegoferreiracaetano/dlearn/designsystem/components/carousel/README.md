@@ -4,25 +4,23 @@ A collection of horizontal scrolling components for different types of content, 
 
 ---
 
-## AppCarousel (Movie Carousel)
+## Carousel (Movie Carousel)
 
-A standardized carousel for displaying movies or series using `AppMovieItem`. It supports both ranked (Top 10) and unranked displays.
+A standardized carousel for displaying movies or series using `AppMovieItem`. It automatically supports both ranked (Top 10) and unranked displays based on the `rank` property of `MovieItem`.
 
 ### Props
-| Prop | Tipo | Padrão | Descrição |
+| Prop | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `title` | `String` | - | The title of the carousel section. |
 | `items` | `List<MovieItem>` | - | The list of movie data to display. |
-| `onItemClick` | `(MovieItem) -> Unit` | - | Callback when a movie item is clicked. |
-| `isRanked` | `Boolean` | `false` | If true, displays a large rank number behind each item. |
+| `onMovieClick` | `(MovieItem) -> Unit` | `{}` | Callback triggered when a movie item is clicked. |
 
 ### Usage
 ```kotlin
-AppCarousel(
+Carousel(
     title = "Trending Now",
     items = movieList,
-    onItemClick = { movie -> /* Navigate */ },
-    isRanked = true
+    onMovieClick = { movie -> /* Navigate */ }
 )
 ```
 
@@ -32,7 +30,7 @@ AppCarousel(
 Standard horizontal carousel for `BannerCard` items. Used for informational or promotional highlights.
 
 ### Props
-| Prop | Tipo | Padrão | Descrição |
+| Prop | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `title` | `String` | - | Title of the carousel section. |
 | `pageCount` | `Int` | - | Total number of pages. |
@@ -59,7 +57,7 @@ BannerCarousel(
 Pager component for full-screen banner display, ideal for the top of home or detail screens.
 
 ### Props
-| Prop | Tipo | Padrão | Descrição |
+| Prop | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `pageCount` | `Int` | - | Total number of banners. |
 | `pageContent` | `Composable (Int) -> Unit` | - | Content for each page (usually `FullScreenVideo`). |
@@ -86,7 +84,7 @@ FullScreenBanner(
 Specialized carousel for Onboarding flows. Features a floating info card and an action button.
 
 ### Props
-| Prop | Tipo | Padrão | Descrição |
+| Prop | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `pageCount` | `Int` | - | Total number of pages. |
 | `onFinish` | `() -> Unit` | - | Callback triggered when clicking the button on the last page. |
@@ -109,7 +107,7 @@ PageCarousel(
 Horizontal list (LazyRow) for displaying the progress of ongoing content.
 
 ### Props
-| Prop | Tipo | Padrão | Descrição |
+| Prop | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `title` | `String` | - | Title of the section (e.g., "Continue Watching"). |
 | `itemCount` | `Int` | - | Number of items in the list. |

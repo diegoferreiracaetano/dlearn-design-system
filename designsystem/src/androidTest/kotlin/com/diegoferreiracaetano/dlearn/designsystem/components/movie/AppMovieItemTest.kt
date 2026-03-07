@@ -66,6 +66,22 @@ class AppMovieItemTest {
     }
 
     @Test
+    fun shouldDisplayRankInVerticalLayout() = runComposeUiTest {
+        val rankedMovie = sampleMovie.copy(rank = 1)
+        setContent {
+            AppMovieItem(
+                movie = rankedMovie,
+                onClick = {},
+                type = MovieItemType.VERTICAL
+            )
+        }
+
+        onNodeWithText("1").assertExists()
+        // Metadata should be hidden in ranked mode as per implementation
+        onNodeWithText(sampleMovie.title).assertDoesNotExist()
+    }
+
+    @Test
     fun shouldDisplayPremiumTagWhenMovieIsPremium() = runComposeUiTest {
         setContent {
             AppMovieItem(
