@@ -1,38 +1,68 @@
-# BannerCarousel
-Carrossel horizontal padrão para exibição de BannerCards. Utilizado para destaques informativos ou promocionais.
+# Carousel Components
+
+A collection of horizontal scrolling components for different types of content, from banners to movie lists.
+
+---
+
+## AppCarousel (Movie Carousel)
+
+A standardized carousel for displaying movies or series using `AppMovieItem`. It supports both ranked (Top 10) and unranked displays.
 
 ### Props
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
-| `title` | `String` | - | Título da seção do carrossel. |
-| `pageCount` | `Int` | - | Número total de páginas. |
-| `pageContent` | `Composable (Int) -> Unit` | - | Conteúdo de cada página (geralmente `BannerCard`). |
+| `title` | `String` | - | The title of the carousel section. |
+| `items` | `List<MovieItem>` | - | The list of movie data to display. |
+| `onItemClick` | `(MovieItem) -> Unit` | - | Callback when a movie item is clicked. |
+| `isRanked` | `Boolean` | `false` | If true, displays a large rank number behind each item. |
+
+### Usage
+```kotlin
+AppCarousel(
+    title = "Trending Now",
+    items = movieList,
+    onItemClick = { movie -> /* Navigate */ },
+    isRanked = true
+)
+```
+
+---
+
+## BannerCarousel
+Standard horizontal carousel for `BannerCard` items. Used for informational or promotional highlights.
+
+### Props
+| Prop | Tipo | Padrão | Descrição |
+| :--- | :--- | :--- | :--- |
+| `title` | `String` | - | Title of the carousel section. |
+| `pageCount` | `Int` | - | Total number of pages. |
+| `pageContent` | `Composable (Int) -> Unit` | - | Content for each page (usually `BannerCard`). |
 
 ### Usage
 ```kotlin
 BannerCarousel(
-    title = "Destaques",
+    title = "Highlights",
     pageCount = items.size
 ) { index ->
     BannerCard(
         title = items[index].title,
         subtitle = items[index].subtitle,
         imageSource = AppImageSource.Url(items[index].url),
-        onClick = { /* navegação */ }
+        onClick = { /* navigate */ }
     )
 }
 ```
 
 ---
 
-# FullScreenBanner
-Componente de pager para exibição de banners em tela cheia, ideal para o topo de telas de início ou detalhes.
+## FullScreenBanner
+Pager component for full-screen banner display, ideal for the top of home or detail screens.
 
 ### Props
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
-| `pageCount` | `Int` | - | Número total de banners. |
-| `pageContent` | `Composable (Int) -> Unit` | - | Conteúdo de cada página (geralmente `FullScreenVideo`). |
+| `pageCount` | `Int` | - | Total number of banners. |
+| `pageContent` | `Composable (Int) -> Unit` | - | Content for each page (usually `FullScreenVideo`). |
 
 ### Usage
 ```kotlin
@@ -43,31 +73,31 @@ FullScreenBanner(
         title = items[index].title,
         subtitle = items[index].subtitle,
         imageSource = AppImageSource.Url(items[index].thumbnailUrl),
-        onItemClick = { /* navegação */ },
-        onWatchClick = { /* assistir */ },
-        onAddToListClick = { /* adicionar */ }
+        onItemClick = { /* navigate */ },
+        onWatchClick = { /* watch */ },
+        onAddToListClick = { /* add */ }
     )
 }
 ```
 
 ---
 
-# PageCarousel
-Carrossel especializado para fluxos de Onboarding. Possui um cartão de informações flutuante e um botão de ação.
+## PageCarousel
+Specialized carousel for Onboarding flows. Features a floating info card and an action button.
 
 ### Props
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
-| `pageCount` | `Int` | - | Número total de páginas. |
-| `onFinish` | `() -> Unit` | - | Callback acionado ao clicar no botão na última página. |
-| `imageContent` | `Composable (Int) -> Unit` | - | Imagem de fundo para cada página. |
-| `infoContent` | `Composable (Int) -> Unit` | - | Conteúdo textual/informativo para cada página. |
+| `pageCount` | `Int` | - | Total number of pages. |
+| `onFinish` | `() -> Unit` | - | Callback triggered when clicking the button on the last page. |
+| `imageContent` | `Composable (Int) -> Unit` | - | Background image for each page. |
+| `infoContent` | `Composable (Int) -> Unit` | - | Textual/informative content for each page. |
 
 ### Usage
 ```kotlin
 PageCarousel(
     pageCount = 3,
-    onFinish = { /* navegação */ },
+    onFinish = { /* navigate */ },
     imageContent = { index -> /* Image */ },
     infoContent = { index -> /* Text */ }
 )
@@ -75,26 +105,26 @@ PageCarousel(
 
 ---
 
-# ContinueWatchingCarousel
-Lista horizontal (LazyRow) para exibir o progresso de conteúdos em andamento.
+## ContinueWatchingCarousel
+Horizontal list (LazyRow) for displaying the progress of ongoing content.
 
 ### Props
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
-| `title` | `String` | - | Título da seção (ex: "Continuar Assistindo"). |
-| `itemCount` | `Int` | - | Número de itens na lista. |
-| `itemContent` | `Composable (Int) -> Unit` | - | Renderizador de cada item. |
+| `title` | `String` | - | Title of the section (e.g., "Continue Watching"). |
+| `itemCount` | `Int` | - | Number of items in the list. |
+| `itemContent` | `Composable (Int) -> Unit` | - | Renderer for each item. |
 
 ### Usage
 ```kotlin
 ContinueWatchingCarousel(
-    title = "Continuar Assistindo",
+    title = "Continue Watching",
     itemCount = items.size
 ) { index ->
     ContinueWatchingCard(
         title = items[index].title,
         imageSource = AppImageSource.Url(items[index].url),
-        onClick = { /* navegação */ }
+        onClick = { /* navigate */ }
     )
 }
 ```

@@ -45,4 +45,7 @@
     <string name="profile_image_picker_camera">Tirar foto</string>
     <string name="profile_image_picker_gallery">Escolher da galeria</string>
     <string name="profile_image_picker_cancel">Cancelar</string>
+
+    <string name="label_premium">Premium</string>
+    <string name="label_free">Free</string>
 </resources>
