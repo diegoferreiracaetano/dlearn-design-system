@@ -48,4 +48,7 @@
 
     <string name="label_premium">Premium</string>
     <string name="label_free">Free</string>
+
+    <string name="action_retry">Tentar novamente</string>
+    <string name="action_close">Fechar</string>
 </resources>

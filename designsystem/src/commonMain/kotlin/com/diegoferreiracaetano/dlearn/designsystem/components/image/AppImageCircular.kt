@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.profile
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.profile_placeholder
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.seiko.imageloader.rememberImagePainter
 import org.jetbrains.compose.resources.painterResource
@@ -31,7 +31,7 @@ fun AppImageCircular(
     val painter = when (source) {
         is AppImageSource.Resource -> painterResource(source.resource)
         is AppImageSource.Url -> rememberImagePainter(source.url)
-        null -> painterResource(Res.drawable.profile)
+        null -> painterResource(Res.drawable.profile_placeholder)
     }
 
     Image(
@@ -40,7 +40,7 @@ fun AppImageCircular(
         contentScale = ContentScale.Crop,
         modifier = modifier
             .aspectRatio(1f)
-            .clip(CircleShape)
+            .clip(CircleShape),
     )
 }
 
@@ -49,7 +49,7 @@ fun AppImageCircular(
 fun AppImageCircularPreview() {
     DLearnTheme {
         AppImageCircular(
-            source = AppImageSource.Resource(Res.drawable.profile)
+            source = null
         )
     }
 }

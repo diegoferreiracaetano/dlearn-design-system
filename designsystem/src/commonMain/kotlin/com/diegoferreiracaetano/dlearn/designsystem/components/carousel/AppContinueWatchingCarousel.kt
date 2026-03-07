@@ -30,6 +30,7 @@ import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val CONTINUE_WATCHING_RATIO = 16f / 9f
+private val ContinueWatchingWidth = 240.dp
 
 /**
  * A specialized carousel for "Continue Watching" items.
@@ -67,7 +68,9 @@ fun ContinueWatchingCard(
     onClick: () -> Unit,
 ) {
     Column(
-        modifier = modifier.clickable(onClick = onClick),
+        modifier = modifier
+            .width(ContinueWatchingWidth)
+            .clickable(onClick = onClick),
     ) {
         Box(
             modifier = Modifier
@@ -123,7 +126,6 @@ fun AppContinueWatchingPreview() {
             itemCount = 2,
         ) { index ->
             ContinueWatchingCard(
-                modifier = Modifier.width(300.dp),
                 title = "Item $index",
                 imageSource = AppImageSource.Resource(Res.drawable.banner),
                 onClick = {},

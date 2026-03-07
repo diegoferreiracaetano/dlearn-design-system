@@ -76,8 +76,8 @@ fun AppEmptyState(
 fun AppEmptyStatePreview() {
     DLearnTheme(darkTheme = true) {
         AppEmptyState(
-            title = "There Is No Movie Yet!",
-            description = "Find your movie by Type title, categories, years, etc",
+            title = "Ainda não há nada aqui!",
+            description = "Encontre o que você procura digitando o título, categorias, etc.",
             imageSource = AppImageSource.Resource(Res.drawable.search)
         )
     }
