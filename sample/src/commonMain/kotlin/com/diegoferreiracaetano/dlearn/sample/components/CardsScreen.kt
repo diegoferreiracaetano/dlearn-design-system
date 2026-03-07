@@ -12,6 +12,7 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.carousel.Carousel
 import com.diegoferreiracaetano.dlearn.designsystem.components.carousel.CarouselItem
 import com.diegoferreiracaetano.dlearn.designsystem.components.carousel.FullScreenBanner
 import com.diegoferreiracaetano.dlearn.designsystem.components.carousel.FullScreenVideo
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.sample.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.sample.generated.resources.banner1
 import com.diegoferreiracaetano.dlearn.sample.generated.resources.banner2
@@ -58,7 +59,7 @@ fun CardsScreen() {
                     FullScreenVideo(
                         title = dummyTitles[pageIndex],
                         subtitle = dummySubtitles[pageIndex],
-                        imageResource = dummyImage[pageIndex],
+                        imageSource = AppImageSource.Resource(dummyImage[pageIndex]),
                         onItemClick = { },
                         onWatchClick = { },
                         onAddToListClick = { }
@@ -79,7 +80,7 @@ fun CardsScreen() {
                     BannerCard(
                         title = dummyTitles[pageIndex],
                         subtitle = dummySubtitles[pageIndex],
-                        imageResource = dummyImage[pageIndex],
+                        imageSource = AppImageSource.Resource(dummyImage[pageIndex]),
                         onClick = { }
                     )
                 }
@@ -95,7 +96,7 @@ fun CardsScreen() {
                     CarouselItem(
                         title = value,
                         subtitle = dummySubtitles[index],
-                        imageResource = dummyImage[index],
+                        imageSource = AppImageSource.Resource(dummyImage[index]),
                         rating = dummyRatings[index],
                         onClick = {}
                     )

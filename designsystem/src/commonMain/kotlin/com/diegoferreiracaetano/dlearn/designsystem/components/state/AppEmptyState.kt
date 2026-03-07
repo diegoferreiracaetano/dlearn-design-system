@@ -15,10 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.search
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private val EmptyStateImageSize = 160.dp
@@ -29,16 +29,14 @@ private val EmptyStateImageSize = 160.dp
  * @param title The title text to display.
  * @param description The description text to display.
  * @param modifier The [Modifier] to be applied to the layout.
- * @param imageResource Optional [DrawableResource] for the empty state image.
- * @param imageURL Optional URL for the empty state image.
+ * @param imageSource The source of the empty state image (URL or Resource).
  */
 @Composable
 fun AppEmptyState(
     title: String,
     description: String,
     modifier: Modifier = Modifier,
-    imageResource: DrawableResource? = null,
-    imageURL: String? = null,
+    imageSource: AppImageSource? = null,
 ) {
     Column(
         modifier = modifier
@@ -49,8 +47,7 @@ fun AppEmptyState(
     ) {
         AppImage(
             modifier = Modifier.size(EmptyStateImageSize),
-            imageResource = imageResource,
-            imageURL = imageURL,
+            source = imageSource,
             contentDescription = null
         )
 
@@ -81,7 +78,7 @@ fun AppEmptyStatePreview() {
         AppEmptyState(
             title = "There Is No Movie Yet!",
             description = "Find your movie by Type title, categories, years, etc",
-            imageResource = Res.drawable.search
+            imageSource = AppImageSource.Resource(Res.drawable.search)
         )
     }
 }

@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.banner.AppBanner
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.components.profile.AppProfileHeader
 import com.diegoferreiracaetano.dlearn.designsystem.components.profile.AppProfileRow
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
@@ -37,7 +38,6 @@ import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.title_na
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.title_password
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import kotlinx.coroutines.flow.distinctUntilChanged
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -70,8 +70,7 @@ data class TextRowItem(
 data class ProfileItem(
     val title: String,
     val description: String,
-    val imageResource: DrawableResource? = null,
-    val imageURL: String? = null,
+    val imageSource: AppImageSource? = null,
     val onEditClick: (() -> Unit)? = null
 ) : AppListItem
 
@@ -81,8 +80,7 @@ data class ProfileItem(
 data class ProfileHeaderItem(
     val name: String,
     val email: String,
-    val imageResource: DrawableResource? = null,
-    val imageURL: String? = null,
+    val imageSource: AppImageSource? = null,
     val onEditClick: (() -> Unit)? = null
 ) : AppListItem
 
@@ -205,16 +203,14 @@ fun AppList(
                 is ProfileItem -> AppProfileRow(
                     name = item.title,
                     email = item.description,
-                    imageResource = item.imageResource,
-                    imageURL = item.imageURL,
+                    imageSource = item.imageSource,
                     onEditClick = item.onEditClick
                 )
 
                 is ProfileHeaderItem -> AppProfileHeader(
                     name = item.name,
                     email = item.email,
-                    imageResource = item.imageResource,
-                    imageURL = item.imageURL,
+                    imageSource = item.imageSource,
                     onEditClick = item.onEditClick
                 )
 

@@ -27,8 +27,7 @@ Cabeçalho de perfil centralizado com imagem grande, botão de edição e inform
 | :--- | :--- | :--- | :--- |
 | `name` | `String` | - | Nome do usuário. |
 | `email` | `String` | - | E-mail do usuário. |
-| `imageURL` | `String?` | `null` | URL da imagem remota. |
-| `imageResource` | `DrawableResource?` | `Res.drawable.profile` | Recurso de imagem local. |
+| `imageSource` | `AppImageSource?` | `AppImageSource.Resource(Res.drawable.profile)` | Fonte da imagem (URL ou Recurso). |
 | `onEditClick` | `(() -> Unit)?` | `null` | Callback para o botão de edição (usado se `onImagePicked` for nulo). |
 | `onImagePicked` | `((ByteArray) -> Unit)?` | `null` | Callback para seleção de imagem (abre diálogo de câmera/galeria). |
 
@@ -51,7 +50,7 @@ Exibe informações de perfil do usuário em formato de linha horizontal com sup
 | :--- | :--- | :--- | :--- |
 | `name` | `String` | - | Nome do usuário. |
 | `email` | `String` | - | E-mail ou identificador. |
-| `imageURL` | `String?` | `null` | URL para imagem remota. |
+| `imageSource` | `AppImageSource?` | `AppImageSource.Resource(Res.drawable.profile)` | Fonte da imagem (URL ou Recurso). |
 | `onEditClick` | `(() -> Unit)?` | - | Callback para ação de edição. |
 
 ### Usage

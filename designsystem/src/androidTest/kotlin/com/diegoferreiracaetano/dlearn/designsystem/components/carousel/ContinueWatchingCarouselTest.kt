@@ -23,7 +23,7 @@ class ContinueWatchingCarouselTest {
             ) {
                 ContinueWatchingCard(
                     title = cardTitle,
-                    imageUrl = "",
+                    imageSource = null,
                     onClick = {}
                 )
             }
@@ -45,7 +45,7 @@ class ContinueWatchingCarouselTest {
             ) {
                 ContinueWatchingCard(
                     title = cardTitle,
-                    imageUrl = "",
+                    imageSource = null,
                     onClick = { clicked = true }
                 )
             }

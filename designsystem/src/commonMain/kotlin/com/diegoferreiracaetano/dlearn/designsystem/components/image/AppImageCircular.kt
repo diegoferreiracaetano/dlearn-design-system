@@ -8,34 +8,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.placeholder
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.profile
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.seiko.imageloader.rememberImagePainter
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
  * A circular image component that clips an image into a circle.
- * Supports both local resources and remote URLs.
+ * Supports both local resources and remote URLs via [AppImageSource].
  *
  * @param modifier The [Modifier] to be applied to the image.
- * @param imageURL Optional URL of the image to load.
- * @param imageResource Optional [DrawableResource] to display.
+ * @param source The source of the image (URL or Resource).
  * @param contentDescription Optional accessibility description.
  */
 @Composable
 fun AppImageCircular(
     modifier: Modifier = Modifier,
-    imageURL: String? = null,
-    imageResource: DrawableResource? = null,
+    source: AppImageSource? = null,
     contentDescription: String? = null,
 ) {
-    val painter = when {
-        imageResource != null -> painterResource(imageResource)
-        !imageURL.isNullOrEmpty() -> rememberImagePainter(imageURL)
-        else -> painterResource(Res.drawable.profile)
+    val painter = when (source) {
+        is AppImageSource.Resource -> painterResource(source.resource)
+        is AppImageSource.Url -> rememberImagePainter(source.url)
+        null -> painterResource(Res.drawable.profile)
     }
 
     Image(
@@ -53,7 +49,7 @@ fun AppImageCircular(
 fun AppImageCircularPreview() {
     DLearnTheme {
         AppImageCircular(
-            imageResource = Res.drawable.profile
+            source = AppImageSource.Resource(Res.drawable.profile)
         )
     }
 }

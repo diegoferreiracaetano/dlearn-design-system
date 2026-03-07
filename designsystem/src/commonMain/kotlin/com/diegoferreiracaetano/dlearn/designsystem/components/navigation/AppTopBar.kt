@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageCircular
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_back
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_favorite
@@ -42,7 +43,6 @@ import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_s
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.search_placeholder
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.diegoferreiracaetano.dlearn.designsystem.util.contrastTextColor
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -65,8 +65,7 @@ private val PROFILE_IMAGE_SIZE = 32.dp
  * @param useTransparent Whether to use the transparent style.
  * @param scrollBehavior The [TopAppBarScrollBehavior] to use.
  * @param actions Additional actions to be displayed in the top bar.
- * @param profileImageUrl The URL of the profile image.
- * @param profileImageResource The resource of the profile image.
+ * @param profileImageSource The source of the profile image (URL or Resource).
  * @param onProfileClick Callback when the profile image is clicked.
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,8 +83,7 @@ fun AppTopBar(
     useTransparent: Boolean = false,
     scrollBehavior: TopAppBarScrollBehavior? = null,
     actions: @Composable RowScope.() -> Unit = {},
-    profileImageUrl: String? = null,
-    profileImageResource: DrawableResource? = null,
+    profileImageSource: AppImageSource? = null,
     onProfileClick: (() -> Unit)? = null,
 ) {
     if (useTransparent) {
@@ -95,8 +93,7 @@ fun AppTopBar(
             onBack = onBack,
             onFavorite = onFavorite,
             scrollBehavior = scrollBehavior,
-            profileImageUrl = profileImageUrl,
-            profileImageResource = profileImageResource,
+            profileImageSource = profileImageSource,
             onProfileClick = onProfileClick,
         )
     } else {
@@ -110,8 +107,7 @@ fun AppTopBar(
             onSearchValueChange = onSearchValueChange,
             scrollBehavior = scrollBehavior,
             actions = actions,
-            profileImageUrl = profileImageUrl,
-            profileImageResource = profileImageResource,
+            profileImageSource = profileImageSource,
             onProfileClick = onProfileClick,
         )
     }
@@ -129,8 +125,7 @@ private fun AppTopBarDefault(
     onSearchValueChange: ((String) -> Unit)?,
     scrollBehavior: TopAppBarScrollBehavior?,
     actions: @Composable RowScope.() -> Unit,
-    profileImageUrl: String?,
-    profileImageResource: DrawableResource?,
+    profileImageSource: AppImageSource?,
     onProfileClick: (() -> Unit)?,
 ) {
     var isSearchActive by remember { mutableStateOf(false) }
@@ -190,12 +185,11 @@ private fun AppTopBarDefault(
                         contentDescription = stringResource(Res.string.action_back),
                     )
                 }
-            } else if (profileImageUrl != null || profileImageResource != null || onProfileClick != null) {
+            } else if (profileImageSource != null || onProfileClick != null) {
                 IconButton(onClick = { onProfileClick?.invoke() }) {
                     AppImageCircular(
                         modifier = Modifier.size(PROFILE_IMAGE_SIZE),
-                        imageURL = profileImageUrl,
-                        imageResource = profileImageResource,
+                        source = profileImageSource,
                         contentDescription = stringResource(Res.string.action_profile)
                     )
                 }
@@ -250,20 +244,18 @@ private fun AppTopBarTransparent(
     onBack: (() -> Unit)?,
     onFavorite: (() -> Unit)?,
     scrollBehavior: TopAppBarScrollBehavior?,
-    profileImageUrl: String?,
-    profileImageResource: DrawableResource?,
+    profileImageSource: AppImageSource?,
     onProfileClick: (() -> Unit)?,
 ) {
     TopAppBar(
         modifier = modifier.fillMaxWidth(),
         title = {},
         navigationIcon = {
-            if (profileImageUrl != null || profileImageResource != null || onProfileClick != null) {
+            if (profileImageSource != null || onProfileClick != null) {
                 IconButton(onClick = { onProfileClick?.invoke() }) {
                     AppImageCircular(
                         modifier = Modifier.size(PROFILE_IMAGE_SIZE),
-                        imageURL = profileImageUrl,
-                        imageResource = profileImageResource,
+                        source = profileImageSource,
                         contentDescription = stringResource(Res.string.action_profile)
                     )
                 }

@@ -31,10 +31,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -43,8 +43,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  * @property title The title of the item.
  * @property subtitle Optional subtitle for the item.
  * @property rating The rating of the item (0.0 to 5.0).
- * @property imageResource Optional [DrawableResource] for the item image.
- * @property imageUrl Optional URL for the item image.
+ * @property imageSource Optional source for the item image.
  * @property primaryInfo Optional primary info tag text (e.g., "New").
  * @property secondaryInfo Optional secondary info tag text.
  * @property rank Optional rank number for "Top 10" style carousels.
@@ -54,8 +53,7 @@ data class CarouselItem(
     val title: String,
     val subtitle: String? = null,
     val rating: Float = 0f,
-    val imageResource: DrawableResource? = null,
-    val imageUrl: String? = null,
+    val imageSource: AppImageSource? = null,
     val primaryInfo: String? = null,
     val secondaryInfo: String? = null,
     val rank: Int? = null,
@@ -125,8 +123,7 @@ fun Carousel(
                                 .clip(MaterialTheme.shapes.small)
                         ) {
                             AppImage(
-                                imageURL = item.imageUrl,
-                                imageResource = item.imageResource,
+                                source = item.imageSource,
                                 contentDescription = item.title,
                                 modifier = Modifier.fillMaxSize(),
                             )
@@ -243,20 +240,20 @@ fun CarouselDefaultPreview() {
         CarouselItem(
             title = "Introduction to Jetpack Compose",
             subtitle = "Jetpack Compose",
-            imageResource = Res.drawable.banner,
+            imageSource = AppImageSource.Resource(Res.drawable.banner),
             rating = 4.5f,
             primaryInfo = "Novidade"
         ),
         CarouselItem(
             title = "State Management in Compose",
             subtitle = "Jetpack Compose",
-            imageResource = Res.drawable.banner,
+            imageSource = AppImageSource.Resource(Res.drawable.banner),
             rating = 4.8f,
         ),
         CarouselItem(
             title = "Dagger Hilt for Dependency Injection",
             subtitle = "Android",
-            imageResource = Res.drawable.banner,
+            imageSource = AppImageSource.Resource(Res.drawable.banner),
             rating = 4.2f,
             primaryInfo = "Novo episódio",
             secondaryInfo = "Assista já"
@@ -278,20 +275,20 @@ fun CarouselTop10Preview() {
         CarouselItem(
             rank = 1,
             title = "Introduction to Jetpack Compose",
-            imageResource = Res.drawable.banner,
+            imageSource = AppImageSource.Resource(Res.drawable.banner),
             rating = 4.5f,
             primaryInfo = "Novidade"
         ),
         CarouselItem(
             rank = 2,
             title = "State Management in Compose",
-            imageResource = Res.drawable.banner,
+            imageSource = AppImageSource.Resource(Res.drawable.banner),
             rating = 4.8f,
         ),
         CarouselItem(
             rank = 3,
             title = "Dagger Hilt for Dependency Injection",
-            imageResource = Res.drawable.banner,
+            imageSource = AppImageSource.Resource(Res.drawable.banner),
             rating = 4.2f,
             primaryInfo = "Novo episódio",
             secondaryInfo = "Assista já"

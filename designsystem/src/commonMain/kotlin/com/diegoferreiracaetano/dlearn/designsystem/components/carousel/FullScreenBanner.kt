@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,12 +24,12 @@ import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.button.AppButton
 import com.diegoferreiracaetano.dlearn.designsystem.components.button.ButtonType
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_add_to_list
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_watch
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -43,8 +42,7 @@ private const val RATIO = 6f / 9f
  * @param modifier The [Modifier] to be applied to the banner card.
  * @param title The title of the featured content.
  * @param subtitle The subtitle or description of the featured content.
- * @param imageResource Optional [DrawableResource] for the banner image.
- * @param imageUrl Optional URL for the banner image.
+ * @param imageSource The source of the banner image (URL or Resource).
  * @param onItemClick Action when the banner itself is clicked.
  * @param onWatchClick Action when the watch button is clicked.
  * @param onAddToListClick Action when the add to list button is clicked.
@@ -54,8 +52,7 @@ fun FullScreenVideo(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String,
-    imageResource: DrawableResource? = null,
-    imageUrl: String? = null,
+    imageSource: AppImageSource? = null,
     onItemClick: () -> Unit,
     onWatchClick: () -> Unit,
     onAddToListClick: () -> Unit,
@@ -71,8 +68,7 @@ fun FullScreenVideo(
             modifier = Modifier.fillMaxWidth()
         ) {
             AppImage(
-                imageURL = imageUrl,
-                imageResource = imageResource,
+                source = imageSource,
                 contentDescription = title,
                 modifier = Modifier
                     .fillMaxSize()
@@ -163,7 +159,7 @@ fun FullScreenVideoPreview() {
         FullScreenVideo(
             title = "Introduction to Jetpack Compose",
             subtitle = "Jetpack Compose",
-            imageResource = Res.drawable.banner,
+            imageSource = AppImageSource.Resource(Res.drawable.banner),
             onItemClick = { println("Clicked") },
             onWatchClick = { println("Watch Clicked") },
             onAddToListClick = { println("Add to List Clicked") }
@@ -184,10 +180,10 @@ fun FullScreenBannerPreview() {
         "Jetpack Compose",
         "Android"
     )
-    val dummyImageUrls = listOf(
-        Res.drawable.banner,
-        Res.drawable.banner,
-        Res.drawable.banner
+    val dummyImageSources = listOf(
+        AppImageSource.Resource(Res.drawable.banner),
+        AppImageSource.Resource(Res.drawable.banner),
+        AppImageSource.Resource(Res.drawable.banner)
     )
 
     DLearnTheme {
@@ -197,7 +193,7 @@ fun FullScreenBannerPreview() {
             FullScreenVideo(
                 title = dummyTitles[pageIndex],
                 subtitle = dummySubtitles[pageIndex],
-                imageResource = dummyImageUrls[pageIndex],
+                imageSource = dummyImageSources[pageIndex],
                 onItemClick = { println("Clicked ${dummyTitles[pageIndex]}") },
                 onWatchClick = { println("Watch ${dummyTitles[pageIndex]}") },
                 onAddToListClick = { println("Add to List ${dummyTitles[pageIndex]}") }

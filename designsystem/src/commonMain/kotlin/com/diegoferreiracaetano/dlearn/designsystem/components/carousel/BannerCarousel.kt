@@ -18,8 +18,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val BANNER_RATIO = 16f / 9f
@@ -29,8 +29,7 @@ fun BannerCard(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String,
-    imageResource: DrawableResource? = null,
-    imageUrl: String? = null,
+    imageSource: AppImageSource? = null,
     onClick: () -> Unit
 ) {
     Card(
@@ -46,8 +45,7 @@ fun BannerCard(
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             AppImage(
-                imageURL = imageUrl,
-                imageResource = imageResource,
+                source = imageSource,
                 contentDescription = title,
                 modifier = Modifier.fillMaxSize()
             )
@@ -113,7 +111,7 @@ fun BannerCardPreview() {
         BannerCard(
             title = "Introduction to Jetpack Compose",
             subtitle = "Jetpack Compose",
-            imageUrl = "https://i3.ytimg.com/vi/n2t5_qA1Q-o/maxresdefault.jpg",
+            imageSource = AppImageSource.Url("https://i3.ytimg.com/vi/n2t5_qA1Q-o/maxresdefault.jpg"),
             onClick = {}
         )
     }
@@ -146,7 +144,7 @@ fun BannerCarouselPreview() {
             BannerCard(
                 title = dummyTitles[pageIndex],
                 subtitle = dummySubtitles[pageIndex],
-                imageUrl = dummyImageUrls[pageIndex],
+                imageSource = AppImageSource.Url(dummyImageUrls[pageIndex]),
                 onClick = { println("Clicked ${dummyTitles[pageIndex]}") }
             )
         }

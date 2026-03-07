@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -63,7 +64,7 @@ private const val RATIO = 16f / 9f
 fun ContinueWatchingCard(
     modifier: Modifier = Modifier,
     title: String,
-    imageUrl: String,
+    imageSource: AppImageSource? = null,
     onClick: () -> Unit
 ) {
     Column(
@@ -75,7 +76,7 @@ fun ContinueWatchingCard(
                 .clip(MaterialTheme.shapes.small)
         ) {
             AppImage(
-                imageURL = imageUrl,
+                source = imageSource,
                 contentDescription = title,
                 modifier = Modifier.fillMaxSize()
             )
@@ -136,7 +137,7 @@ fun ContinueWatchingPreview() {
             ContinueWatchingCard(
                 modifier = Modifier.width(350.dp),
                 title = dummyTitles[index],
-                imageUrl = dummyImageUrls[index],
+                imageSource = AppImageSource.Url(dummyImageUrls[index]),
                 onClick = {}
             )
         }

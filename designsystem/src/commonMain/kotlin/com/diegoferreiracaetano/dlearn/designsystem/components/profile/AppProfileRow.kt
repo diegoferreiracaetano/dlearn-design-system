@@ -27,10 +27,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageCircular
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.profile
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private val ContentSpacing = 16.dp
@@ -47,8 +47,7 @@ private const val DESCRIPTION_ALPHA = 0.7f
  * @param name The user's name.
  * @param email The user's email or identifier.
  * @param modifier The [Modifier] to be applied to the row.
- * @param imageResource Optional [DrawableResource] for the profile image.
- * @param imageURL Optional URL for the profile image.
+ * @param imageSource The source of the profile image (URL or Resource).
  * @param onEditClick Callback when the edit icon is clicked.
  */
 @Composable
@@ -56,8 +55,7 @@ fun AppProfileRow(
     name: String,
     email: String,
     modifier: Modifier = Modifier,
-    imageResource: DrawableResource? = Res.drawable.profile,
-    imageURL: String? = null,
+    imageSource: AppImageSource? = AppImageSource.Resource(Res.drawable.profile),
     onEditClick: (() -> Unit)? = null
 ) {
     AppProfileRow(
@@ -67,8 +65,7 @@ fun AppProfileRow(
         image = {
             AppImageCircular(
                 modifier = Modifier.size(ProfileImageSize),
-                imageResource = imageResource,
-                imageURL = imageURL,
+                source = imageSource,
                 contentDescription = null
             )
         },

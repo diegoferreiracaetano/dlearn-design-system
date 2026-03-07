@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.alert.AppDialog
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageCircular
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.camera
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.profile
@@ -37,7 +38,6 @@ import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.profile_
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.profile_image_picker_title
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.diegoferreiracaetano.dlearn.designsystem.util.rememberImagePickerLauncher
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -64,8 +64,7 @@ object AppProfileHeaderTags {
  * @param name The user's name.
  * @param email The user's email or identifier.
  * @param modifier The [Modifier] to be applied to the header.
- * @param imageResource Optional [DrawableResource] for the profile image.
- * @param imageURL Optional URL for the profile image.
+ * @param imageSource The source of the profile image (URL or Resource).
  * @param onEditClick Callback invoked when the edit button is clicked.
  * @param onImagePicked Callback invoked when a new image is selected (camera or gallery).
  */
@@ -74,8 +73,7 @@ fun AppProfileHeader(
     name: String,
     email: String,
     modifier: Modifier = Modifier,
-    imageResource: DrawableResource? = Res.drawable.profile,
-    imageURL: String? = null,
+    imageSource: AppImageSource? = AppImageSource.Resource(Res.drawable.profile),
     onEditClick: (() -> Unit)? = null,
     onImagePicked: ((ByteArray) -> Unit)? = null
 ) {
@@ -95,8 +93,7 @@ fun AppProfileHeader(
                 modifier = Modifier
                     .size(ProfileImageSize)
                     .testTag(AppProfileHeaderTags.TAG_IMAGE),
-                imageResource = imageResource,
-                imageURL = imageURL,
+                source = imageSource,
                 contentDescription = null
             )
 
@@ -155,7 +152,7 @@ fun AppProfileHeader(
             onDismissRequest = { showPickerOptions = false },
             title = stringResource(Res.string.profile_image_picker_title),
             confirmButtonText = stringResource(Res.string.profile_image_picker_camera),
-            imageResource = Res.drawable.camera,
+            imageSource = AppImageSource.Resource(Res.drawable.camera),
             onConfirmClick = {
                 imagePicker.launchCamera()
                 showPickerOptions = false

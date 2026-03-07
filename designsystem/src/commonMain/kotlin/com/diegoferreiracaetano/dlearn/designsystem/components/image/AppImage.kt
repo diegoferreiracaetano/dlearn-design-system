@@ -7,36 +7,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.placeholder
-import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.seiko.imageloader.rememberImagePainter
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private val DefaultImageSize = 120.dp
 
 /**
- * A flexible image component that can load images from a URL, a [DrawableResource],
- * or a default placeholder.
+ * A flexible image component that can load images from a [AppImageSource].
  *
  * @param modifier The [Modifier] to be applied to the image.
- * @param imageURL Optional URL of the image to load.
- * @param imageResource Optional [DrawableResource] to display.
+ * @param source The source of the image (URL or Resource).
  * @param contentDescription Optional accessibility description for the image.
  */
 @Composable
 fun AppImage(
     modifier: Modifier = Modifier,
-    imageURL: String? = null,
-    imageResource: DrawableResource? = null,
+    source: AppImageSource? = null,
     contentDescription: String? = null,
 ) {
-    val painter = when {
-        imageResource != null -> painterResource(imageResource)
-        !imageURL.isNullOrEmpty() -> rememberImagePainter(imageURL)
-        else -> painterResource(Res.drawable.placeholder)
+    val painter = when (source) {
+        is AppImageSource.Resource -> painterResource(source.resource)
+        is AppImageSource.Url -> rememberImagePainter(source.url)
+        null -> painterResource(Res.drawable.placeholder)
     }
 
     Image(

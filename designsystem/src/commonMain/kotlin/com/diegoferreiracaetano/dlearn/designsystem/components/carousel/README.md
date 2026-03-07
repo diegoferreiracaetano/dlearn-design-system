@@ -17,7 +17,7 @@ BannerCarousel(
     BannerCard(
         title = items[index].title,
         subtitle = items[index].subtitle,
-        imageUrl = items[index].url,
+        imageSource = AppImageSource.Url(items[index].url),
         onClick = { /* navegação */ }
     )
 }
@@ -40,8 +40,12 @@ FullScreenBanner(
     pageCount = items.size
 ) { index ->
     FullScreenVideo(
-        url = items[index].videoUrl,
-        thumbnailUrl = items[index].thumbnailUrl
+        title = items[index].title,
+        subtitle = items[index].subtitle,
+        imageSource = AppImageSource.Url(items[index].thumbnailUrl),
+        onItemClick = { /* navegação */ },
+        onWatchClick = { /* assistir */ },
+        onAddToListClick = { /* adicionar */ }
     )
 }
 ```
@@ -87,6 +91,10 @@ ContinueWatchingCarousel(
     title = "Continuar Assistindo",
     itemCount = items.size
 ) { index ->
-    ContinueWatchingCard(item = items[index])
+    ContinueWatchingCard(
+        title = items[index].title,
+        imageSource = AppImageSource.Url(items[index].url),
+        onClick = { /* navegação */ }
+    )
 }
 ```

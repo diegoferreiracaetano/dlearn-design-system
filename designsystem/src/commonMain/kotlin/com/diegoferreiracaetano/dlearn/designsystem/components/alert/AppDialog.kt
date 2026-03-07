@@ -21,10 +21,10 @@ import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.button.AppButton
 import com.diegoferreiracaetano.dlearn.designsystem.components.button.ButtonType
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.question
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private val DialogPadding = 24.dp
@@ -43,7 +43,7 @@ private val DialogButtonSpacing = 12.dp
  * @param onDismissClick Optional callback for the dismiss button.
  * @param title Optional title for the dialog.
  * @param description Optional description for the dialog.
- * @param imageResource Optional [DrawableResource] to be displayed at the top.
+ * @param imageSource Optional [AppImageSource] to be displayed at the top.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,7 +56,7 @@ fun AppDialog(
     onDismissClick: (() -> Unit)? = null,
     title: String? = null,
     description: String? = null,
-    imageResource: DrawableResource? = null,
+    imageSource: AppImageSource? = null,
 ) {
     BasicAlertDialog(
         onDismissRequest = onDismissRequest,
@@ -73,9 +73,9 @@ fun AppDialog(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                imageResource?.let {
+                imageSource?.let {
                     AppImage(
-                        imageResource = it,
+                        source = it,
                         modifier = Modifier.size(DialogImageSize),
                         contentDescription = title
                     )
@@ -140,7 +140,7 @@ fun AppDialogPreview() {
             onConfirmClick = {},
             dismissButtonText = "Log Out",
             onDismissClick = {},
-            imageResource = Res.drawable.question
+            imageSource = AppImageSource.Resource(Res.drawable.question)
         )
     }
 }
