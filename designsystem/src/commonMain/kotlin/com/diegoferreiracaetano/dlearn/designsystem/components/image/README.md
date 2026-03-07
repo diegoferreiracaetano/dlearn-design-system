@@ -9,6 +9,10 @@ Componente para exibição de imagens. Suporta carregamento de URLs remotas, rec
 
 ### Usage
 ```kotlin
+// Usando as extensões para criar AppImageSource
+AppImage(source = "https://example.com/image.jpg".toAppImageSource())
+
+// Ou de forma explícita
 AppImage(source = AppImageSource.Url("https://example.com/image.jpg"))
 ```
 
@@ -25,5 +29,9 @@ Componente para exibição de imagens em formato circular. Suporta carregamento 
 
 ### Usage
 ```kotlin
+// Usando as extensões para criar AppImageSource
+AppImageCircular(source = Res.drawable.user_avatar.toAppImageSource())
+
+// Ou de forma explícita
 AppImageCircular(source = AppImageSource.Resource(Res.drawable.user_avatar))
 ```

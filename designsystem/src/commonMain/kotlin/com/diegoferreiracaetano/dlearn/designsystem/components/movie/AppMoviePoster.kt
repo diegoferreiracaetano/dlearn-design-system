@@ -39,7 +39,7 @@ private val RatingBadgePadding = 8.dp
 @Composable
 fun AppMoviePoster(
     imageSource: AppImageSource,
-    rating: Double,
+    rating: Double? = null,
     modifier: Modifier = Modifier,
     width: Dp = 110.dp,
     height: Dp = 150.dp,
@@ -56,13 +56,15 @@ fun AppMoviePoster(
             modifier = Modifier.size(width = width, height = height)
         )
 
-        AppBadge(
-            text = rating.toString(),
-            type = AppBadgeType.RATING,
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(RatingBadgePadding)
-        )
+        rating?.let {
+            AppBadge(
+                text = rating.toString(),
+                type = AppBadgeType.RATING,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(RatingBadgePadding)
+            )
+        }
 
         if (primaryInfo != null || secondaryInfo != null) {
             Column(
