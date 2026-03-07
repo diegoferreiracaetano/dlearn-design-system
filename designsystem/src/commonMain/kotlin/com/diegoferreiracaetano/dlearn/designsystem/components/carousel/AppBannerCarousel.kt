@@ -19,18 +19,47 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val BANNER_RATIO = 16f / 9f
 
+/**
+ * A specialized carousel for banners.
+ *
+ * @param modifier The [Modifier] to be applied to the carousel container.
+ * @param title The title of the carousel section.
+ * @param itemCount The number of items in the carousel.
+ * @param itemContent The composable content for each banner page.
+ */
+@Composable
+fun AppBannerCarousel(
+    modifier: Modifier = Modifier,
+    title: String,
+    itemCount: Int,
+    itemContent: @Composable (index: Int) -> Unit,
+) {
+    AppCarousel(
+        modifier = modifier,
+        title = title,
+        itemCount = itemCount,
+        isPager = true,
+        itemContent = itemContent,
+    )
+}
+
+/**
+ * A card component designed to be used within a banner carousel.
+ */
 @Composable
 fun BannerCard(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String,
     imageSource: AppImageSource? = null,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Card(
         modifier = modifier
@@ -40,14 +69,14 @@ fun BannerCard(
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        ),
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             AppImage(
                 source = imageSource,
                 contentDescription = title,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             )
 
             Box(
@@ -57,95 +86,47 @@ fun BannerCard(
                         brush = Brush.verticalGradient(
                             colors = listOf(
                                 Color.Transparent,
-                                MaterialTheme.colorScheme.scrim.copy(alpha = 0.7f)
+                                MaterialTheme.colorScheme.scrim.copy(alpha = 0.7f),
                             ),
-                            startY = 300f
-                        )
-                    )
+                            startY = 300f,
+                        ),
+                    ),
             )
 
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
-                    .padding(16.dp)
+                    .padding(16.dp),
             ) {
                 Text(
                     text = title,
                     color = Color.White,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
                 )
                 Text(
                     text = subtitle,
                     color = Color.White.copy(alpha = 0.8f),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             }
         }
     }
 }
 
+@Preview(showBackground = true)
 @Composable
-fun BannerCarousel(
-    modifier: Modifier = Modifier,
-    title: String,
-    pageCount: Int,
-    pageContent: @Composable (pageIndex: Int) -> Unit
-) {
-    Column(modifier = modifier) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(vertical = 8.dp),
-        )
-        AppCarousel(
-            pageCount = pageCount,
-            pageContent = pageContent
-        )
-    }
-}
-
-@Preview
-@Composable
-fun BannerCardPreview() {
+fun AppBannerCarouselPreview() {
+    val dummyTitles = listOf("Compose Intro", "State Management")
     DLearnTheme {
-        BannerCard(
-            title = "Introduction to Jetpack Compose",
-            subtitle = "Jetpack Compose",
-            imageSource = AppImageSource.Url("https://i3.ytimg.com/vi/n2t5_qA1Q-o/maxresdefault.jpg"),
-            onClick = {}
-        )
-    }
-}
-
-@Preview
-@Composable
-fun BannerCarouselPreview() {
-    val dummyTitles = listOf(
-        "Introduction to Jetpack Compose",
-        "State Management in Compose",
-        "Dagger Hilt for Dependency Injection"
-    )
-    val dummySubtitles = listOf(
-        "Jetpack Compose",
-        "Jetpack Compose",
-        "Android"
-    )
-    val dummyImageUrls = listOf(
-        "https://i3.ytimg.com/vi/n2t5_qA1Q-o/maxresdefault.jpg",
-        "https://i3.ytimg.com/vi/N_9o_L4nN5E/maxresdefault.jpg",
-        "https://i3.ytimg.com/vi/g-2fcfd4gVE/maxresdefault.jpg"
-    )
-
-    DLearnTheme {
-        BannerCarousel(
-            title = "Favoritos",
-            pageCount = dummyTitles.size,
-        ) { pageIndex ->
+        AppBannerCarousel(
+            title = "Recommended",
+            itemCount = dummyTitles.size,
+        ) { index ->
             BannerCard(
-                title = dummyTitles[pageIndex],
-                subtitle = dummySubtitles[pageIndex],
-                imageSource = AppImageSource.Url(dummyImageUrls[pageIndex]),
-                onClick = { println("Clicked ${dummyTitles[pageIndex]}") }
+                title = dummyTitles[index],
+                subtitle = "Subtitle $index",
+                imageSource = AppImageSource.Resource(Res.drawable.banner),
+                onClick = {},
             )
         }
     }

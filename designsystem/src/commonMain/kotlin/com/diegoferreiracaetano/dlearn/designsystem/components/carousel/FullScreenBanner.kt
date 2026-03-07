@@ -146,9 +146,9 @@ fun FullScreenBanner(
     pageContent: @Composable (pageIndex: Int) -> Unit
 ) {
     AppCarousel(
-        pageCount = pageCount,
+        itemCount = pageCount,
         modifier = modifier,
-        pageContent = pageContent
+        itemContent = pageContent
     )
 }
 

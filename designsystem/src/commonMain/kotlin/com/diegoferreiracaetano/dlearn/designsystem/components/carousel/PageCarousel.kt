@@ -47,13 +47,12 @@ fun PageCarousel(
 
     Box(modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         AppCarousel(
-            pageCount = pageCount,
+            itemCount = pageCount,
             pagerState = pagerState,
             showIndicator = false,
-            modifier = Modifier.fillMaxSize()
-        ) { pageIndex ->
-            imageContent(pageIndex)
-        }
+            modifier = Modifier.fillMaxSize(),
+            itemContent = imageContent
+        )
 
         Column(
             modifier = Modifier
