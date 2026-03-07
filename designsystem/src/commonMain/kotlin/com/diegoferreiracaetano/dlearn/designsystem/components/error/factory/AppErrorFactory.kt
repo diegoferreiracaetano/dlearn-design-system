@@ -1,35 +1,36 @@
 package com.diegoferreiracaetano.dlearn.designsystem.components.error.factory
 
-import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.AppError
-import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.AuthError
+import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.AppErrorData
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.GenericError
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.NoInternetError
-import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.NotFoundError
-import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.ServerError
 
 /**
- * Factory for creating [AppError] instances based on connectivity and status codes.
+ * Factory for creating [AppErrorData] instances based on connectivity and exceptions.
  * This object centralizes the logic for mapping technical error signals into user-friendly states.
  */
 object AppErrorFactory {
 
     /**
-     * Maps the provided [statusCode] and [isNetworkAvailable] status to an [AppError] implementation.
+     * Maps the provided [throwable] and [isNetworkAvailable] status to an [AppErrorData] implementation.
      *
-     * @param statusCode The HTTP status code received from a request.
+     * @param throwable The [Throwable] caught during an operation.
      * @param isNetworkAvailable The current network availability state.
-     * @return An instance of [AppError] representing the appropriate error state.
+     * @return An instance of [AppErrorData] representing the appropriate error state.
      */
     operator fun invoke(
-        statusCode: Int? = null,
+        throwable: Throwable? = null,
         isNetworkAvailable: Boolean = true
-    ): AppError {
+    ): AppErrorData {
         if (!isNetworkAvailable) return NoInternetError()
 
-        return when (statusCode) {
-            401, 403 -> AuthError()
-            404 -> NotFoundError()
-            in 500..599 -> ServerError()
+        // This is a placeholder for actual Throwable mapping logic.
+        // In a real scenario, you might check for specific Exception types or 
+        // custom properties (like status codes) within the throwable.
+        return when (throwable) {
+            // Example mappings if you had specific Exception types:
+            // is UnauthorizedException -> AuthError()
+            // is ResourceNotFoundException -> NotFoundError()
+            // is InternalServerErrorException -> ServerError()
             else -> GenericError()
         }
     }

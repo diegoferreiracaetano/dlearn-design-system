@@ -1,43 +1,37 @@
-# Error State System
+# Error Handling System
 
-This package provides a standardized and platform-aware error handling UI system for the DLearn Design System.
+O sistema de erro do DLearn Design System é composto por uma UI flexível (`AppError`) e uma fábrica inteligente (`AppErrorFactory`) que mapeia exceções e estado de rede para modelos de erro amigáveis (`AppErrorData`).
 
-## Components
+## Componentes
 
-### `AppErrorState`
-A full-screen component that displays an error message based on the current context (HTTP status code or network connectivity).
-
-**Features:**
-- **Context Awareness:** Automatically detects if the network is down and shows a "No Internet" state.
-- **HTTP Mapping:** Maps common status codes (401, 404, 5xx) to specific user-friendly messages and illustrations.
-- **Actions:** Supports "Retry" and "Close" actions with customizable callbacks.
-- **Portuguese Support:** All strings are localized in Portuguese (PT-BR).
-
-### `AppErrorFactory`
-A central factory that logicizes the mapping from technical errors to UI models.
-
-### `AppError` (Model)
-An interface and a set of data classes representing different error states:
-- `NoInternetError`
-- `NotFoundError`
-- `AuthError`
-- `ServerError`
-- `GenericError`
-
-## Usage
+### `AppError`
+Um componente de tela cheia que exibe o estado de erro com suporte a ações primárias e secundárias empilhadas verticalmente.
 
 ```kotlin
-AppErrorState(
-    statusCode = 404, // Optional: Passing null defaults to a generic or connectivity error
-    onRetry = { 
-        // Logic to reload data
-    },
-    onClose = { 
-        // Logic to dismiss the screen
-    }
+AppError(
+    throwable = exception, // Opcional: determina o tipo de erro via factory
+    onPrimary = { /* lógica de tentativa */ },
+    primaryText = "Tentar Novamente", // Opcional: padrão é extraído do recurso
+    onSecondary = { /* ação secundária */ },
+    secondaryText = "Voltar", // Opcional: padrão é "Fechar"
+    onClose = { /* fechar a tela no topo */ }
 )
 ```
 
-## Testing
-The factory logic is covered by unit tests in `commonTest`. 
-UI components can be previewed using Compose Previews provided in the file.
+### `AppErrorFactory`
+Responsável por criar a instância correta de `AppErrorData` baseada no contexto de exceção e conectividade.
+
+```kotlin
+val errorData = AppErrorFactory(
+    throwable = exception,
+    isNetworkAvailable = true
+)
+```
+
+## Localização
+Todos os textos padrão são fornecidos em Português (PT-BR) dentro das implementações de `AppErrorData`.
+- `NoInternetError`: "Sem Conexão com a Internet"
+- `NotFoundError`: "Recurso não Encontrado"
+- `AuthError`: "Erro de Autenticação"
+- `ServerError`: "Erro no Servidor"
+- `GenericError`: "Erro Inesperado"

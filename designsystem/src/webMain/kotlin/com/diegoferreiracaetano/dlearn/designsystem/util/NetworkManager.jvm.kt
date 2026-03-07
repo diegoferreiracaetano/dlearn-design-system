@@ -1,17 +1,15 @@
 package com.diegoferreiracaetano.dlearn.designsystem.util
 
-import kotlinx.browser.window
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 
-/**
- * Web implementation of [NetworkManager] using [window.navigator.onLine].
- */
 actual class NetworkManager {
-    /**
-     * Checks if the browser is currently online.
-     * Note: This property only indicates if the browser is connected to a network,
-     * not necessarily if it has internet access.
-     */
     actual fun isNetworkAvailable(): Boolean {
-        return window.navigator.onLine
+        TODO("Not yet implemented")
     }
+}
+
+@Composable
+actual fun rememberNetworkManager(): NetworkManager {
+    return remember { NetworkManager() }
 }

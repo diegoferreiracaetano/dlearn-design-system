@@ -1,8 +1,7 @@
-package com.diegoferreiracaetano.dlearn.designsystem.components.error
+package com.diegoferreiracaetano.dlearn.designsystem.components.feedback
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,52 +23,41 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.button.AppButton
 import com.diegoferreiracaetano.dlearn.designsystem.components.button.ButtonType
-import com.diegoferreiracaetano.dlearn.designsystem.components.error.factory.AppErrorFactory
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImage
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.components.navigation.AppTopBar
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_close
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_retry
-import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
-import com.diegoferreiracaetano.dlearn.designsystem.util.rememberNetworkManager
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
-private val ErrorStateImageSize = 160.dp
+private val FeedbackImageSize = 160.dp
 
 /**
- * A comprehensive UI component for displaying error states within the application.
- * 
- * This component automatically adapts its content (title, description, image) based on the
- * provided [statusCode] and current network connectivity using [AppErrorFactory].
- * 
- * Features:
- * - Top toolbar with an optional close action.
- * - Central illustration and localized text.
- * - Bottom action bar with "Retry" and "Close" buttons.
+ * A generic feedback component used as a base for error states, empty states, and success messages.
  *
- * @param statusCode The HTTP status code to determine the specific error type (e.g., 404, 500).
- *                   If null, it defaults to a generic error unless the network is down.
+ * @param title The main title of the feedback.
+ * @param description A detailed description of the state.
+ * @param imageSource The illustrative image for the feedback.
  * @param modifier The [Modifier] to be applied to the root layout.
- * @param onRetry Optional callback invoked when the "Retry" button is clicked. 
- *                The button is only visible if this callback is provided.
- * @param onClose Optional callback invoked when the close icon in the toolbar or the 
- *                "Close" button at the bottom is clicked.
+ * @param primaryText Text for the primary action button.
+ * @param onPrimary Callback for the primary action button.
+ * @param secondaryText Text for the secondary action button.
+ * @param onSecondary Callback for the secondary action button.
+ * @param onClose Callback for the close icon in the toolbar.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppErrorState(
-    statusCode: Int? = null,
+fun AppFeedback(
+    title: String,
+    description: String,
+    imageSource: AppImageSource?,
     modifier: Modifier = Modifier,
-    onRetry: (() -> Unit)? = null,
+    primaryText: String? = null,
+    onPrimary: (() -> Unit)? = null,
+    secondaryText: String? = null,
+    onSecondary: (() -> Unit)? = null,
     onClose: (() -> Unit)? = null,
 ) {
-    val networkManager = rememberNetworkManager()
-    val error = AppErrorFactory(
-        statusCode = statusCode,
-        isNetworkAvailable = networkManager.isNetworkAvailable()
-    )
-
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -87,27 +75,27 @@ fun AppErrorState(
             )
         },
         bottomBar = {
-            if (onClose != null || onRetry != null) {
-                Row(
+            if (onPrimary != null || onSecondary != null) {
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    if (onClose != null) {
+                    if (onPrimary != null && primaryText != null) {
                         AppButton(
-                            modifier = Modifier.weight(1f),
-                            text = stringResource(Res.string.action_close),
-                            type = ButtonType.SECONDARY,
-                            onClick = onClose
+                            modifier = Modifier.fillMaxWidth(),
+                            text = primaryText,
+                            type = ButtonType.PRIMARY,
+                            onClick = onPrimary
                         )
                     }
-                    if (onRetry != null) {
+                    if (onSecondary != null && secondaryText != null) {
                         AppButton(
-                            modifier = Modifier.weight(1f),
-                            text = stringResource(Res.string.action_retry),
-                            type = ButtonType.PRIMARY,
-                            onClick = onRetry
+                            modifier = Modifier.fillMaxWidth(),
+                            text = secondaryText,
+                            type = ButtonType.SECONDARY,
+                            onClick = onSecondary
                         )
                     }
                 }
@@ -122,16 +110,17 @@ fun AppErrorState(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            AppImage(
-                modifier = Modifier.size(ErrorStateImageSize),
-                source = error.imageSource,
-                contentDescription = null
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
+            if (imageSource != null) {
+                AppImage(
+                    modifier = Modifier.size(FeedbackImageSize),
+                    source = imageSource,
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+            }
 
             Text(
-                text = error.title,
+                text = title,
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center
@@ -140,32 +129,11 @@ fun AppErrorState(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = error.description,
+                text = description,
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
             )
         }
-    }
-}
-
-@Preview
-@Composable
-fun AppErrorStatePreview() {
-    DLearnTheme(darkTheme = true) {
-        AppErrorState(
-            onRetry = {},
-            onClose = {}
-        )
-    }
-}
-
-@Preview
-@Composable
-fun AppErrorStateNoNetworkPreview() {
-    DLearnTheme(darkTheme = true) {
-        AppErrorState(
-            onRetry = {}
-        )
     }
 }
