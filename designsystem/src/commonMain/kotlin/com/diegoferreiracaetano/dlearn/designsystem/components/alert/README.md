@@ -27,7 +27,7 @@ Um componente de diálogo de alerta personalizado seguindo as especificações d
 | `onDismissClick` | `(() -> Unit)?` | `null` | Callback opcional para o botão de descarte. |
 | `title` | `String?` | `null` | Título opcional para o diálogo. |
 | `description` | `String?` | `null` | Descrição opcional para o diálogo. |
-| `imageResource` | `DrawableResource?` | `null` | [DrawableResource] opcional a ser exibido no topo. |
+| `imageSource` | `AppImageSource?` | `null` | [AppImageSource] opcional a ser exibido no topo. |
 
 ### Usage
 ```kotlin
@@ -39,5 +39,46 @@ AppDialog(
     onConfirmClick = { /* confirm */ },
     dismissButtonText = "Log Out",
     onDismissClick = { /* logout */ }
+)
+```
+
+---
+
+# AppShareDialog
+Um diálogo de compartilhamento que exibe uma lista de opções de redes sociais ou outras ações.
+
+### Props
+| Prop | Tipo | Padrão | Descrição |
+| :--- | :--- | :--- | :--- |
+| `onDismissRequest` | `() -> Unit` | - | Callback quando o diálogo é descartado. |
+| `options` | `List<ShareOption>` | - | Lista de opções de compartilhamento a serem exibidas. |
+| `onOptionClick` | `(ShareOption) -> Unit` | - | Callback quando uma opção de compartilhamento é clicada. |
+| `modifier` | `Modifier` | `Modifier` | O [Modifier] a ser aplicado ao diálogo. |
+| `title` | `String` | `"Share to"` | O título do diálogo. |
+
+### ShareOption
+| Atributo | Tipo | Descrição |
+| :--- | :--- | :--- |
+| `id` | `String` | Identificador único para a opção. |
+| `icon` | `DrawableResource?` | Ícone opcional usando recurso drawable. |
+| `imageVector` | `ImageVector?` | Ícone opcional usando ImageVector. |
+| `backgroundColor` | `Color?` | Cor de fundo opcional para o container do ícone. |
+| `backgroundBrush` | `Brush?` | Gradiente opcional para o container do ícone. |
+| `iconTint` | `Color` | Cor para tingir o ícone (Padrão: White). |
+| `contentDescription` | `String` | Descrição de acessibilidade. |
+
+### Usage
+```kotlin
+AppShareDialog(
+    onDismissRequest = { /* dismiss */ },
+    onOptionClick = { option -> /* handle click */ },
+    options = listOf(
+        ShareOption(
+            id = "facebook",
+            imageVector = Icons.Default.Share,
+            backgroundColor = Color(0xFF3b5998),
+            contentDescription = "Facebook"
+        )
+    )
 )
 ```
