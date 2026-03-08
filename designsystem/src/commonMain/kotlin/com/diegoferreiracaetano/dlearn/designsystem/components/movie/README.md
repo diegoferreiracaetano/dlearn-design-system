@@ -5,14 +5,21 @@ A collection of specialized components for displaying movies, series, and relate
 ## Components
 
 ### AppMovieItem
-The main orchestrator component. It combines `AppMoviePoster` and `AppMovieInfo` into a cohesive layout. It supports both horizontal (list) and vertical (grid/carousel) layouts.
+The main orchestrator component for lists and grids. It combines `AppMoviePoster` and `AppMovieInfo` into a cohesive layout.
 
 **Parameters:**
 - `movie`: `MovieItem` - The data model containing all movie information.
 - `onClick`: `() -> Unit` - Callback for when the item is clicked.
 - `type`: `MovieItemType` - Choose between `HORIZONTAL` (lists) or `VERTICAL` (grids/carousels).
 
-**Note:** In `VERTICAL` mode, if `movie.rank` is provided, the component renders a "Top 10" style item with a large rank number.
+---
+
+### AppMovieDetailHeader
+The top-level component for the movie detail screen. It orchestrates the Title, Poster, and detailed metadata.
+
+**Parameters:**
+- `movie`: `MovieItem` - The data model.
+- `modifier`: `Modifier` - Applied to the root container.
 
 ---
 
@@ -21,50 +28,48 @@ Handles the visual representation of the movie, including the image and overlay 
 
 **Parameters:**
 - `imageSource`: `AppImageSource` - Source for the poster image.
-- `rating`: `Double` - Movie rating (displayed in a `RATING` badge).
+- `rating`: `Double?` - Movie rating (displayed in a `RATING` badge).
 - `width` / `height`: `Dp` - Dimensions of the poster.
-- `primaryInfo` / `secondaryInfo`: `String?` - Optional text for informational badges overlaying the bottom of the poster.
+- `primaryInfo` / `secondaryInfo`: `String?` - Optional text for informational badges overlaying the bottom.
 
 ---
 
 ### AppMovieInfo
-Displays textual details and metadata. Adapts its density based on the layout orientation.
+Displays textual details and metadata for general listings. Adapts its density based on the layout orientation.
 
 **Parameters:**
 - `title`, `year`, `duration`, `contentRating`, `genre`, `type`: `String` - Movie metadata.
-- `isPremium`: `Boolean` - Determines if a "Premium" or "Free" tag is shown.
-- `isVerticalLayout`: `Boolean` - Adjusts the information density for vertical vs horizontal layouts.
+- `isPremium`: `Boolean` - Displays a "Premium" or "Free" tag.
+- `layoutType`: `AppMovieInfoType` - `HORIZONTAL` or `VERTICAL`.
+
+---
+
+### AppMovieDetailInfo
+A specialized metadata component for detail screens, featuring vertical dividers and a rating badge.
+
+**Parameters:**
+- `year`, `duration`, `genre`: `String` - Metadata.
+- `rating`: `Double?` - Numeric rating.
 
 ---
 
 ## Usage
 
+### Movie Detail Screen Header
 ```kotlin
-val movie = MovieItem(
-    id = "1",
-    title = "Spider-Man No Way Home",
-    imageSource = AppImageSource.Resource(Res.drawable.poster),
-    rating = 4.5,
-    year = "2021",
-    duration = "148 min",
-    contentRating = "PG-13",
-    genre = "Action",
-    type = "Movie",
-    isPremium = true
+AppMovieDetailHeader(
+    movie = movieItem,
+    modifier = Modifier.padding(16.dp)
 )
+```
 
-// Horizontal Layout (Standard list item)
+### Listing Item
+```kotlin
+// Horizontal Layout
 AppMovieItem(
     movie = movie,
     onClick = { /* Navigate */ },
     type = MovieItemType.HORIZONTAL
-)
-
-// Vertical Layout (Grid or Carousel)
-AppMovieItem(
-    movie = movie,
-    onClick = { /* Navigate */ },
-    type = MovieItemType.VERTICAL
 )
 ```
 

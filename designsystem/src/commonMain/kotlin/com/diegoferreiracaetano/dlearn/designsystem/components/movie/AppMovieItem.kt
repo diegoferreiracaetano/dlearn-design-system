@@ -125,7 +125,7 @@ fun AppMovieItem(
                     type = movie.type,
                     isPremium = movie.isPremium,
                     modifier = Modifier.weight(1f).height(PosterHeight),
-                    isVerticalLayout = false
+                    layoutType = AppMovieInfoType.HORIZONTAL
                 )
             }
         }
@@ -176,7 +176,7 @@ fun AppMovieItem(
                         genre = movie.genre,
                         type = movie.type,
                         isPremium = movie.isPremium,
-                        isVerticalLayout = true,
+                        layoutType = AppMovieInfoType.VERTICAL,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
