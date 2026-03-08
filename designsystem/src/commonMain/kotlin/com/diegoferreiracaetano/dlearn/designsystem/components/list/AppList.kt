@@ -191,7 +191,7 @@ fun AppList(
                     } else {
                         AppTextRow(
                             label = item.label,
-                            valueString = item.valueString,
+                            value = item.valueString,
                             leadingIcon = item.leadingIcon,
                             isEnabled = item.isEnabled,
                             onClick = item.onClick,

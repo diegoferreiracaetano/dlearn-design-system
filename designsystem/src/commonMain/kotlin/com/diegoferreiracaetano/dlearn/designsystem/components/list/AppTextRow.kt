@@ -59,8 +59,8 @@ fun AppTextRow(
     onCheckedChange: ((Boolean) -> Unit)? = null
 ) {
     AppTextRow(
-        label = label,
-        valueString = stringResource(value),
+        label = stringResource(label),
+        value = stringResource(value),
         modifier = modifier,
         leadingIcon = leadingIcon,
         isEnabled = isEnabled,
@@ -75,7 +75,7 @@ fun AppTextRow(
  *
  * @param label The [StringResource] for the label text.
  * @param modifier The [Modifier] to be applied to the row.
- * @param valueString Optional string value text.
+ * @param value Optional string value text.
  * @param leadingIcon Optional [ImageVector] to be displayed on the left.
  * @param isEnabled Whether the switcher (if present) is checked.
  * @param onClick Callback when the row is clicked.
@@ -85,7 +85,40 @@ fun AppTextRow(
 fun AppTextRow(
     label: StringResource,
     modifier: Modifier = Modifier,
-    valueString: String? = null,
+    value: String? = null,
+    leadingIcon: ImageVector? = null,
+    isEnabled: Boolean = false,
+    onClick: (() -> Unit)? = null,
+    onCheckedChange: ((Boolean) -> Unit)? = null
+) {
+    AppTextRow(
+        label = stringResource(label),
+        value = value,
+        modifier = modifier,
+        leadingIcon = leadingIcon,
+        isEnabled = isEnabled,
+        onClick = onClick,
+        onCheckedChange = onCheckedChange,
+    )
+}
+
+/**
+ * A row component that displays a label and a string value, optionally with a leading icon,
+ * a switcher, or an arrow icon.
+ *
+ * @param label The string for the label text.
+ * @param modifier The [Modifier] to be applied to the row.
+ * @param value Optional string value text.
+ * @param leadingIcon Optional [ImageVector] to be displayed on the left.
+ * @param isEnabled Whether the switcher (if present) is checked.
+ * @param onClick Callback when the row is clicked.
+ * @param onCheckedChange Callback when the switcher state changes. If provided, a switcher is shown.
+ */
+@Composable
+fun AppTextRow(
+    label: String,
+    modifier: Modifier = Modifier,
+    value: String? = null,
     leadingIcon: ImageVector? = null,
     isEnabled: Boolean = false,
     onClick: (() -> Unit)? = null,
@@ -112,7 +145,7 @@ fun AppTextRow(
                     imageVector = icon,
                     contentDescription = null,
                     modifier = Modifier.size(LeadingIconSize),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
             Spacer(modifier = Modifier.width(ContentSpacing))
@@ -122,14 +155,14 @@ fun AppTextRow(
             modifier = Modifier.weight(1f),
         ) {
             Text(
-                text = stringResource(label),
+                text = label,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface
             )
-            if (!valueString.isNullOrEmpty()) {
+            if (!value.isNullOrEmpty()) {
                 Text(
-                    text = valueString,
+                    text = value,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -165,8 +198,8 @@ private fun AppTextRowPreview() {
                 .padding(16.dp)
         ) {
             AppTextRow(
-                label = Res.string.action_back,
-                valueString = "Example value",
+                label = "Label from backend",
+                value = "Example value",
                 onClick = {}
             )
             AppTextRow(

@@ -25,8 +25,25 @@ fun AppSectionTitle(
     title: StringResource,
     modifier: Modifier = Modifier
 ) {
+    AppSectionTitle(
+        title = stringResource(title),
+        modifier = modifier
+    )
+}
+
+/**
+ * A title component for sections within a list or settings screen.
+ *
+ * @param title The string for the title text.
+ * @param modifier The [Modifier] to be applied to the title.
+ */
+@Composable
+fun AppSectionTitle(
+    title: String,
+    modifier: Modifier = Modifier
+) {
     Text(
-        text = stringResource(title),
+        text = title,
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.Bold,
         color = MaterialTheme.colorScheme.onSurface,
