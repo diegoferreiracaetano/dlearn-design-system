@@ -51,4 +51,7 @@
 
     <string name="action_retry">Tentar novamente</string>
     <string name="action_close">Fechar</string>
+
+    <string name="action_more">Ver mais</string>
+    <string name="action_less">Ver menos</string>
 </resources>
