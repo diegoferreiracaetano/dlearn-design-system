@@ -4,6 +4,24 @@ A collection of specialized components for displaying movies, series, and relate
 
 ## Components
 
+### AppMovieActions
+A specialized action bar for movie details, featuring a primary play button and secondary icon-only actions (like download and share).
+
+**Parameters:**
+- `onPlayClick`: `() -> Unit` - Callback for the main play action.
+- `onDownloadClick`: `() -> Unit` - Callback for the download action.
+- `onShareClick`: `() -> Unit` - Callback for the share action.
+- `modifier`: `Modifier` - Applied to the root container.
+- `playText`: `String` - Label for the play button (default: "Trailer").
+
+**Testing:**
+Uses `AppMovieActionsTags` for instrumented tests:
+- `PLAY_BUTTON`
+- `DOWNLOAD_BUTTON`
+- `SHARE_BUTTON`
+
+---
+
 ### AppMovieItem
 The main orchestrator component for lists and grids. It combines `AppMoviePoster` and `AppMovieInfo` into a cohesive layout.
 
@@ -54,6 +72,16 @@ A specialized metadata component for detail screens, featuring vertical dividers
 ---
 
 ## Usage
+
+### Movie Actions
+```kotlin
+AppMovieActions(
+    onPlayClick = { /* Play */ },
+    onDownloadClick = { /* Download */ },
+    onShareClick = { /* Share */ },
+    playText = "Watch Now"
+)
+```
 
 ### Movie Detail Screen Header
 ```kotlin

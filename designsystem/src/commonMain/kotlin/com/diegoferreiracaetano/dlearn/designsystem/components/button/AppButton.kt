@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.toAppImageSource
@@ -66,6 +67,7 @@ enum class ButtonType {
  *                 Use [Color.Unspecified] to keep original image colors (e.g., Google logo).
  * @param enabled Whether the button is enabled for interaction.
  * @param backgroundColor Optional background color to override the default for the selected [type].
+ * @param testTag Optional tag for testing identification.
  */
 @Composable
 fun AppButton(
@@ -77,6 +79,7 @@ fun AppButton(
     iconTint: Color? = null,
     enabled: Boolean = true,
     backgroundColor: Color? = null,
+    testTag: String? = null,
 ) {
     AppButton(
         text = stringResource(text),
@@ -87,6 +90,7 @@ fun AppButton(
         iconTint = iconTint,
         enabled = enabled,
         backgroundColor = backgroundColor,
+        testTag = testTag,
     )
 }
 
@@ -103,6 +107,7 @@ fun AppButton(
  *                 Use [Color.Unspecified] to keep original image colors (e.g., Google logo).
  * @param enabled Whether the button is enabled for interaction.
  * @param backgroundColor Optional background color to override the default for the selected [type].
+ * @param testTag Optional tag for testing identification.
  */
 @Composable
 fun AppButton(
@@ -114,6 +119,7 @@ fun AppButton(
     iconTint: Color? = null,
     enabled: Boolean = true,
     backgroundColor: Color? = null,
+    testTag: String? = null,
 ) {
     val defaultContainerColor = when (type) {
         ButtonType.PRIMARY -> MaterialTheme.colorScheme.primary
@@ -149,7 +155,7 @@ fun AppButton(
     )
 
     AppButtonInternal(
-        modifier = modifier,
+        modifier = if (testTag != null) modifier.testTag(testTag) else modifier,
         text = text,
         onClick = onClick,
         imageSource = imageSource,
@@ -172,11 +178,13 @@ private fun AppButtonInternal(
     border: BorderStroke?,
 ) {
     val isIconOnly = text.isNullOrEmpty()
-    val buttonModifier = modifier
-        .fillMaxWidth()
-        .height(ButtonHeight)
+    val buttonModifier = if (isIconOnly) {
+        modifier.size(ButtonHeight)
+    } else {
+        modifier.fillMaxWidth().height(ButtonHeight)
+    }
 
-    val contentPadding = if (isIconOnly) PaddingValues(ButtonContentSpacing) else ButtonDefaults.ContentPadding
+    val contentPadding = if (isIconOnly) PaddingValues(0.dp) else ButtonDefaults.ContentPadding
 
     if (border != null) {
         OutlinedButton(

@@ -27,6 +27,8 @@ fun String.toAppImageSource(): AppImageSource = AppImageSource.Url(this)
  */
 fun DrawableResource.toAppImageSource(): AppImageSource = AppImageSource.Resource(this)
 
+fun ImageVector.toAppImageSource(): AppImageSource = AppImageSource.Vector(this)
+
 @Composable
 fun AppImageSource.toPainter() = when (this) {
     is AppImageSource.Resource -> painterResource(resource)
