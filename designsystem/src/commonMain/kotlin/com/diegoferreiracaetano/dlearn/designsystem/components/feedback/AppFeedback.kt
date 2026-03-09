@@ -28,12 +28,56 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSou
 import com.diegoferreiracaetano.dlearn.designsystem.components.navigation.AppTopBar
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_close
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.placeholder
+import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private val FeedbackImageSize = 160.dp
 
 /**
  * A generic feedback component used as a base for error states, empty states, and success messages.
+ * This version accepts [StringResource] for title and description.
+ *
+ * @param title The main title of the feedback.
+ * @param description A detailed description of the state.
+ * @param imageSource The illustrative image for the feedback.
+ * @param modifier The [Modifier] to be applied to the root layout.
+ * @param primaryText Text for the primary action button.
+ * @param onPrimary Callback for the primary action button.
+ * @param secondaryText Text for the secondary action button.
+ * @param onSecondary Callback for the secondary action button.
+ * @param onClose Callback for the close icon in the toolbar.
+ */
+@Composable
+fun AppFeedback(
+    title: StringResource,
+    description: StringResource,
+    imageSource: AppImageSource?,
+    modifier: Modifier = Modifier,
+    primaryText: StringResource? = null,
+    onPrimary: (() -> Unit)? = null,
+    secondaryText: StringResource? = null,
+    onSecondary: (() -> Unit)? = null,
+    onClose: (() -> Unit)? = null,
+) {
+    AppFeedback(
+        title = stringResource(title),
+        description = stringResource(description),
+        imageSource = imageSource,
+        modifier = modifier,
+        primaryText = primaryText?.let { stringResource(it) },
+        onPrimary = onPrimary,
+        secondaryText = secondaryText?.let { stringResource(it) },
+        onSecondary = onSecondary,
+        onClose = onClose
+    )
+}
+
+/**
+ * A generic feedback component used as a base for error states, empty states, and success messages.
+ * This version accepts raw [String] for title and description.
  *
  * @param title The main title of the feedback.
  * @param description A detailed description of the state.
@@ -135,5 +179,22 @@ fun AppFeedback(
                 textAlign = TextAlign.Center
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun AppFeedbackPreview() {
+    DLearnTheme {
+        AppFeedback(
+            title = "Feedback Title",
+            description = "This is a detailed description of the feedback state.",
+            imageSource = AppImageSource.Resource(Res.drawable.placeholder),
+            primaryText = "Primary Action",
+            onPrimary = {},
+            secondaryText = "Secondary Action",
+            onSecondary = {},
+            onClose = {}
+        )
     }
 }

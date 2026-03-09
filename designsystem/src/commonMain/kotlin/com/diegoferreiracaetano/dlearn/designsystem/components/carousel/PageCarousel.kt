@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.button.AppButton
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.toAppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.ic_arrow_right
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
@@ -92,7 +93,7 @@ fun PageCarousel(
                             onFinish()
                         }
                     },
-                    image = Res.drawable.ic_arrow_right,
+                    imageSource = Res.drawable.ic_arrow_right.toAppImageSource(),
                     modifier = Modifier.size(56.dp).testTag(PAGE_CAROUSEL_NEXT_BUTTON_TAG),
                 )
             }

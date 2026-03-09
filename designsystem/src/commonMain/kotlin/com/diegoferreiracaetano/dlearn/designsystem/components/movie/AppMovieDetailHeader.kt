@@ -46,14 +46,6 @@ fun AppMovieDetailHeader(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = movie.title,
-            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(bottom = TitleSpacing)
-        )
-
         AppMoviePoster(
             imageSource = movie.imageSource,
             width = PosterWidth,
@@ -88,7 +80,8 @@ fun AppMovieDetailHeaderPreview() {
         AppContainer(
             topBar = {
                 AppTopBar(
-                    useTransparent = true,
+                    title = sampleMovie.title,
+                    subtitle = "Active Now",
                     onBack = {},
                     actions = {
                         Icon(

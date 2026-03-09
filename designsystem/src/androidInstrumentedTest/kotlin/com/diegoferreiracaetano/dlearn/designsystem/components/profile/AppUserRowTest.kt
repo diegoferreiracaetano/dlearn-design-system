@@ -2,7 +2,6 @@ package com.diegoferreiracaetano.dlearn.designsystem.components.profile
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
@@ -10,46 +9,45 @@ import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertTrue
 
-class AppProfileHeaderTest {
+class AppUserRowTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @Test
-    fun appProfileHeader_displaysNameAndEmail() {
-        val name = "Tiffany"
-        val email = "tiffany@example.com"
+    fun appUserRow_displaysNameAndRole() {
+        val name = "Jon Watts"
+        val role = "Directors"
 
         composeTestRule.setContent {
             DLearnTheme {
-                AppProfileHeader(
+                AppUserRow(
                     name = name,
-                    email = email
+                    role = role
                 )
             }
         }
 
         composeTestRule.onNodeWithText(name).assertIsDisplayed()
-        composeTestRule.onNodeWithText(email).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(AppProfileHeaderTags.TAG_IMAGE).assertIsDisplayed()
+        composeTestRule.onNodeWithText(role).assertIsDisplayed()
     }
 
     @Test
-    fun appProfileHeader_callsOnEditClick_whenClicked() {
+    fun appUserRow_callsOnClick_whenClicked() {
         var clicked = false
-        val name = "Tiffany"
+        val name = "Jon Watts"
 
         composeTestRule.setContent {
             DLearnTheme {
-                AppProfileHeader(
+                AppUserRow(
                     name = name,
-                    email = "tiffany@example.com",
-                    onEditClick = { clicked = true }
+                    role = "Directors",
+                    onClick = { clicked = true }
                 )
             }
         }
 
-        composeTestRule.onNodeWithTag(AppProfileHeaderTags.TAG_EDIT_BUTTON).performClick()
+        composeTestRule.onNodeWithText(name).performClick()
         assertTrue(clicked)
     }
 }

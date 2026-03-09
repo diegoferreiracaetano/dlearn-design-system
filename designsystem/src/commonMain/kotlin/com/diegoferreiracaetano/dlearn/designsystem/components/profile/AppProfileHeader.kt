@@ -38,6 +38,7 @@ import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.profile_
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.profile_image_picker_title
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.diegoferreiracaetano.dlearn.designsystem.util.rememberImagePickerLauncher
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -60,6 +61,38 @@ object AppProfileHeaderTags {
 /**
  * A profile header component that displays a large circular image with an edit button,
  * followed by the user's name and email centered.
+ * This version accepts [StringResource] for name and email.
+ *
+ * @param name The user's name.
+ * @param email The user's email or identifier.
+ * @param modifier The [Modifier] to be applied to the header.
+ * @param imageSource The source of the profile image (URL or Resource).
+ * @param onEditClick Callback invoked when the edit button is clicked.
+ * @param onImagePicked Callback invoked when a new image is selected (camera or gallery).
+ */
+@Composable
+fun AppProfileHeader(
+    name: StringResource,
+    email: StringResource,
+    modifier: Modifier = Modifier,
+    imageSource: AppImageSource? = AppImageSource.Resource(Res.drawable.profile),
+    onEditClick: (() -> Unit)? = null,
+    onImagePicked: ((ByteArray) -> Unit)? = null
+) {
+    AppProfileHeader(
+        name = stringResource(name),
+        email = stringResource(email),
+        modifier = modifier,
+        imageSource = imageSource,
+        onEditClick = onEditClick,
+        onImagePicked = onImagePicked
+    )
+}
+
+/**
+ * A profile header component that displays a large circular image with an edit button,
+ * followed by the user's name and email centered.
+ * This version accepts raw [String] for name and email.
  *
  * @param name The user's name.
  * @param email The user's email or identifier.

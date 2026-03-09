@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.profile_placeholder
@@ -31,6 +32,7 @@ fun AppImageCircular(
     val painter = when (source) {
         is AppImageSource.Resource -> painterResource(source.resource)
         is AppImageSource.Url -> rememberImagePainter(source.url)
+        is AppImageSource.Vector -> rememberVectorPainter(source.imageVector)
         null -> painterResource(Res.drawable.profile_placeholder)
     }
 

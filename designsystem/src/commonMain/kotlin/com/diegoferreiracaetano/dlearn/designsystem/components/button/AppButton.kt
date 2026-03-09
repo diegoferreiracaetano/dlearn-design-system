@@ -26,12 +26,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.toAppImageSource
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.toPainter
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.google
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.diegoferreiracaetano.dlearn.designsystem.theme.Shapes
-import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private val ButtonHeight = 56.dp
@@ -52,13 +55,50 @@ enum class ButtonType {
 
 /**
  * A custom button component that supports different styles (Primary, Secondary, Tertiary)
- * and an optional leading image.
+ * and an optional leading image. This version accepts a [StringResource] for localized text.
+ *
+ * @param text The [StringResource] for the text to be displayed on the button.
+ * @param onClick Callback when the button is clicked.
+ * @param modifier The [Modifier] to be applied to the button.
+ * @param type The [ButtonType] to determine the button's style.
+ * @param imageSource Optional [AppImageSource] to be displayed as a leading icon.
+ * @param iconTint Optional tint for the icon. If null, follows the button's content color (theme aware).
+ *                 Use [Color.Unspecified] to keep original image colors (e.g., Google logo).
+ * @param enabled Whether the button is enabled for interaction.
+ * @param backgroundColor Optional background color to override the default for the selected [type].
+ */
+@Composable
+fun AppButton(
+    text: StringResource,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    type: ButtonType = ButtonType.PRIMARY,
+    imageSource: AppImageSource? = null,
+    iconTint: Color? = null,
+    enabled: Boolean = true,
+    backgroundColor: Color? = null,
+) {
+    AppButton(
+        text = stringResource(text),
+        onClick = onClick,
+        modifier = modifier,
+        type = type,
+        imageSource = imageSource,
+        iconTint = iconTint,
+        enabled = enabled,
+        backgroundColor = backgroundColor,
+    )
+}
+
+/**
+ * A custom button component that supports different styles (Primary, Secondary, Tertiary)
+ * and an optional leading image. This version accepts a raw [String] for the text.
  *
  * @param modifier The [Modifier] to be applied to the button.
- * @param text The text to be displayed on the button.
+ * @param text The raw string for the text to be displayed on the button.
  * @param onClick Callback when the button is clicked.
  * @param type The [ButtonType] to determine the button's style.
- * @param image Optional [DrawableResource] to be displayed as a leading icon.
+ * @param imageSource Optional [AppImageSource] to be displayed as a leading icon.
  * @param iconTint Optional tint for the icon. If null, follows the button's content color (theme aware).
  *                 Use [Color.Unspecified] to keep original image colors (e.g., Google logo).
  * @param enabled Whether the button is enabled for interaction.
@@ -70,10 +110,10 @@ fun AppButton(
     text: String? = null,
     onClick: () -> Unit,
     type: ButtonType = ButtonType.PRIMARY,
-    image: DrawableResource? = null,
+    imageSource: AppImageSource? = null,
     iconTint: Color? = null,
     enabled: Boolean = true,
-    backgroundColor: Color? = null
+    backgroundColor: Color? = null,
 ) {
     val defaultContainerColor = when (type) {
         ButtonType.PRIMARY -> MaterialTheme.colorScheme.primary
@@ -112,11 +152,11 @@ fun AppButton(
         modifier = modifier,
         text = text,
         onClick = onClick,
-        image = image,
+        imageSource = imageSource,
         iconTint = iconTint,
         enabled = enabled,
         colors = finalColors,
-        border = border
+        border = border,
     )
 }
 
@@ -125,11 +165,11 @@ private fun AppButtonInternal(
     modifier: Modifier = Modifier,
     text: String? = null,
     onClick: () -> Unit,
-    image: DrawableResource?,
+    imageSource: AppImageSource?,
     iconTint: Color?,
     enabled: Boolean,
     colors: ButtonColors,
-    border: BorderStroke?
+    border: BorderStroke?,
 ) {
     val isIconOnly = text.isNullOrEmpty()
     val buttonModifier = modifier
@@ -148,7 +188,7 @@ private fun AppButtonInternal(
             modifier = buttonModifier,
             contentPadding = contentPadding
         ) {
-            AppButtonContent(text, image, iconTint)
+            AppButtonContent(text, imageSource, iconTint)
         }
     } else {
         Button(
@@ -159,7 +199,7 @@ private fun AppButtonInternal(
             modifier = buttonModifier,
             contentPadding = contentPadding
         ) {
-            AppButtonContent(text, image, iconTint)
+            AppButtonContent(text, imageSource, iconTint)
         }
     }
 }
@@ -167,17 +207,17 @@ private fun AppButtonInternal(
 @Composable
 private fun AppButtonContent(
     text: String? = null,
-    image: DrawableResource?,
-    iconTint: Color?
+    imageSource: AppImageSource?,
+    iconTint: Color?,
 ) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        if (image != null) {
+        if (imageSource != null) {
             Icon(
-                painter = painterResource(image),
+                painter = imageSource.toPainter(),
                 contentDescription = text,
                 modifier = Modifier.size(ButtonIconSize),
                 tint = iconTint ?: LocalContentColor.current
@@ -206,19 +246,19 @@ fun AppButtonPrimaryPreview() {
             AppButton(
                 text = "Apple Style (Follows Theme)",
                 onClick = {},
-                image = Res.drawable.google,
+                imageSource = Res.drawable.google.toAppImageSource(),
             )
             AppButton(
                 text = "Google Style (Original Colors)",
                 onClick = {},
-                image = Res.drawable.google,
+                imageSource = Res.drawable.google.toAppImageSource(),
                 iconTint = Color.Unspecified
             )
             AppButton(
                 modifier = Modifier.size(64.dp),
                 onClick = {},
                 type = ButtonType.SECONDARY,
-                image = Res.drawable.google,
+                imageSource = Res.drawable.google.toAppImageSource(),
                 iconTint = Color.Unspecified
             )
             AppButton(

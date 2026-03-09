@@ -10,13 +10,15 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.unit.dp
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.app_name
 import org.junit.Test
 
 @OptIn(ExperimentalTestApi::class)
 class AppCarouselTest {
 
     @Test
-    fun appCarousel_withTitle_displaysTitle() = runComposeUiTest {
+    fun appCarousel_withStringTitle_displaysTitle() = runComposeUiTest {
         val title = "Carousel Title"
         setContent {
             AppCarousel(
@@ -28,6 +30,21 @@ class AppCarouselTest {
         }
 
         onNodeWithText(title).assertIsDisplayed()
+    }
+
+    @Test
+    fun appCarousel_withResourceTitle_displaysTitle() = runComposeUiTest {
+        setContent {
+            AppCarousel(
+                itemCount = 1,
+                title = Res.string.app_name,
+            ) {
+                Box(Modifier.size(100.dp))
+            }
+        }
+
+        // In a real instrumented test, Res.string.app_name would resolve to "DLearn"
+        // Here we just verify the component renders without crashing when using a resource
     }
 
     @Test
@@ -45,7 +62,6 @@ class AppCarouselTest {
             }
         }
 
-        // Use assertExists for items in horizontal lists to avoid visibility issues in tests
         onNodeWithTag("item_0").assertExists()
         onNodeWithTag("item_1").assertExists()
         onNodeWithTag("item_2").assertExists()

@@ -20,12 +20,55 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.diegoferreiracaetano.dlearn.designsystem.components.list.AppSectionTitle
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
  * A generic carousel component that supports both paging (one item at a time)
  * and standard horizontal scrolling (list of items).
+ * This version accepts a [StringResource] for the title.
+ *
+ * @param itemCount The total number of items in the carousel.
+ * @param modifier The modifier to be applied to the carousel container.
+ * @param title The [StringResource] title displayed above the carousel.
+ * @param isPager If true, uses a [HorizontalPager] for snapping behavior. If false, uses a [LazyRow].
+ * @param spacing The spacing between items.
+ * @param contentPadding The padding to be applied around the content.
+ * @param pagerState The state for the pager (only used if [isPager] is true).
+ * @param showIndicator If true, shows a page indicator (only used if [isPager] is true).
+ * @param itemContent The composable content for each item.
+ */
+@Composable
+fun AppCarousel(
+    itemCount: Int,
+    modifier: Modifier = Modifier,
+    title: StringResource,
+    isPager: Boolean = true,
+    spacing: Dp = if (isPager) 0.dp else 8.dp,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+    pagerState: PagerState = rememberPagerState { itemCount },
+    showIndicator: Boolean = isPager,
+    itemContent: @Composable (index: Int) -> Unit,
+) {
+    AppCarouselInternal(
+        itemCount = itemCount,
+        modifier = modifier,
+        titleContent = { AppSectionTitle(title = title) },
+        isPager = isPager,
+        spacing = spacing,
+        contentPadding = contentPadding,
+        pagerState = pagerState,
+        showIndicator = showIndicator,
+        itemContent = itemContent,
+    )
+}
+
+/**
+ * A generic carousel component that supports both paging (one item at a time)
+ * and standard horizontal scrolling (list of items).
+ * This version accepts an optional raw [String] for the title.
  *
  * @param itemCount The total number of items in the carousel.
  * @param modifier The modifier to be applied to the carousel container.
@@ -49,14 +92,36 @@ fun AppCarousel(
     showIndicator: Boolean = isPager,
     itemContent: @Composable (index: Int) -> Unit,
 ) {
+    AppCarouselInternal(
+        itemCount = itemCount,
+        modifier = modifier,
+        titleContent = title?.let { { AppSectionTitle(title = it) } },
+        isPager = isPager,
+        spacing = spacing,
+        contentPadding = contentPadding,
+        pagerState = pagerState,
+        showIndicator = showIndicator,
+        itemContent = itemContent,
+    )
+}
+
+/**
+ * Internal base implementation for [AppCarousel].
+ */
+@Composable
+private fun AppCarouselInternal(
+    itemCount: Int,
+    modifier: Modifier = Modifier,
+    titleContent: (@Composable () -> Unit)? = null,
+    isPager: Boolean = true,
+    spacing: Dp = if (isPager) 0.dp else 8.dp,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+    pagerState: PagerState = rememberPagerState { itemCount },
+    showIndicator: Boolean = isPager,
+    itemContent: @Composable (index: Int) -> Unit,
+) {
     Column(modifier = modifier.fillMaxWidth()) {
-        title?.let {
-            Text(
-                text = it,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
-            )
-        }
+        titleContent?.invoke()
 
         if (isPager) {
             Box(modifier = Modifier.fillMaxWidth()) {

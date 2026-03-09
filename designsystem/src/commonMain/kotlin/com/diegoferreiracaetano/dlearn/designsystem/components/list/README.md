@@ -1,101 +1,51 @@
-# AppList
-Um componente de lista robusto baseado em `LazyColumn` que suporta um cabeçalho colapsável (Sticky Header).
+# List Components
 
-### Props
-| Prop | Tipo | Padrão | Descrição |
-| :--- | :--- | :--- | :--- |
-| `modifier` | `Modifier` | `Modifier` | Modificador de layout. |
-| `collapsibleContent` | `@Composable () -> Unit` | `null` | Cabeçalho que esconde ao rolar para baixo. |
-| `content` | `LazyListScope.() -> Unit` | - | Itens da lista. |
+This package contains components used for building lists, settings screens, and profile sections.
 
-### Usage
+## Components
+
+### AppSectionTitle
+
+A text component used as a header for sections in lists or carousels. It follows the design system's typography and spacing guidelines.
+
+**Features:**
+- Uses `MaterialTheme.typography.titleMedium` with `FontWeight.Bold`.
+- Consistent padding (32dp top, 8dp bottom).
+- Supports both `String` and `StringResource`.
+
+**Usage:**
+
 ```kotlin
-AppList(
-    collapsibleContent = { AppBanner(title = "Bem-vindo!", description = "Confira as novidades.") }
-) {
-    items(myData) { item -> /* ... */ }
-}
+// Using StringResource
+AppSectionTitle(title = Res.string.settings_section)
+
+// Using raw String
+AppSectionTitle(title = "Account Details")
 ```
 
----
+### AppList
 
-# AppProfileHeader
-Cabeçalho de perfil centralizado com imagem grande, botão de edição e informações de contato.
+A high-level component that manages a `LazyColumn` with support for:
+- Collapsible headers (hides on scroll down, shows on scroll up).
+- Predefined item types: `ProfileHeaderItem`, `BannerItem`, `SectionTitleItem`, `TextRowItem`, etc.
+- Custom composable items.
 
-### Props
-| Prop | Tipo | Padrão | Descrição |
-| :--- | :--- | :--- | :--- |
-| `name` | `String` | - | Nome do usuário. |
-| `email` | `String` | - | E-mail do usuário. |
-| `imageSource` | `AppImageSource?` | `AppImageSource.Resource(Res.drawable.profile)` | Fonte da imagem (URL ou Recurso). |
-| `onEditClick` | `(() -> Unit)?` | `null` | Callback para o botão de edição (usado se `onImagePicked` for nulo). |
-| `onImagePicked` | `((ByteArray) -> Unit)?` | `null` | Callback para seleção de imagem (abre diálogo de câmera/galeria). |
+**Usage:**
 
-### Usage
 ```kotlin
-AppProfileHeader(
-    name = "Tiffany",
-    email = "tiffany@example.com",
-    onEditClick = { /* editar */ }
+val items = listOf(
+    SectionTitleItem(title = Res.string.profile_title),
+    ProfileHeaderItem(name = "User", email = "user@example.com"),
+    SectionTitleItem(title = Res.string.settings_title),
+    TextRowItem(label = Res.string.notifications, onCheckedChange = { ... })
 )
+
+AppList(items = items)
 ```
+
+### AppTextRow
+
+A row component for settings or menus with a label and optional trailing value or switch.
 
 ---
-
-# AppProfileRow
-Exibe informações de perfil do usuário em formato de linha horizontal com suporte a uma ação de edição.
-
-### Props
-| Prop | Tipo | Padrão | Descrição |
-| :--- | :--- | :--- | :--- |
-| `name` | `String` | - | Nome do usuário. |
-| `email` | `String` | - | E-mail ou identificador. |
-| `imageSource` | `AppImageSource?` | `AppImageSource.Resource(Res.drawable.profile)` | Fonte da imagem (URL ou Recurso). |
-| `onEditClick` | `(() -> Unit)?` | - | Callback para ação de edição. |
-
-### Usage
-```kotlin
-AppProfileRow(
-    name = "John Doe",
-    email = "john.doe@email.com",
-    onEditClick = { /* Abrir edição */ }
-)
-```
-
----
-
-# AppTextRow
-Uma linha flexível que exibe um rótulo e um valor opcional, com suporte a ícones e navegação.
-
-### Props
-| Prop | Tipo | Padrão | Descrição |
-| :--- | :--- | :--- | :--- |
-| `label` | `StringResource` | - | Rótulo principal. |
-| `valueString` | `String?` | `null` | Valor em texto puro. |
-| `leadingIcon` | `ImageVector?` | `null` | Ícone à esquerda. |
-| `onClick` | `(() -> Unit)?` | `null` | Ação ao clicar (exibe seta de navegação). |
-
-### Usage
-```kotlin
-AppTextRow(
-    label = Res.string.language,
-    valueString = "Português",
-    leadingIcon = Icons.Default.Language,
-    onClick = { /* Abrir seleção */ }
-)
-```
-
----
-
-# AppSectionTitle
-Utilizado para agrupar linhas em seções lógicas com espaçamento e tipografia adequados.
-
-### Props
-| Prop | Tipo | Padrão | Descrição |
-| :--- | :--- | :--- | :--- |
-| `title` | `StringResource` | - | Texto do título da seção. |
-
-### Usage
-```kotlin
-AppSectionTitle(title = Res.string.settings_general)
-```
+*Maintained by the Design System Team*

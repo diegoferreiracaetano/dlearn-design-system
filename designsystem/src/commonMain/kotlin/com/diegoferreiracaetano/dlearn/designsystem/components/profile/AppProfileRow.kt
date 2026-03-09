@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageCircular
@@ -31,6 +32,8 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSou
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.profile
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private val ContentSpacing = 16.dp
@@ -42,7 +45,42 @@ private const val CONTAINER_BACKGROUND_ALPHA = 0.3f
 private const val DESCRIPTION_ALPHA = 0.7f
 
 /**
+ * Constants used for test tags in [AppProfileRow].
+ */
+object AppProfileRowTags {
+    const val TAG_EDIT_BUTTON = "AppProfileRow_EditButton"
+}
+
+/**
  * A profile row component that displays user information with an image and an edit button.
+ * This version accepts [StringResource] for name and email.
+ *
+ * @param name The user's name.
+ * @param email The user's email or identifier.
+ * @param modifier The [Modifier] to be applied to the row.
+ * @param imageSource The source of the profile image (URL or Resource).
+ * @param onEditClick Callback when the edit icon is clicked.
+ */
+@Composable
+fun AppProfileRow(
+    name: StringResource,
+    email: StringResource,
+    modifier: Modifier = Modifier,
+    imageSource: AppImageSource? = AppImageSource.Resource(Res.drawable.profile),
+    onEditClick: (() -> Unit)? = null
+) {
+    AppProfileRow(
+        name = stringResource(name),
+        email = stringResource(email),
+        modifier = modifier,
+        imageSource = imageSource,
+        onEditClick = onEditClick
+    )
+}
+
+/**
+ * A profile row component that displays user information with an image and an edit button.
+ * This version accepts raw [String] for name and email.
  *
  * @param name The user's name.
  * @param email The user's email or identifier.
@@ -79,7 +117,8 @@ fun AppProfileRow(
                             shape = CircleShape
                         )
                         .clip(CircleShape)
-                        .clickable { onClick() },
+                        .clickable { onClick() }
+                        .testTag(AppProfileRowTags.TAG_EDIT_BUTTON),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(

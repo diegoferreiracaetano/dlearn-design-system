@@ -10,19 +10,19 @@ import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertTrue
 
-class AppProfileHeaderTest {
+class AppProfileRowTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @Test
-    fun appProfileHeader_displaysNameAndEmail() {
-        val name = "Tiffany"
-        val email = "tiffany@example.com"
+    fun appProfileRow_displaysNameAndEmail() {
+        val name = "John Doe"
+        val email = "john.doe@example.com"
 
         composeTestRule.setContent {
             DLearnTheme {
-                AppProfileHeader(
+                AppProfileRow(
                     name = name,
                     email = email
                 )
@@ -31,25 +31,24 @@ class AppProfileHeaderTest {
 
         composeTestRule.onNodeWithText(name).assertIsDisplayed()
         composeTestRule.onNodeWithText(email).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(AppProfileHeaderTags.TAG_IMAGE).assertIsDisplayed()
     }
 
     @Test
-    fun appProfileHeader_callsOnEditClick_whenClicked() {
+    fun appProfileRow_callsOnEditClick_whenClicked() {
         var clicked = false
-        val name = "Tiffany"
+        val name = "John Doe"
 
         composeTestRule.setContent {
             DLearnTheme {
-                AppProfileHeader(
+                AppProfileRow(
                     name = name,
-                    email = "tiffany@example.com",
+                    email = "john.doe@example.com",
                     onEditClick = { clicked = true }
                 )
             }
         }
 
-        composeTestRule.onNodeWithTag(AppProfileHeaderTags.TAG_EDIT_BUTTON).performClick()
+        composeTestRule.onNodeWithTag(AppProfileRowTags.TAG_EDIT_BUTTON).performClick()
         assertTrue(clicked)
     }
 }
