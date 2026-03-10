@@ -50,6 +50,7 @@ private val VerticalPosterHeight = 200.dp
  * @property primaryInfo Optional short text displayed on a primary badge over the poster.
  * @property secondaryInfo Optional short text displayed on a secondary badge over the poster.
  * @property rank Optional rank number for "Top 10" style carousels.
+ * @property youtubeVideoId Optional YouTube video ID for trailers/previews.
  */
 data class MovieItem(
     val id: String,
@@ -65,6 +66,7 @@ data class MovieItem(
     val primaryInfo: String? = null,
     val secondaryInfo: String? = null,
     val rank: Int? = null,
+    val youtubeVideoId: String? = null,
 )
 
 /**

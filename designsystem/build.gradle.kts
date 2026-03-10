@@ -35,7 +35,10 @@ kotlin {
             framework {
                 baseName = "DesignSystem"
                 isStatic = false
-                freeCompilerArgs += listOf("-Xbinary=bundleId=com.diegoferreiracaetano.dlearn.designsystem")
+                freeCompilerArgs += listOf(
+                    "-Xbinary=bundleId=com.diegoferreiracaetano.dlearn.designsystem",
+                    "-Xexpect-actual-classes"
+                )
             }
         }
     }
@@ -54,6 +57,7 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
+            implementation(libs.youtube.player.core)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

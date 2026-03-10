@@ -17,6 +17,7 @@ detekt = "1.23.8"
 robolectric = "4.16.1"
 swiftBridge = "1.2.1"
 dokka = "2.1.0"
+youtubePlayer = "13.0.0"
 
 [libraries]
 androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "composeMultiplatform" }
@@ -34,6 +35,7 @@ androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "composeMultiplatform" }
 dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+youtube-player-core = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "youtubePlayer" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

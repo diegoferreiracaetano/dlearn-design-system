@@ -54,4 +54,10 @@
 
     <string name="action_more">Ver mais</string>
     <string name="action_less">Ver menos</string>
+
+    <string name="movie_action_play_trailer">Trailer</string>
+    <string name="movie_action_pause">Pausar</string>
+    <string name="movie_action_download">Download</string>
+    <string name="movie_action_share">Compartilhar</string>
+    <string name="youtube_player_title">YouTube Player</string>
 </resources>

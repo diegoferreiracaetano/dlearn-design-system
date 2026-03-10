@@ -18,8 +18,7 @@ class AppMovieInfoTest {
                 contentRating = "PG-13",
                 genre = "Sci-Fi",
                 type = "Movie",
-                isPremium = true,
-                isVerticalLayout = false
+                isPremium = true
             )
         }
 
@@ -43,7 +42,6 @@ class AppMovieInfoTest {
                 genre = "Sci-Fi",
                 type = "Movie",
                 isPremium = true,
-                isVerticalLayout = true
             )
         }
 

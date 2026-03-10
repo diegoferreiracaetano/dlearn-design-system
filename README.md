@@ -15,6 +15,7 @@ Abaixo você encontra a visão geral dos componentes disponíveis. Clique no nom
 
 ### 🔘 Interação (Buttons & Selection)
 - [**AppButton**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/button/README.md#appbutton): Botões com estilos Primary, Secondary e Tertiary.
+- [**AppYoutubePlayer**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/video/README.md#appyoutubeplayer): Player de vídeo do YouTube (Android/iOS).
 - [**AppSwitcher**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/button/README.md#appswitcher): Chave de alternância (Toggle/Switch).
 - [**AppSelection**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/button/README.md#appselection): Menus de seleção e dropdowns customizados.
 
@@ -27,6 +28,11 @@ Abaixo você encontra a visão geral dos componentes disponíveis. Clique no nom
 - [**ContinueWatchingCarousel**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/carousel/README.md#continuewatchingcarousel): Otimizado para progresso de mídia.
 - [**FullScreenBanner**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/carousel/README.md#fullscreenbanner): Banners de destaque.
 - [**PageCarousel**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/carousel/README.md#pagecarousel): Carrossel para fluxos de Onboarding.
+
+### 🎬 Filmes & Séries (Movie)
+- [**AppMovieDetailHeader**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/movie/README.md#appmoviedetailheader): Cabeçalho detalhado com suporte a trailer.
+- [**AppMovieItem**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/movie/README.md#appmovieitem): Card de filme para listas e grades.
+- [**AppMovieActions**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/movie/README.md#appmovieactions): Barra de ações (Play, Download, Share).
 
 ### ✍️ Entrada de Dados (Forms)
 - [**AppTextField**](designsystem/src/commonMain/kotlin/com/diegoferreiracaetano/dlearn/designsystem/components/textfield/README.md#apptextfield): Input de texto versátil.

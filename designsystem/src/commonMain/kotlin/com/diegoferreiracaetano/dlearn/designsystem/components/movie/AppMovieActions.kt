@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.MaterialTheme
@@ -17,7 +18,11 @@ import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.button.AppButton
 import com.diegoferreiracaetano.dlearn.designsystem.components.button.ButtonType
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.toAppImageSource
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.movie_action_pause
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.movie_action_play_trailer
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 object AppMovieActionsTags {
@@ -26,33 +31,28 @@ object AppMovieActionsTags {
     const val SHARE_BUTTON = "AppMovieActions_ShareButton"
 }
 
-/**
- * A specialized action bar for movie details.
- *
- * @param onPlayClick Callback for the main play action.
- * @param onDownloadClick Callback for the download action.
- * @param onShareClick Callback for the share action.
- * @param modifier Modifier for the container.
- * @param playText Raw string for the play button label.
- */
 @Composable
 fun AppMovieActions(
     onPlayClick: () -> Unit,
     onDownloadClick: () -> Unit,
     onShareClick: () -> Unit,
     modifier: Modifier = Modifier,
-    playText: String = "Trailer",
+    playText: String = stringResource(Res.string.movie_action_play_trailer),
+    isPlaying: Boolean = false
 ) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        val icon = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow
+        val text = if (isPlaying) stringResource(Res.string.movie_action_pause) else playText
+
         AppButton(
-            text = playText,
+            text = text,
             onClick = onPlayClick,
             type = ButtonType.PRIMARY,
-            imageSource = Icons.Default.PlayArrow.toAppImageSource(),
+            imageSource = icon.toAppImageSource(),
             backgroundColor = MaterialTheme.colorScheme.tertiary,
             modifier = Modifier.weight(2f),
             testTag = AppMovieActionsTags.PLAY_BUTTON
