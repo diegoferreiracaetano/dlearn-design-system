@@ -60,4 +60,7 @@
     <string name="movie_action_download">Download</string>
     <string name="movie_action_share">Compartilhar</string>
     <string name="youtube_player_title">YouTube Player</string>
+
+    <string name="error_timeout_title">Tempo Esgotado</string>
+    <string name="error_timeout_description">A requisição demorou mais do que o esperado. Por favor, verifique sua conexão e tente novamente.</string>
 </resources>

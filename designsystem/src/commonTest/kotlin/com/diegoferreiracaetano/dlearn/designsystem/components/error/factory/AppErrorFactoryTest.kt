@@ -5,6 +5,7 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.Gener
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.NoInternetError
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.NotFoundError
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.ServerError
+import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.TimeoutError
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
@@ -44,6 +45,18 @@ class AppErrorFactoryTest {
             val error = AppErrorFactory(throwable = Throwable("$code Internal Error"))
             assertTrue(error is ServerError, "Failed for code $code")
         }
+    }
+
+    @Test
+    fun whenTimeoutByCode_shouldReturnTimeoutError() {
+        val error = AppErrorFactory(throwable = Throwable("408 Request Timeout"))
+        assertTrue(error is TimeoutError)
+    }
+
+    @Test
+    fun whenTimeoutByMessage_shouldReturnTimeoutError() {
+        val error = AppErrorFactory(throwable = Throwable("Connection timed out"))
+        assertTrue(error is TimeoutError)
     }
 
     @Test

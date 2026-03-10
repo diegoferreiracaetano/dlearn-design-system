@@ -34,4 +34,5 @@ Todos os textos padrão são fornecidos em Português (PT-BR) dentro das impleme
 - `NotFoundError`: "Recurso não Encontrado"
 - `AuthError`: "Erro de Autenticação"
 - `ServerError`: "Erro no Servidor"
+- `TimeoutError`: "Tempo Esgotado"
 - `GenericError`: "Erro Inesperado"

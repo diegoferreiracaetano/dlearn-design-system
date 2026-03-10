@@ -6,6 +6,7 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.Gener
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.NoInternetError
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.NotFoundError
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.ServerError
+import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.TimeoutError
 
 object AppErrorFactory {
 
@@ -22,6 +23,7 @@ object AppErrorFactory {
             isAuthError(statusCode, message) -> AuthError()
             isNotFoundError(statusCode, message) -> NotFoundError()
             isServerError(statusCode, message) -> ServerError()
+            isTimeoutError(statusCode, message) -> TimeoutError()
             else -> GenericError()
         }
     }
@@ -34,6 +36,9 @@ object AppErrorFactory {
 
     private fun isServerError(statusCode: Int?, message: String) =
         statusCode in 500..599 || message.contains("server error", ignoreCase = true)
+
+    private fun isTimeoutError(statusCode: Int?, message: String) =
+        statusCode == 408 || message.contains("timeout", ignoreCase = true)
 
     private fun extractStatusCode(message: String): Int? {
         return Regex("(\\d{3})").find(message)?.value?.toIntOrNull()
