@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -26,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.toAppImageSource
@@ -39,8 +41,8 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private val ButtonHeight = 56.dp
-private val ButtonIconSize = 28.dp
-private val ButtonContentSpacing = 16.dp
+private val ButtonIconSize = 20.dp
+private val ButtonContentSpacing = 8.dp
 private val ButtonBorderWidth = 1.dp
 private val PreviewPadding = 16.dp
 private val PreviewSpacing = 12.dp
@@ -57,17 +59,6 @@ enum class ButtonType {
 /**
  * A custom button component that supports different styles (Primary, Secondary, Tertiary)
  * and an optional leading image. This version accepts a [StringResource] for localized text.
- *
- * @param text The [StringResource] for the text to be displayed on the button.
- * @param onClick Callback when the button is clicked.
- * @param modifier The [Modifier] to be applied to the button.
- * @param type The [ButtonType] to determine the button's style.
- * @param imageSource Optional [AppImageSource] to be displayed as a leading icon.
- * @param iconTint Optional tint for the icon. If null, follows the button's content color (theme aware).
- *                 Use [Color.Unspecified] to keep original image colors (e.g., Google logo).
- * @param enabled Whether the button is enabled for interaction.
- * @param backgroundColor Optional background color to override the default for the selected [type].
- * @param testTag Optional tag for testing identification.
  */
 @Composable
 fun AppButton(
@@ -97,17 +88,6 @@ fun AppButton(
 /**
  * A custom button component that supports different styles (Primary, Secondary, Tertiary)
  * and an optional leading image. This version accepts a raw [String] for the text.
- *
- * @param modifier The [Modifier] to be applied to the button.
- * @param text The raw string for the text to be displayed on the button.
- * @param onClick Callback when the button is clicked.
- * @param type The [ButtonType] to determine the button's style.
- * @param imageSource Optional [AppImageSource] to be displayed as a leading icon.
- * @param iconTint Optional tint for the icon. If null, follows the button's content color (theme aware).
- *                 Use [Color.Unspecified] to keep original image colors (e.g., Google logo).
- * @param enabled Whether the button is enabled for interaction.
- * @param backgroundColor Optional background color to override the default for the selected [type].
- * @param testTag Optional tag for testing identification.
  */
 @Composable
 fun AppButton(

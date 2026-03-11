@@ -59,6 +59,8 @@
     <string name="movie_action_pause">Pausar</string>
     <string name="movie_action_download">Download</string>
     <string name="movie_action_share">Compartilhar</string>
+    <string name="movie_where_to_watch">Onde assistir</string>
+    <string name="movie_watch_provider_more">Mais %1$d</string>
     <string name="youtube_player_title">YouTube Player</string>
 
     <string name="error_timeout_title">Tempo Esgotado</string>

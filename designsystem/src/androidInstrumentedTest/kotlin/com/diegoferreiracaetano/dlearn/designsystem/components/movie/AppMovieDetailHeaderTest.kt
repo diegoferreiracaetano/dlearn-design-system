@@ -6,6 +6,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.toAppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
@@ -16,6 +17,11 @@ class AppMovieDetailHeaderTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
+
+    private val providers = listOf(
+        WatchProvider("Mercado Play", "https://icon.url".toAppImageSource(), "Free"),
+        WatchProvider("Netflix", "https://icon.url".toAppImageSource(), "Subscription")
+    )
 
     @Test
     fun appMovieDetailHeader_displaysTitleAndMetadata() {
@@ -31,7 +37,11 @@ class AppMovieDetailHeaderTest {
 
         composeTestRule.setContent {
             DLearnTheme {
-                AppMovieDetailHeader(movie = sampleMovie)
+                AppMovieDetailHeader(
+                    movie = sampleMovie,
+                    providers = providers,
+                    onProviderClick = {}
+                )
             }
         }
 
@@ -52,15 +62,15 @@ class AppMovieDetailHeaderTest {
 
         composeTestRule.setContent {
             DLearnTheme {
-                AppMovieDetailHeader(movie = sampleMovie)
+                AppMovieDetailHeader(
+                    movie = sampleMovie,
+                    providers = providers,
+                    onProviderClick = {}
+                )
             }
         }
 
         // Click play button
         composeTestRule.onNodeWithTag(AppMovieActionsTags.PLAY_BUTTON).performClick()
-
-        // Youtube player should be displayed (checking for a generic node if no tag is in the expect)
-        // Note: The player doesn't have a testTag by default in the component unless we pass it, 
-        // but we can verify it exists if we used matchParentSize which we did.
     }
 }

@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.toAppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.components.navigation.AppContainer
 import com.diegoferreiracaetano.dlearn.designsystem.components.navigation.AppTopBar
 import com.diegoferreiracaetano.dlearn.designsystem.components.video.AppYoutubePlayer
@@ -44,10 +45,14 @@ private val VerticalSpacing = 24.dp
 @Composable
 fun AppMovieDetailHeader(
     movie: MovieItem,
+    providers: List<WatchProvider>,
+    onProviderClick: (WatchProvider) -> Unit,
     modifier: Modifier = Modifier,
     onPlayClick: () -> Unit = {},
-    onDownloadClick: () -> Unit = {},
-    onShareClick: () -> Unit = {}
+    onAddToListClick: () -> Unit = {},
+    onFavoriteClick: () -> Unit = {},
+    isFavorite: Boolean = false,
+    isInList: Boolean = false
 ) {
     var isPlaying by remember { mutableStateOf(false) }
     var isStarted by remember { mutableStateOf(false) }
@@ -60,7 +65,8 @@ fun AppMovieDetailHeader(
             targetState = isStarted,
             transitionSpec = {
                 fadeIn(animationSpec = tween(500)) togetherWith fadeOut(animationSpec = tween(500))
-            }
+            },
+            label = "MovieHeaderContent"
         ) { started ->
             if (started) {
                 AppYoutubePlayer(
@@ -104,9 +110,13 @@ fun AppMovieDetailHeader(
                 }
                 onPlayClick()
             },
+            onAddToListClick = onAddToListClick,
+            onFavoriteClick = onFavoriteClick,
+            isFavorite = isFavorite,
+            isInList = isInList,
             isPlaying = isPlaying,
-            onDownloadClick = onDownloadClick,
-            onShareClick = onShareClick,
+            providers = providers,
+            onProviderClick = onProviderClick,
             modifier = Modifier.padding(top = VerticalSpacing)
         )
     }
@@ -125,6 +135,11 @@ fun AppMovieDetailHeaderPreview() {
         genre = "Action",
         rating = 4.5,
         youtubeVideoId = "dQw4w9WgXcQ"
+    )
+
+    val providers = listOf(
+        WatchProvider("Mercado Play", "https://via.placeholder.com/150".toAppImageSource(), "Sem custo financeiro"),
+        WatchProvider("Netflix", "https://via.placeholder.com/150".toAppImageSource(), "Assinatura"),
     )
 
     DLearnTheme(darkTheme = true) {
@@ -147,6 +162,8 @@ fun AppMovieDetailHeaderPreview() {
         ) { containerModifier ->
             AppMovieDetailHeader(
                 movie = sampleMovie,
+                providers = providers,
+                onProviderClick = {},
                 modifier = containerModifier.padding(16.dp)
             )
         }

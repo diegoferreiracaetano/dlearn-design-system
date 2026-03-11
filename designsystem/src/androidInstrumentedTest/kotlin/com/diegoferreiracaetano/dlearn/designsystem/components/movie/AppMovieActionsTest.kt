@@ -3,7 +3,9 @@ package com.diegoferreiracaetano.dlearn.designsystem.components.movie
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.diegoferreiracaetano.dlearn.designsystem.components.image.toAppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.junit.Rule
 import org.junit.Test
@@ -13,21 +15,24 @@ class AppMovieActionsTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
+    private val providers = listOf(
+        WatchProvider("Mercado Play", "https://icon.url".toAppImageSource(), "Free"),
+        WatchProvider("Netflix", "https://icon.url".toAppImageSource(), "Subscription")
+    )
+
     @Test
-    fun appMovieActions_displaysAllButtons() {
+    fun appMovieActions_displaysPlayButton() {
         composeTestRule.setContent {
             DLearnTheme {
                 AppMovieActions(
                     onPlayClick = {},
-                    onDownloadClick = {},
-                    onShareClick = {}
+                    providers = providers,
+                    onProviderClick = {}
                 )
             }
         }
 
         composeTestRule.onNodeWithTag(AppMovieActionsTags.PLAY_BUTTON).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(AppMovieActionsTags.DOWNLOAD_BUTTON).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(AppMovieActionsTags.SHARE_BUTTON).assertIsDisplayed()
     }
 
     @Test
@@ -37,8 +42,8 @@ class AppMovieActionsTest {
             DLearnTheme {
                 AppMovieActions(
                     onPlayClick = { clicked = true },
-                    onDownloadClick = {},
-                    onShareClick = {}
+                    providers = providers,
+                    onProviderClick = {}
                 )
             }
         }
@@ -48,36 +53,30 @@ class AppMovieActionsTest {
     }
 
     @Test
-    fun appMovieActions_callsOnDownloadClick() {
-        var clicked = false
+    fun appMovieActions_expandsProvidersAndCallsClick() {
+        var clickedProvider: WatchProvider? = null
         composeTestRule.setContent {
             DLearnTheme {
                 AppMovieActions(
                     onPlayClick = {},
-                    onDownloadClick = { clicked = true },
-                    onShareClick = {}
+                    providers = providers,
+                    onProviderClick = { clickedProvider = it }
                 )
             }
         }
 
-        composeTestRule.onNodeWithTag(AppMovieActionsTags.DOWNLOAD_BUTTON).performClick()
-        assert(clicked)
-    }
-
-    @Test
-    fun appMovieActions_callsOnShareClick() {
-        var clicked = false
-        composeTestRule.setContent {
-            DLearnTheme {
-                AppMovieActions(
-                    onPlayClick = {},
-                    onDownloadClick = {},
-                    onShareClick = { clicked = true }
-                )
-            }
-        }
-
-        composeTestRule.onNodeWithTag(AppMovieActionsTags.SHARE_BUTTON).performClick()
-        assert(clicked)
+        // Initially collapsed, should see "Onde assistir"
+        composeTestRule.onNodeWithText("Onde assistir").assertIsDisplayed()
+        
+        // Click to expand
+        composeTestRule.onNodeWithText("Onde assistir").performClick()
+        
+        // Now should see provider names
+        composeTestRule.onNodeWithText("Netflix").assertIsDisplayed()
+        
+        // Click on a provider item
+        composeTestRule.onNodeWithText("Netflix").performClick()
+        
+        assert(clickedProvider?.name == "Netflix")
     }
 }
