@@ -4,11 +4,9 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -23,7 +21,6 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
@@ -42,7 +39,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private val ButtonHeight = 56.dp
 private val ButtonIconSize = 20.dp
-private val ButtonContentSpacing = 8.dp
+private val ButtonContentSpacing = 4.dp
 private val ButtonBorderWidth = 1.dp
 private val PreviewPadding = 16.dp
 private val PreviewSpacing = 12.dp
@@ -58,7 +55,17 @@ enum class ButtonType {
 
 /**
  * A custom button component that supports different styles (Primary, Secondary, Tertiary)
- * and an optional leading image. This version accepts a [StringResource] for localized text.
+ * and an optional leading image.
+ *
+ * @param text The localized text for the button.
+ * @param onClick Callback triggered when the button is clicked.
+ * @param modifier Modifier for the button container.
+ * @param type The visual style of the button ([ButtonType.PRIMARY], [ButtonType.SECONDARY], [ButtonType.TERTIARY]).
+ * @param imageSource Optional leading icon for the button.
+ * @param iconTint Optional tint for the leading icon.
+ * @param enabled Whether the button is interactive.
+ * @param backgroundColor Optional background color override.
+ * @param testTag Tag for UI testing.
  */
 @Composable
 fun AppButton(
@@ -87,7 +94,17 @@ fun AppButton(
 
 /**
  * A custom button component that supports different styles (Primary, Secondary, Tertiary)
- * and an optional leading image. This version accepts a raw [String] for the text.
+ * and an optional leading image.
+ *
+ * @param modifier Modifier for the button container.
+ * @param text The raw string for the button text.
+ * @param onClick Callback triggered when the button is clicked.
+ * @param type The visual style of the button ([ButtonType.PRIMARY], [ButtonType.SECONDARY], [ButtonType.TERTIARY]).
+ * @param imageSource Optional leading icon for the button.
+ * @param iconTint Optional tint for the leading icon.
+ * @param enabled Whether the button is interactive.
+ * @param backgroundColor Optional background color override.
+ * @param testTag Tag for UI testing.
  */
 @Composable
 fun AppButton(
@@ -109,7 +126,7 @@ fun AppButton(
 
     val defaultContentColor = when (type) {
         ButtonType.PRIMARY -> MaterialTheme.colorScheme.onPrimary
-        ButtonType.SECONDARY -> MaterialTheme.colorScheme.onSurface
+        ButtonType.SECONDARY -> MaterialTheme.colorScheme.onSurfaceVariant
         ButtonType.TERTIARY -> MaterialTheme.colorScheme.surface
     }
 
@@ -158,13 +175,18 @@ private fun AppButtonInternal(
     border: BorderStroke?,
 ) {
     val isIconOnly = text.isNullOrEmpty()
+    
     val buttonModifier = if (isIconOnly) {
         modifier.size(ButtonHeight)
     } else {
-        modifier.fillMaxWidth().height(ButtonHeight)
+        modifier.defaultMinSize(minHeight = ButtonHeight)
     }
 
-    val contentPadding = if (isIconOnly) PaddingValues(0.dp) else ButtonDefaults.ContentPadding
+    val contentPadding = if (isIconOnly) {
+        PaddingValues(0.dp)
+    } else {
+        PaddingValues(horizontal = 8.dp, vertical = 0.dp)
+    }
 
     if (border != null) {
         OutlinedButton(
@@ -193,33 +215,30 @@ private fun AppButtonInternal(
 }
 
 @Composable
-private fun AppButtonContent(
+private fun RowScope.AppButtonContent(
     text: String? = null,
     imageSource: AppImageSource?,
     iconTint: Color?,
 ) {
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        if (imageSource != null) {
-            Icon(
-                painter = imageSource.toPainter(),
-                contentDescription = text,
-                modifier = Modifier.size(ButtonIconSize),
-                tint = iconTint ?: LocalContentColor.current
-            )
-            if (!text.isNullOrEmpty()) {
-                Spacer(modifier = Modifier.width(ButtonContentSpacing))
-            }
-        }
+    if (imageSource != null) {
+        Icon(
+            painter = imageSource.toPainter(),
+            contentDescription = text,
+            modifier = Modifier.size(ButtonIconSize),
+            tint = iconTint ?: LocalContentColor.current
+        )
         if (!text.isNullOrEmpty()) {
-            Text(
-                text = text,
-                style = typography.labelMedium,
-            )
+            Spacer(modifier = Modifier.width(ButtonContentSpacing))
         }
+    }
+    if (!text.isNullOrEmpty()) {
+        Text(
+            text = text,
+            style = typography.labelMedium,
+            color = LocalContentColor.current,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
 
