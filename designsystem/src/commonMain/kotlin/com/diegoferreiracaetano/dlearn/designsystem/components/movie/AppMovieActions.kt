@@ -110,13 +110,15 @@ fun AppMovieActions(
             )
         }
 
-        AppWatchProviders(
-            providers = providers,
-            onProviderClick = onProviderClick,
-            isExpanded = watchProvidersExpanded,
-            onExpandClick = { watchProvidersExpanded = !watchProvidersExpanded },
-            modifier = Modifier.fillMaxWidth()
-        )
+        if (providers.isNotEmpty()) {
+            AppWatchProviders(
+                providers = providers,
+                onProviderClick = onProviderClick,
+                isExpanded = watchProvidersExpanded,
+                onExpandClick = { watchProvidersExpanded = !watchProvidersExpanded },
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }
 
