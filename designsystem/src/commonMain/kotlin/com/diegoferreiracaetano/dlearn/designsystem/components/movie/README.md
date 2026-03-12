@@ -19,9 +19,25 @@ A vertical action bar typically used in movie detail screens. It includes the ma
 A component that shows where a movie can be watched. It supports a collapsed view with a summary and an expanded view with a detailed list and direct links.
 
 **Parameters:**
-- `providers`: `List<WatchProvider>` - Data objects for each streaming service.
-- `onProviderClick`: `(WatchProvider) -> Unit` - Callback to handle navigation to the provider.
+- `providers`: `List<WatchProvider>` - List of `WatchProvider` objects to display.
+- `onProviderClick`: `(WatchProvider) -> Unit` - Callback to handle navigation to a specific provider.
 - `modifier`: `Modifier` - Modifier for the container.
+- `isExpanded`: `Boolean` - Initial expansion state.
+- `onExpandClick`: `() -> Unit` - Callback for toggling expansion.
+
+**Usage:**
+```kotlin
+val providers = listOf(
+    WatchProvider("Netflix", iconSource, "Subscription", "https://netflix.com/...")
+)
+
+AppWatchProviders(
+    providers = providers,
+    onProviderClick = { provider -> /* Open URL */ },
+    isExpanded = false,
+    onExpandClick = { /* Toggle State */ }
+)
+```
 
 ### AppMovieDetailHeader
 A header component that displays a movie poster or a video player along with metadata and actions.
@@ -33,16 +49,12 @@ A header component that displays a movie poster or a video player along with met
 - `modifier`: `Modifier` - Modifier for the container.
 - `onPlayClick`: `() -> Unit` - Callback when the play button is pressed.
 
-## Usage
+## Usage Example
 
 ```kotlin
-val providers = listOf(
-    WatchProvider("Netflix", iconSource, "Subscription", "https://netflix.com/...")
-)
-
 AppMovieDetailHeader(
     movie = myMovieItem,
-    providers = providers,
+    providers = myProviders,
     onProviderClick = { provider -> /* Open URL */ },
     onPlayClick = { /* Handle play */ }
 )

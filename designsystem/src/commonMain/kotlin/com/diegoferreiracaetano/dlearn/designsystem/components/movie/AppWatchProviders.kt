@@ -10,7 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -36,6 +35,14 @@ import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+/**
+ * Data class representing a watch provider (streaming service).
+ *
+ * @property name The name of the streaming service (e.g., "Netflix").
+ * @property icon The icon of the streaming service.
+ * @property priceInfo Information about the pricing or availability (e.g., "Subscription").
+ * @property watchUrl The direct URL to watch the content on this provider (optional).
+ */
 data class WatchProvider(
     val name: String,
     val icon: AppImageSource,
@@ -43,6 +50,35 @@ data class WatchProvider(
     val watchUrl: String? = null
 )
 
+private val ContainerPadding = 16.dp
+private val HeaderSpacing = 16.dp
+private val ProviderIconSize = 40.dp
+private val SummaryIconSize = 28.dp
+private val SummaryIconPadding = 2.dp
+private val SummaryIconOverlap = (-10).dp
+private val ContentSpacing = 12.dp
+private val DividerVerticalPadding = 12.dp
+private val WatchButtonHeight = 36.dp
+private val SummaryDividerWidth = 1.dp
+private val SummaryDividerHeight = 40.dp
+private val SummaryTextSpacing = 4.dp
+private val ProviderActionSpacing = 8.dp
+private const val BackgroundAlpha = 0.5f
+private const val DividerAlpha = 0.1f
+private const val SummaryDividerAlpha = 0.15f
+private const val SummaryVisibleCount = 3
+
+/**
+ * A component that displays a list of watch providers where a movie can be streamed.
+ * It features a collapsible design that shows a primary provider and a summary of others
+ * when collapsed, and a full list when expanded.
+ *
+ * @param providers The list of [WatchProvider] objects to display.
+ * @param onProviderClick Callback invoked when a provider is clicked.
+ * @param modifier The [Modifier] to be applied to this component.
+ * @param isExpanded Whether the component is currently expanded to show all providers.
+ * @param onExpandClick Callback invoked when the expand/collapse header or summary is clicked.
+ */
 @Composable
 fun AppWatchProviders(
     providers: List<WatchProvider>,
@@ -51,30 +87,25 @@ fun AppWatchProviders(
     isExpanded: Boolean = false,
     onExpandClick: () -> Unit = {}
 ) {
-
     val firstProvider = providers.firstOrNull()
     val remainingProviders = providers.drop(1)
 
     Column(
         modifier = modifier
-            .clip(RoundedCornerShape(24.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+            .clip(MaterialTheme.shapes.large)
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = BackgroundAlpha))
             .animateContentSize()
-            .padding(16.dp)
+            .padding(ContainerPadding)
     ) {
-
         Header(isExpanded, onExpandClick)
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(HeaderSpacing))
 
         if (firstProvider != null) {
-
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 Box(modifier = Modifier.weight(1f)) {
-
                     WatchProviderItem(
                         provider = firstProvider,
                         showWatchButton = isExpanded,
@@ -85,47 +116,42 @@ fun AppWatchProviders(
                 AnimatedVisibility(
                     visible = !isExpanded && remainingProviders.isNotEmpty()
                 ) {
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.clickable { onExpandClick() }
                     ) {
-
                         Box(
                             modifier = Modifier
-                                .width(1.dp)
-                                .height(40.dp)
+                                .width(SummaryDividerWidth)
+                                .height(SummaryDividerHeight)
                                 .background(
-                                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.15f)
+                                    MaterialTheme.colorScheme.onSurface.copy(alpha = SummaryDividerAlpha)
                                 )
                         )
 
-                        Spacer(Modifier.width(12.dp))
+                        Spacer(Modifier.width(ContentSpacing))
 
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-
                             Row(
-                                horizontalArrangement = Arrangement.spacedBy((-10).dp)
+                                horizontalArrangement = Arrangement.spacedBy(SummaryIconOverlap)
                             ) {
-
-                                remainingProviders.take(3).forEach {
-
+                                remainingProviders.take(SummaryVisibleCount).forEach {
                                     AppImageCircular(
                                         source = it.icon,
                                         modifier = Modifier
-                                            .size(28.dp)
+                                            .size(SummaryIconSize)
                                             .background(
                                                 MaterialTheme.colorScheme.surface,
                                                 CircleShape
                                             )
-                                            .padding(2.dp)
+                                            .padding(SummaryIconPadding)
                                     )
                                 }
                             }
 
-                            Spacer(Modifier.height(4.dp))
+                            Spacer(Modifier.height(SummaryTextSpacing))
 
                             Text(
                                 text = stringResource(
@@ -144,14 +170,11 @@ fun AppWatchProviders(
         AnimatedVisibility(
             visible = isExpanded
         ) {
-
             Column {
-
                 remainingProviders.forEach {
-
                     HorizontalDivider(
-                        modifier = Modifier.padding(vertical = 12.dp),
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+                        modifier = Modifier.padding(vertical = DividerVerticalPadding),
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = DividerAlpha)
                     )
 
                     WatchProviderItem(
@@ -165,12 +188,14 @@ fun AppWatchProviders(
     }
 }
 
+/**
+ * Header of the [AppWatchProviders] component containing the title and an expand/collapse icon.
+ */
 @Composable
 private fun Header(
     isExpanded: Boolean,
     onExpandClick: () -> Unit
 ) {
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -178,7 +203,6 @@ private fun Header(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         Text(
             text = stringResource(Res.string.movie_where_to_watch),
             style = MaterialTheme.typography.titleMedium,
@@ -195,32 +219,32 @@ private fun Header(
     }
 }
 
+/**
+ * Individual provider item within the [AppWatchProviders] list.
+ */
 @Composable
 private fun WatchProviderItem(
     provider: WatchProvider,
     onClick: () -> Unit,
     showWatchButton: Boolean = true
 ) {
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() }
-            .animateContentSize(), // anima deslocamento do conteúdo
+            .animateContentSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         AppImageCircular(
             source = provider.icon,
-            modifier = Modifier.size(40.dp)
+            modifier = Modifier.size(ProviderIconSize)
         )
 
-        Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(ContentSpacing))
 
         Column(
             modifier = Modifier.weight(1f)
         ) {
-
             Text(
                 text = provider.name,
                 style = MaterialTheme.typography.titleSmall,
@@ -239,17 +263,15 @@ private fun WatchProviderItem(
             enter = fadeIn() + expandHorizontally(expandFrom = Alignment.End),
             exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.End)
         ) {
-
             Row {
-
-                Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(ProviderActionSpacing))
 
                 AppButton(
                     text = Res.string.action_watch,
                     onClick = onClick,
                     type = ButtonType.SECONDARY,
                     imageSource = Icons.Default.PlayCircleOutline.toAppImageSource(),
-                    modifier = Modifier.height(36.dp)
+                    modifier = Modifier.height(WatchButtonHeight)
                 )
             }
         }
@@ -259,7 +281,6 @@ private fun WatchProviderItem(
 @Preview
 @Composable
 fun AppWatchProvidersPreview() {
-
     val providers = listOf(
         WatchProvider("Mercado Play", Res.drawable.ic_netflix.toAppImageSource(), "Sem custo financeiro"),
         WatchProvider("Netflix", Res.drawable.ic_netflix.toAppImageSource(), "Assinatura"),
@@ -269,11 +290,9 @@ fun AppWatchProvidersPreview() {
     )
 
     DLearnTheme {
-
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(ContainerPadding)
         ) {
-
             AppWatchProviders(
                 providers = providers,
                 onProviderClick = {},
