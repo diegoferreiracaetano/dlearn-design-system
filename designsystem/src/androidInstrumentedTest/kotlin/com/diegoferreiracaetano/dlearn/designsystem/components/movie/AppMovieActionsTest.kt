@@ -26,6 +26,8 @@ class AppMovieActionsTest {
             DLearnTheme {
                 AppMovieActions(
                     onPlayClick = {},
+                    onAddToListClick = {},
+                    onFavoriteClick = {},
                     providers = providers,
                     onProviderClick = {}
                 )
@@ -42,6 +44,8 @@ class AppMovieActionsTest {
             DLearnTheme {
                 AppMovieActions(
                     onPlayClick = { clicked = true },
+                    onAddToListClick = {},
+                    onFavoriteClick = {},
                     providers = providers,
                     onProviderClick = {}
                 )
@@ -59,6 +63,8 @@ class AppMovieActionsTest {
             DLearnTheme {
                 AppMovieActions(
                     onPlayClick = {},
+                    onAddToListClick = {},
+                    onFavoriteClick = {},
                     providers = providers,
                     onProviderClick = { clickedProvider = it }
                 )

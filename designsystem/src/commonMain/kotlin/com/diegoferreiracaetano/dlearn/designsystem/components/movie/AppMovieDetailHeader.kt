@@ -33,6 +33,7 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.video.AppYoutubeP
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.app_subtitle
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.ic_netflix
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -138,8 +139,8 @@ fun AppMovieDetailHeaderPreview() {
     )
 
     val providers = listOf(
-        WatchProvider("Mercado Play", "https://via.placeholder.com/150".toAppImageSource(), "Sem custo financeiro"),
-        WatchProvider("Netflix", "https://via.placeholder.com/150".toAppImageSource(), "Assinatura"),
+        WatchProvider("Mercado Play", Res.drawable.ic_netflix.toAppImageSource(), "Sem custo financeiro"),
+        WatchProvider("Netflix", Res.drawable.ic_netflix.toAppImageSource(), "Assinatura"),
     )
 
     DLearnTheme(darkTheme = true) {
