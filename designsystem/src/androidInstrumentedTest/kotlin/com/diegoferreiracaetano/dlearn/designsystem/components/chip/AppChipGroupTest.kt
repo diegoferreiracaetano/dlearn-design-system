@@ -14,8 +14,8 @@ class AppChipGroupTest {
     @Test
     fun shouldDisplayAllChipsWhenNoFilterIsSelected() = runComposeUiTest {
         val items = listOf(
-            AppChip(label = "Chip 1"),
-            AppChip(label = "Chip 2")
+            AppChipItem(label = "Chip 1"),
+            AppChipItem(label = "Chip 2")
         )
         setContent {
             AppChipGroup(items = items, onFilterChanged = {})
@@ -29,8 +29,8 @@ class AppChipGroupTest {
     fun shouldTriggerOnFilterChangedWhenAFilterChipIsClicked() = runComposeUiTest {
         var selectedFilter: String? = null
         val items = listOf(
-            AppChip(label = "Chip 1", isFilter = true),
-            AppChip(label = "Chip 2", isFilter = true)
+            AppChipItem(label = "Chip 1", isFilter = true),
+            AppChipItem(label = "Chip 2", isFilter = true)
         )
         setContent {
             AppChipGroup(items = items, onFilterChanged = { selectedFilter = it })
@@ -44,9 +44,9 @@ class AppChipGroupTest {
     @Test
     fun shouldFilterVisibleChipsWhenAFilterIsSelected() = runComposeUiTest {
         val items = listOf(
-            AppChip(label = "Filter 1", isFilter = true),
-            AppChip(label = "Filter 2", isFilter = true),
-            AppChip(label = "Action 1", isFilter = false)
+            AppChipItem(label = "Filter 1", isFilter = true),
+            AppChipItem(label = "Filter 2", isFilter = true),
+            AppChipItem(label = "Action 1", isFilter = false)
         )
         setContent {
             AppChipGroup(items = items, onFilterChanged = {})

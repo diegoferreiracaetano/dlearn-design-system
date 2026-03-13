@@ -48,26 +48,78 @@ private const val CHIP_BORDER_ALPHA = 0.5f
  * @property onClick Action to be performed when the chip is clicked.
  * @property hasDropDown Whether the chip should display a dropdown icon.
  * @property isFilter Whether the chip acts as a filter that can be selected.
+ * @property isSelected Whether the chip is currently selected.
  */
-data class AppChip(
+data class AppChipItem(
     val label: String,
     val onClick: () -> Unit = {},
     val hasDropDown: Boolean = false,
-    val isFilter: Boolean = true
+    val isFilter: Boolean = true,
+    val isSelected: Boolean = false
 )
+
+/**
+ * A specialized chip component for the Design System.
+ *
+ * @param modifier The [Modifier] to be applied to the chip.
+ * @param label The text to be displayed.
+ * @param isSelected Whether the chip is selected.
+ * @param hasDropDown Whether to show a dropdown icon.
+ * @param onClick Callback when the chip is clicked.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppChip(
+    modifier: Modifier = Modifier,
+    label: String,
+    isSelected: Boolean = false,
+    hasDropDown: Boolean = false,
+    onClick: () -> Unit
+) {
+    FilterChip(
+        modifier = modifier,
+        selected = isSelected,
+        onClick = onClick,
+        shape = Shapes.extraLarge,
+        label = { Text(label) },
+        colors = FilterChipDefaults.filterChipColors(
+            containerColor = Color.Transparent,
+            selectedContainerColor = MaterialTheme.colorScheme.onSurface,
+            labelColor = MaterialTheme.colorScheme.onSurface,
+            selectedLabelColor = MaterialTheme.colorScheme.surface,
+            iconColor = MaterialTheme.colorScheme.onSurface,
+            selectedTrailingIconColor = MaterialTheme.colorScheme.surface
+        ),
+        border = FilterChipDefaults.filterChipBorder(
+            borderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = CHIP_BORDER_ALPHA),
+            selectedBorderColor = Color.Transparent,
+            enabled = true,
+            selected = isSelected
+        ),
+        trailingIcon = if (hasDropDown) {
+            {
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = stringResource(Res.string.chip_description_dropdown)
+                )
+            }
+        } else {
+            null
+        }
+    )
+}
 
 /**
  * A group of chips that can be used for filtering or selection.
  *
  * @param modifier The [Modifier] to be applied to the chip group.
- * @param items The list of [AppChip] items to be displayed.
+ * @param items The list of [AppChipItem] items to be displayed.
  * @param onFilterChanged Callback invoked when the selected filter changes.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppChipGroup(
     modifier: Modifier = Modifier,
-    items: List<AppChip>,
+    items: List<AppChipItem>,
     onFilterChanged: (String?) -> Unit
 ) {
     var selectedFilterLabel by remember { mutableStateOf<String?>(null) }
@@ -103,10 +155,11 @@ fun AppChipGroup(
             horizontalArrangement = Arrangement.spacedBy(CHIP_SPACING)
         ) {
             items(visibleChips) { chip ->
-                val isSelected = chip.label == selectedFilterLabel
-                FilterChip(
-                    shape = Shapes.extraLarge,
-                    selected = isSelected,
+                val isSelected = chip.label == selectedFilterLabel || chip.isSelected
+                AppChip(
+                    label = chip.label,
+                    isSelected = isSelected,
+                    hasDropDown = chip.hasDropDown,
                     onClick = {
                         if (chip.isFilter) {
                             val newFilter = if (isSelected) null else chip.label
@@ -114,31 +167,6 @@ fun AppChipGroup(
                             onFilterChanged(newFilter)
                         }
                         chip.onClick()
-                    },
-                    label = { Text(chip.label) },
-                    colors = FilterChipDefaults.filterChipColors(
-                        containerColor = Color.Transparent,
-                        selectedContainerColor = MaterialTheme.colorScheme.onSurface,
-                        labelColor = MaterialTheme.colorScheme.onSurface,
-                        selectedLabelColor = MaterialTheme.colorScheme.surface,
-                        iconColor = MaterialTheme.colorScheme.onSurface,
-                        selectedTrailingIconColor = MaterialTheme.colorScheme.surface
-                    ),
-                    border = FilterChipDefaults.filterChipBorder(
-                        borderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = CHIP_BORDER_ALPHA),
-                        selectedBorderColor = Color.Transparent,
-                        enabled = true,
-                        selected = isSelected
-                    ),
-                    trailingIcon = if (chip.hasDropDown) {
-                        {
-                            Icon(
-                                imageVector = Icons.Default.ArrowDropDown,
-                                contentDescription = stringResource(Res.string.chip_description_dropdown)
-                            )
-                        }
-                    } else {
-                        null
                     }
                 )
             }
@@ -152,16 +180,16 @@ fun AppChipGroupPreview() {
     DLearnTheme(darkTheme = true) {
         AppChipGroup(
             items = listOf(
-                AppChip(
+                AppChipItem(
                     label = stringResource(Res.string.chip_label_series)
                 ),
-                AppChip(
+                AppChipItem(
                     label = stringResource(Res.string.chip_label_movies)
                 ),
-                AppChip(
+                AppChipItem(
                     label = stringResource(Res.string.chip_label_categories),
                     hasDropDown = true,
-                    isFilter = false
+                    isFilter = true
                 )
             ),
             onFilterChanged = {}
