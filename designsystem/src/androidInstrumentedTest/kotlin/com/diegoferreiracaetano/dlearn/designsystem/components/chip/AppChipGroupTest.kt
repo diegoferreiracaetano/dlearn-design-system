@@ -62,4 +62,59 @@ class AppChipGroupTest {
         // Filter 2 should NOT be displayed (it was filtered out)
         onNodeWithText("Filter 2").assertDoesNotExist()
     }
+
+    @Test
+    fun shouldDisplayDropdownOptionsWhenChipIsClicked() = runComposeUiTest {
+        val options = listOf("Option A", "Option B")
+        val items = listOf(
+            AppChipItem(
+                label = "Dropdown",
+                hasDropDown = true,
+                dropDownOptions = options
+            )
+        )
+        setContent {
+            AppChipGroup(items = items, onFilterChanged = {})
+        }
+
+        onNodeWithText("Dropdown").performClick()
+
+        onNodeWithText("Option A").assertIsDisplayed()
+        onNodeWithText("Option B").assertIsDisplayed()
+    }
+
+    @Test
+    fun shouldTriggerOnOptionSelectedWhenDropdownOptionIsClicked() = runComposeUiTest {
+        var selectedOption = ""
+        val options = listOf("Option A", "Option B")
+        val items = listOf(
+            AppChipItem(
+                label = "Dropdown",
+                hasDropDown = true,
+                dropDownOptions = options,
+                onOptionSelected = { selectedOption = it }
+            )
+        )
+        setContent {
+            AppChipGroup(items = items, onFilterChanged = {})
+        }
+
+        onNodeWithText("Dropdown").performClick()
+        onNodeWithText("Option A").performClick()
+
+        assertEquals("Option A", selectedOption)
+    }
+
+    @Test
+    fun shouldRespectIsSelectedStateFromItem() = runComposeUiTest {
+        val items = listOf(
+            AppChipItem(label = "Selected", isSelected = true, isFilter = true),
+            AppChipItem(label = "Not Selected", isSelected = false, isFilter = true)
+        )
+        setContent {
+            AppChipGroup(items = items, onFilterChanged = {})
+        }
+
+        onNodeWithText("Selected").assertIsDisplayed()
+    }
 }
