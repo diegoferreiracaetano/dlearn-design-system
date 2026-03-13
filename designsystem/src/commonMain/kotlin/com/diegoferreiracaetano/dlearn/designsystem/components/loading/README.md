@@ -1,29 +1,33 @@
 # AppLoading
-Componente de carregamento visual animado (spinner rotativo).
+
+Componente de carregamento que exibe um indicador de progresso circular centralizado. Ocupa todo o espaço disponível por padrão.
 
 ### Props
+
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
-| `modifier` | `Modifier` | `Modifier` | Modificador de layout do Compose. |
-| `color` | `Color` | `Color.Red` | Cor do arco de carregamento. |
-| `strokeWidth` | `Float` | `20f` | Espessura da linha do arco. |
+| `modifier` | `Modifier` | `Modifier` | O modificador a ser aplicado ao contêiner. |
 
-### Usage
+### Exemplo de Uso
+
 ```kotlin
-AppLoading(color = Color.Blue)
+AppLoading()
 ```
 
 ---
 
 # ScreenLoading
-Versão em tela cheia do carregamento com fundo translúcido para bloquear interações.
+
+Componente de carregamento em tela cheia que exibe o `AppLoading` centralizado com uma cor de fundo do tema (`surfaceVariant`).
 
 ### Props
+
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
-| `modifier` | `Modifier` | `Modifier` | Modificador de layout. Ocupa a tela toda por padrão. |
+| `modifier` | `Modifier` | `Modifier` | O modificador a ser aplicado à tela de carregamento. |
 
-### Usage
+### Exemplo de Uso
+
 ```kotlin
 if (isLoading) {
     ScreenLoading()

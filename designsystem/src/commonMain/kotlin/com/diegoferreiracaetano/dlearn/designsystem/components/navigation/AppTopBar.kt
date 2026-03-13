@@ -51,7 +51,7 @@ private val PROFILE_IMAGE_SIZE = 32.dp
 
 /**
  * A custom [TopAppBar] that can switch between a default and a transparent style.
- * It supports a title, subtitle, back button, favorite button, menu button, and integrated search.
+ * It supports a title, subtitle, back button, favorite button, menu button, and actions.
  *
  * @param modifier The [Modifier] to be applied to the top bar.
  * @param title The title text to be displayed.

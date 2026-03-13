@@ -6,6 +6,7 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.runComposeUiTest
+import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
@@ -15,7 +16,9 @@ class AppLoadingTest {
     fun shouldDisplayLoadingWhenRendered() = runComposeUiTest {
         val testTag = "AppLoading"
         setContent {
-            AppLoading(modifier = Modifier.testTag(testTag))
+            DLearnTheme {
+                AppLoading(modifier = Modifier.testTag(testTag))
+            }
         }
 
         onNodeWithTag(testTag).assertIsDisplayed()

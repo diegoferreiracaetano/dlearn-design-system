@@ -1,16 +1,19 @@
 # AppContainer
-Scaffold base que organiza automaticamente a TopBar, BottomBar e o conteúdo da tela.
+Scaffold base que organiza automaticamente a TopBar, SearchBar, BottomBar e o conteúdo da tela.
 
 ### Props
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
 | `topBar` | `@Composable () -> Unit` | `null` | Slot para a barra superior. |
+| `searchBar` | `@Composable () -> Unit` | `null` | Slot para a barra de busca (exibida abaixo da TopBar). |
 | `bottomBar` | `@Composable () -> Unit` | `null` | Slot para a barra inferior. |
+| `drawerContent` | `@Composable (ColumnScope.() -> Unit)?` | `null` | Conteúdo do menu lateral. |
 
 ### Usage
 ```kotlin
 AppContainer(
     topBar = { AppTopBar(title = "Home") },
+    searchBar = { AppSearchBar(query = "", ...) },
     bottomBar = { AppBottomNavigationBar(...) }
 ) { padding ->
     // Conteúdo aqui

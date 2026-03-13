@@ -38,6 +38,37 @@ class AppContainerTest {
     }
 
     @Test
+    fun shouldDisplaySearchBarWhenProvided() = runComposeUiTest {
+        val searchBarText = "Search Bar"
+        setContent {
+            AppContainer(
+                searchBar = { Text(text = searchBarText) }
+            ) {
+                Text(text = "Content")
+            }
+        }
+
+        onNodeWithText(searchBarText).assertIsDisplayed()
+    }
+
+    @Test
+    fun shouldDisplayBothTopBarAndSearchBarWhenProvided() = runComposeUiTest {
+        val topBarText = "Top Bar"
+        val searchBarText = "Search Bar"
+        setContent {
+            AppContainer(
+                topBar = { Text(text = topBarText) },
+                searchBar = { Text(text = searchBarText) }
+            ) {
+                Text(text = "Content")
+            }
+        }
+
+        onNodeWithText(topBarText).assertIsDisplayed()
+        onNodeWithText(searchBarText).assertIsDisplayed()
+    }
+
+    @Test
     fun shouldDisplayBottomBarWhenProvided() = runComposeUiTest {
         val bottomBarText = "Bottom Bar"
         setContent {
