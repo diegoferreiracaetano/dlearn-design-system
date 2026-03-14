@@ -1,11 +1,12 @@
 # AppContainer
-Scaffold base que organiza automaticamente a TopBar, SearchBar, BottomBar e o conteúdo da tela. Agora também lida centralmente com estados de Loading e Error, preservando a navegação (TopBar, BottomBar, Drawer) visível para o usuário.
+Scaffold base que organiza automaticamente a TopBar, SearchBar, ChipGroup e o conteúdo da tela. Agora também lida centralmente com estados de Loading e Error, preservando a navegação (TopBar, BottomBar, Drawer) visível para o usuário.
 
 ### Props
 | Prop | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
 | `topBar` | `@Composable () -> Unit` | `null` | Slot para a barra superior. |
 | `searchBar` | `@Composable () -> Unit` | `null` | Slot para a barra de busca (exibida abaixo da TopBar). |
+| `chipGroup` | `@Composable () -> Unit` | `null` | Slot para o grupo de chips de filtro (exibido abaixo da SearchBar). |
 | `bottomBar` | `@Composable () -> Unit` | `null` | Slot para a barra inferior. |
 | `drawerContent` | `@Composable (ColumnScope.() -> Unit)?` | `null` | Conteúdo do menu lateral. |
 | `isLoading` | `Boolean` | `false` | Se `true`, exibe o componente `AppLoading` centralizado no corpo. |
@@ -17,6 +18,12 @@ Scaffold base que organiza automaticamente a TopBar, SearchBar, BottomBar e o co
 AppContainer(
     topBar = { AppTopBar(title = "Home") },
     searchBar = { AppSearchBar(query = "", ...) },
+    chipGroup = { 
+        AppChipGroup(
+            items = listOf(AppChipItem(label = "Action")),
+            onFilterChanged = { /* ... */ }
+        )
+    },
     bottomBar = { AppBottomNavigationBar(...) },
     isLoading = state.isLoading,
     error = state.error,

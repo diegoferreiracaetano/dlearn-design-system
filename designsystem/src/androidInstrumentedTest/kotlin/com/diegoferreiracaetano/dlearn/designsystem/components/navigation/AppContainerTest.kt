@@ -58,6 +58,40 @@ class AppContainerTest {
     }
 
     @Test
+    fun shouldDisplayChipGroupWhenProvided() = runComposeUiTest {
+        val chipGroupText = "Chip Group"
+        setContent {
+            AppContainer(
+                chipGroup = { Text(text = chipGroupText) }
+            ) {
+                Text(text = "Content")
+            }
+        }
+
+        onNodeWithText(chipGroupText).assertIsDisplayed()
+    }
+
+    @Test
+    fun shouldDisplayTopBarSearchBarAndChipGroupWhenProvided() = runComposeUiTest {
+        val topBarText = "Top Bar"
+        val searchBarText = "Search Bar"
+        val chipGroupText = "Chip Group"
+        setContent {
+            AppContainer(
+                topBar = { Text(text = topBarText) },
+                searchBar = { Text(text = searchBarText) },
+                chipGroup = { Text(text = chipGroupText) }
+            ) {
+                Text(text = "Content")
+            }
+        }
+
+        onNodeWithText(topBarText).assertIsDisplayed()
+        onNodeWithText(searchBarText).assertIsDisplayed()
+        onNodeWithText(chipGroupText).assertIsDisplayed()
+    }
+
+    @Test
     fun shouldDisplayBottomBarWhenProvided() = runComposeUiTest {
         val bottomBarText = "Bottom Bar"
         setContent {

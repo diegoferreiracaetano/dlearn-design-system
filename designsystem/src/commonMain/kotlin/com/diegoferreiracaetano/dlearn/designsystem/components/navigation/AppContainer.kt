@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,37 +21,26 @@ import androidx.compose.material3.PermanentDrawerSheet
 import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.alert.AppSnackbarHost
+import com.diegoferreiracaetano.dlearn.designsystem.components.chip.AppChipGroup
+import com.diegoferreiracaetano.dlearn.designsystem.components.chip.AppChipItem
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.AppErrorContent
-import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
-import com.diegoferreiracaetano.dlearn.designsystem.components.list.AppList
 import com.diegoferreiracaetano.dlearn.designsystem.components.loading.AppLoading
-import com.diegoferreiracaetano.dlearn.designsystem.components.movie.AppMovieItem
-import com.diegoferreiracaetano.dlearn.designsystem.components.movie.MovieItem
-import com.diegoferreiracaetano.dlearn.designsystem.components.movie.MovieItemType
-import com.diegoferreiracaetano.dlearn.designsystem.components.search.AppSearchBar
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.profile_placeholder
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import androidx.compose.material3.Text
-
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -60,6 +48,7 @@ private fun AppScaffoldContent(
     modifier: Modifier = Modifier,
     topBar: @Composable (() -> Unit)? = null,
     searchBar: @Composable (() -> Unit)? = null,
+    chipGroup: @Composable (() -> Unit)? = null,
     bottomBar: @Composable (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState,
     scrollBehavior: TopAppBarScrollBehavior,
@@ -76,10 +65,11 @@ private fun AppScaffoldContent(
             )
         },
         topBar = {
-            if (topBar != null || searchBar != null) {
+            if (topBar != null || searchBar != null || chipGroup != null) {
                 Column {
                     topBar?.invoke()
                     searchBar?.invoke()
+                    chipGroup?.invoke()
                 }
             }
         },
@@ -103,6 +93,7 @@ private fun AppScaffoldContent(
                 isLoading -> {
                     AppLoading(modifier = baseModifier)
                 }
+
                 error != null -> {
                     AppErrorContent(
                         modifier = baseModifier,
@@ -110,6 +101,7 @@ private fun AppScaffoldContent(
                         onPrimary = onRetry
                     )
                 }
+
                 else -> {
                     content(baseModifier)
                 }
@@ -126,6 +118,7 @@ private fun AppScaffoldContent(
  * @param modifier The [Modifier] to be applied to the container.
  * @param topBar Optional top app bar composable.
  * @param searchBar Optional search bar composable.
+ * @param chipGroup Optional chip group composable.
  * @param drawerContent Optional content for the navigation drawer.
  * @param drawerState Optional state to control the drawer.
  * @param bottomBar Optional bottom navigation bar composable.
@@ -142,6 +135,7 @@ fun AppContainer(
     modifier: Modifier = Modifier,
     topBar: @Composable (() -> Unit)? = null,
     searchBar: @Composable (() -> Unit)? = null,
+    chipGroup: @Composable (() -> Unit)? = null,
     drawerContent: @Composable (ColumnScope.() -> Unit)? = null,
     drawerState: DrawerState? = null,
     bottomBar: @Composable (() -> Unit)? = null,
@@ -169,6 +163,7 @@ fun AppContainer(
                             modifier = Modifier,
                             topBar = topBar,
                             searchBar = searchBar,
+                            chipGroup = chipGroup,
                             bottomBar = bottomBar,
                             snackBarHostState = snackBarHostState,
                             scrollBehavior = scrollBehavior,
@@ -202,6 +197,7 @@ fun AppContainer(
                             modifier = Modifier,
                             topBar = topBarWithMenu,
                             searchBar = searchBar,
+                            chipGroup = chipGroup,
                             bottomBar = bottomBar,
                             snackBarHostState = snackBarHostState,
                             scrollBehavior = scrollBehavior,
@@ -219,6 +215,7 @@ fun AppContainer(
             modifier = modifier,
             topBar = topBar,
             searchBar = searchBar,
+            chipGroup = chipGroup,
             bottomBar = bottomBar,
             snackBarHostState = snackBarHostState,
             scrollBehavior = scrollBehavior,
@@ -241,6 +238,31 @@ fun AppContainerPreview() {
         ) { modifier ->
             Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text("Content Screen")
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun AppContainerWithChipGroupPreview() {
+    DLearnTheme(darkTheme = true) {
+        AppContainer(
+            topBar = { AppTopBar(title = "Movies") },
+            chipGroup = {
+                AppChipGroup(
+                    items = listOf(
+                        AppChipItem(label = "Action"),
+                        AppChipItem(label = "Comedy"),
+                        AppChipItem(label = "Drama")
+                    ),
+                    onFilterChanged = {}
+                )
+            }
+        ) { modifier ->
+            Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("Content with Chips")
             }
         }
     }
