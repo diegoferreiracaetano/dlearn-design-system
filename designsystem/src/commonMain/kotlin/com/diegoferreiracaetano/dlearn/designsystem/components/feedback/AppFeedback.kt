@@ -37,6 +37,109 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 private val FeedbackImageSize = 160.dp
 
 /**
+ * A layout variation for feedback states without the Scaffold and AppTopBar.
+ */
+@Composable
+fun AppFeedbackContent(
+    title: String,
+    description: String,
+    imageSource: AppImageSource?,
+    modifier: Modifier = Modifier,
+    primaryText: String? = null,
+    onPrimary: (() -> Unit)? = null,
+    secondaryText: String? = null,
+    onSecondary: (() -> Unit)? = null,
+) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+    ) {
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            if (imageSource != null) {
+                AppImage(
+                    modifier = Modifier.size(FeedbackImageSize),
+                    source = imageSource,
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+            }
+
+            Text(
+                text = title,
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+        }
+
+        if (onPrimary != null || onSecondary != null) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp)
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                if (onPrimary != null && primaryText != null) {
+                    AppButton(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = primaryText,
+                        type = ButtonType.PRIMARY,
+                        onClick = onPrimary
+                    )
+                }
+                if (onSecondary != null && secondaryText != null) {
+                    AppButton(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = secondaryText,
+                        type = ButtonType.SECONDARY,
+                        onClick = onSecondary
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun AppFeedbackContent(
+    title: StringResource,
+    description: StringResource,
+    imageSource: AppImageSource?,
+    modifier: Modifier = Modifier,
+    primaryText: StringResource? = null,
+    onPrimary: (() -> Unit)? = null,
+    secondaryText: StringResource? = null,
+    onSecondary: (() -> Unit)? = null,
+) {
+    AppFeedbackContent(
+        title = stringResource(title),
+        description = stringResource(description),
+        imageSource = imageSource,
+        modifier = modifier,
+        primaryText = primaryText?.let { stringResource(it) },
+        onPrimary = onPrimary,
+        secondaryText = secondaryText?.let { stringResource(it) },
+        onSecondary = onSecondary
+    )
+}
+
+/**
  * A generic feedback component used as a base for error states, empty states, and success messages.
  * This version accepts [StringResource] for title and description.
  *
@@ -117,69 +220,18 @@ fun AppFeedback(
                     }
                 }
             )
-        },
-        bottomBar = {
-            if (onPrimary != null || onSecondary != null) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp)
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    if (onPrimary != null && primaryText != null) {
-                        AppButton(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = primaryText,
-                            type = ButtonType.PRIMARY,
-                            onClick = onPrimary
-                        )
-                    }
-                    if (onSecondary != null && secondaryText != null) {
-                        AppButton(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = secondaryText,
-                            type = ButtonType.SECONDARY,
-                            onClick = onSecondary
-                        )
-                    }
-                }
-            }
         }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(horizontal = 32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            if (imageSource != null) {
-                AppImage(
-                    modifier = Modifier.size(FeedbackImageSize),
-                    source = imageSource,
-                    contentDescription = null
-                )
-                Spacer(modifier = Modifier.height(24.dp))
-            }
-
-            Text(
-                text = title,
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
-            )
-        }
+        AppFeedbackContent(
+            modifier = Modifier.padding(paddingValues),
+            title = title,
+            description = description,
+            imageSource = imageSource,
+            primaryText = primaryText,
+            onPrimary = onPrimary,
+            secondaryText = secondaryText,
+            onSecondary = onSecondary
+        )
     }
 }
 
@@ -196,6 +248,22 @@ fun AppFeedbackPreview() {
             secondaryText = "Secondary Action",
             onSecondary = {},
             onClose = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun AppFeedbackContentPreview() {
+    DLearnTheme {
+        AppFeedbackContent(
+            title = "Content Title",
+            description = "This is the description for the feedback content preview.",
+            imageSource = AppImageSource.Resource(Res.drawable.placeholder),
+            primaryText = "Primary button",
+            onPrimary = {},
+            secondaryText = "Secondary button",
+            onSecondary = {}
         )
     }
 }

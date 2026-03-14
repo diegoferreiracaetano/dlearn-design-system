@@ -38,7 +38,7 @@ object AppErrorFactory {
         statusCode in 500..599 || message.contains("server error", ignoreCase = true)
 
     private fun isTimeoutError(statusCode: Int?, message: String) =
-        statusCode == 408 || message.contains("timeout", ignoreCase = true)
+        statusCode == 408 || message.contains("timeout", ignoreCase = true) || message.contains("timed out", ignoreCase = true)
 
     private fun extractStatusCode(message: String): Int? {
         return Regex("(\\d{3})").find(message)?.value?.toIntOrNull()

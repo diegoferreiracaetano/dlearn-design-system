@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.factory.AppErrorFactory
 import com.diegoferreiracaetano.dlearn.designsystem.components.feedback.AppFeedback
+import com.diegoferreiracaetano.dlearn.designsystem.components.feedback.AppFeedbackContent
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_close
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_retry
@@ -11,6 +12,37 @@ import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import com.diegoferreiracaetano.dlearn.designsystem.util.rememberNetworkManager
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.resources.StringResource
+
+/**
+ * A comprehensive UI component for displaying error states without the Scaffold and AppTopBar.
+ */
+@Composable
+fun AppErrorContent(
+    throwable: Throwable? = null,
+    modifier: Modifier = Modifier,
+    primaryText: StringResource? = null,
+    onPrimary: (() -> Unit)? = null,
+    secondaryText: StringResource? = null,
+    onSecondary: (() -> Unit)? = null,
+) {
+    val networkManager = rememberNetworkManager()
+    val errorData = AppErrorFactory(
+        throwable = throwable,
+        isNetworkAvailable = networkManager.isNetworkAvailable()
+    )
+
+    AppFeedbackContent(
+        modifier = modifier,
+        title = errorData.title,
+        description = errorData.description,
+        imageSource = errorData.imageSource,
+        primaryText = primaryText ?: Res.string.action_retry,
+        onPrimary = onPrimary,
+        secondaryText = secondaryText ?: Res.string.action_close,
+        onSecondary = onSecondary
+    )
+}
 
 /**
  * A comprehensive UI component for displaying error states within the application.
@@ -30,9 +62,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun AppError(
     throwable: Throwable? = null,
     modifier: Modifier = Modifier,
-    primaryText: String? = null,
+    primaryText: StringResource? = null,
     onPrimary: (() -> Unit)? = null,
-    secondaryText: String? = null,
+    secondaryText: StringResource? = null,
     onSecondary: (() -> Unit)? = null,
     onClose: (() -> Unit)? = null,
 ) {
@@ -47,9 +79,9 @@ fun AppError(
         title = errorData.title,
         description = errorData.description,
         imageSource = errorData.imageSource,
-        primaryText = primaryText ?: stringResource(Res.string.action_retry),
+        primaryText = primaryText ?: Res.string.action_retry,
         onPrimary = onPrimary,
-        secondaryText = secondaryText ?: stringResource(Res.string.action_close),
+        secondaryText = secondaryText ?: Res.string.action_close,
         onSecondary = onSecondary,
         onClose = onClose
     )

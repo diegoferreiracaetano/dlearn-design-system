@@ -1,5 +1,5 @@
 # AppContainer
-Scaffold base que organiza automaticamente a TopBar, SearchBar, BottomBar e o conteúdo da tela.
+Scaffold base que organiza automaticamente a TopBar, SearchBar, BottomBar e o conteúdo da tela. Agora também lida centralmente com estados de Loading e Error, preservando a navegação (TopBar, BottomBar, Drawer) visível para o usuário.
 
 ### Props
 | Prop | Tipo | Padrão | Descrição |
@@ -8,15 +8,21 @@ Scaffold base que organiza automaticamente a TopBar, SearchBar, BottomBar e o co
 | `searchBar` | `@Composable () -> Unit` | `null` | Slot para a barra de busca (exibida abaixo da TopBar). |
 | `bottomBar` | `@Composable () -> Unit` | `null` | Slot para a barra inferior. |
 | `drawerContent` | `@Composable (ColumnScope.() -> Unit)?` | `null` | Conteúdo do menu lateral. |
+| `isLoading` | `Boolean` | `false` | Se `true`, exibe o componente `AppLoading` centralizado no corpo. |
+| `error` | `Throwable?` | `null` | Se informado, exibe o componente `AppErrorContent` centralizado no corpo. |
+| `onRetry` | `(() -> Unit)?` | `null` | Callback disparado ao clicar em Tentar Novamente na tela de erro. |
 
 ### Usage
 ```kotlin
 AppContainer(
     topBar = { AppTopBar(title = "Home") },
     searchBar = { AppSearchBar(query = "", ...) },
-    bottomBar = { AppBottomNavigationBar(...) }
+    bottomBar = { AppBottomNavigationBar(...) },
+    isLoading = state.isLoading,
+    error = state.error,
+    onRetry = { viewModel.loadData() }
 ) { padding ->
-    // Conteúdo aqui
+    // Conteúdo aqui será exibido apenas se isLoading for false e error for null
 }
 ```
 

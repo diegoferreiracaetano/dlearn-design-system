@@ -37,8 +37,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.alert.AppSnackbarHost
+import com.diegoferreiracaetano.dlearn.designsystem.components.error.AppErrorContent
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.components.list.AppList
+import com.diegoferreiracaetano.dlearn.designsystem.components.loading.AppLoading
 import com.diegoferreiracaetano.dlearn.designsystem.components.movie.AppMovieItem
 import com.diegoferreiracaetano.dlearn.designsystem.components.movie.MovieItem
 import com.diegoferreiracaetano.dlearn.designsystem.components.movie.MovieItemType
@@ -49,6 +51,8 @@ import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.profile_
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.material3.Text
+
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -59,6 +63,9 @@ private fun AppScaffoldContent(
     bottomBar: @Composable (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState,
     scrollBehavior: TopAppBarScrollBehavior,
+    isLoading: Boolean = false,
+    error: Throwable? = null,
+    onRetry: (() -> Unit)? = null,
     content: @Composable (Modifier) -> Unit
 ) {
     Scaffold(
@@ -92,7 +99,21 @@ private fun AppScaffoldContent(
                 .fillMaxSize(),
             contentAlignment = Alignment.TopCenter
         ) {
-            content(baseModifier)
+            when {
+                isLoading -> {
+                    AppLoading(modifier = baseModifier)
+                }
+                error != null -> {
+                    AppErrorContent(
+                        modifier = baseModifier,
+                        throwable = error,
+                        onPrimary = onRetry
+                    )
+                }
+                else -> {
+                    content(baseModifier)
+                }
+            }
         }
     }
 }
@@ -110,6 +131,9 @@ private fun AppScaffoldContent(
  * @param bottomBar Optional bottom navigation bar composable.
  * @param snackBarHostState The [SnackbarHostState] for managing snackbars.
  * @param scrollBehavior The [TopAppBarScrollBehavior] to coordinate with the top bar.
+ * @param isLoading Whether to display the centralized loading state.
+ * @param error The [Throwable] representing an error state to be displayed.
+ * @param onRetry Callback invoked when the user requests to retry after an error.
  * @param content The main content of the container, receiving a [Modifier] with appropriate padding and insets.
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -123,6 +147,9 @@ fun AppContainer(
     bottomBar: @Composable (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState()),
+    isLoading: Boolean = false,
+    error: Throwable? = null,
+    onRetry: (() -> Unit)? = null,
     content: @Composable (Modifier) -> Unit
 ) {
     if (drawerContent != null) {
@@ -145,6 +172,9 @@ fun AppContainer(
                             bottomBar = bottomBar,
                             snackBarHostState = snackBarHostState,
                             scrollBehavior = scrollBehavior,
+                            isLoading = isLoading,
+                            error = error,
+                            onRetry = onRetry,
                             content = content
                         )
                     }
@@ -175,6 +205,9 @@ fun AppContainer(
                             bottomBar = bottomBar,
                             snackBarHostState = snackBarHostState,
                             scrollBehavior = scrollBehavior,
+                            isLoading = isLoading,
+                            error = error,
+                            onRetry = onRetry,
                             content = content
                         )
                     }
@@ -189,6 +222,9 @@ fun AppContainer(
             bottomBar = bottomBar,
             snackBarHostState = snackBarHostState,
             scrollBehavior = scrollBehavior,
+            isLoading = isLoading,
+            error = error,
+            onRetry = onRetry,
             content = content
         )
     }
@@ -197,52 +233,44 @@ fun AppContainer(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun AppTopBarPreview() {
-    var query by remember { mutableStateOf("") }
-    var active by remember { mutableStateOf(false) }
-
-    val sampleMovie = MovieItem(
-        id = "1",
-        title = "Spider-Man No Way Home",
-        imageSource = AppImageSource.Resource(Res.drawable.banner),
-        rating = 4.5,
-        year = "2021",
-        duration = "148 Minutes",
-        contentRating = "PG-13",
-        genre = "Action",
-        type = "Movie",
-        isPremium = true,
-        primaryInfo = "New",
-        secondaryInfo = "Trending"
-    )
-
-    val movies = List(10) { sampleMovie.copy(id = it.toString()) }
-
+fun AppContainerPreview() {
     DLearnTheme(darkTheme = true) {
         AppContainer(
-            searchBar = {
-                AppSearchBar(
-                    query = query,
-                    onQueryChange = { query = it },
-                    active = active,
-                    onActiveChange = { active = it },
-                    onSearch = { active = false },
-                    onMenuClick = {},
-                    profileImageSource = AppImageSource.Resource(Res.drawable.profile_placeholder),
-                    onProfileClick = {}
-                )
-            }
+            topBar = { AppTopBar(title = "Home") },
+            bottomBar = { AppBottomNavigationBar(items = emptyList(), selectedRoute = "", onTabSelected = {}) }
         ) { modifier ->
-            AppList(modifier = modifier) {
-                items(movies) { movie ->
-                    AppMovieItem(
-                        movie = movie,
-                        onClick = {},
-                        type = MovieItemType.HORIZONTAL,
-                        modifier = Modifier.padding(8.dp)
-                    )
-                }
+            Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("Content Screen")
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun AppContainerLoadingPreview() {
+    DLearnTheme(darkTheme = true) {
+        AppContainer(
+            topBar = { AppTopBar(title = "Loading...") },
+            isLoading = true
+        ) { modifier ->
+            Text("This should not be visible", modifier = modifier)
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun AppContainerErrorPreview() {
+    DLearnTheme(darkTheme = true) {
+        AppContainer(
+            topBar = { AppTopBar(title = "Error") },
+            error = Throwable("Timeout"),
+            onRetry = {}
+        ) { modifier ->
+            Text("This should not be visible", modifier = modifier)
         }
     }
 }
