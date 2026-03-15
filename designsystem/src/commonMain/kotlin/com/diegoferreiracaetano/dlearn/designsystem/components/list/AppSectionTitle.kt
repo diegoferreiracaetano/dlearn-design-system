@@ -15,7 +15,7 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-private val SectionTitlePaddingTop = 32.dp
+private val SectionTitlePaddingTop = 16.dp
 private val SectionTitlePaddingBottom = 8.dp
 
 /**

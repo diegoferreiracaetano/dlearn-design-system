@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.alert.AppSnackbarHost
 import com.diegoferreiracaetano.dlearn.designsystem.components.chip.AppChipGroup
 import com.diegoferreiracaetano.dlearn.designsystem.components.chip.AppChipItem
-import com.diegoferreiracaetano.dlearn.designsystem.components.error.AppErrorContent
+import com.diegoferreiracaetano.dlearn.designsystem.components.error.AppError
 import com.diegoferreiracaetano.dlearn.designsystem.components.loading.AppLoading
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import kotlinx.coroutines.launch
@@ -52,9 +52,6 @@ private fun AppScaffoldContent(
     bottomBar: @Composable (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState,
     scrollBehavior: TopAppBarScrollBehavior,
-    isLoading: Boolean = false,
-    error: Throwable? = null,
-    onRetry: (() -> Unit)? = null,
     content: @Composable (Modifier) -> Unit
 ) {
     Scaffold(
@@ -89,23 +86,7 @@ private fun AppScaffoldContent(
                 .fillMaxSize(),
             contentAlignment = Alignment.TopCenter
         ) {
-            when {
-                isLoading -> {
-                    AppLoading(modifier = baseModifier)
-                }
-
-                error != null -> {
-                    AppErrorContent(
-                        modifier = baseModifier,
-                        throwable = error,
-                        onPrimary = onRetry
-                    )
-                }
-
-                else -> {
-                    content(baseModifier)
-                }
-            }
+            content(baseModifier)
         }
     }
 }
@@ -141,9 +122,6 @@ fun AppContainer(
     bottomBar: @Composable (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState()),
-    isLoading: Boolean = false,
-    error: Throwable? = null,
-    onRetry: (() -> Unit)? = null,
     content: @Composable (Modifier) -> Unit
 ) {
     if (drawerContent != null) {
@@ -167,9 +145,6 @@ fun AppContainer(
                             bottomBar = bottomBar,
                             snackBarHostState = snackBarHostState,
                             scrollBehavior = scrollBehavior,
-                            isLoading = isLoading,
-                            error = error,
-                            onRetry = onRetry,
                             content = content
                         )
                     }
@@ -201,9 +176,6 @@ fun AppContainer(
                             bottomBar = bottomBar,
                             snackBarHostState = snackBarHostState,
                             scrollBehavior = scrollBehavior,
-                            isLoading = isLoading,
-                            error = error,
-                            onRetry = onRetry,
                             content = content
                         )
                     }
@@ -219,9 +191,6 @@ fun AppContainer(
             bottomBar = bottomBar,
             snackBarHostState = snackBarHostState,
             scrollBehavior = scrollBehavior,
-            isLoading = isLoading,
-            error = error,
-            onRetry = onRetry,
             content = content
         )
     }
@@ -264,35 +233,6 @@ fun AppContainerWithChipGroupPreview() {
             Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text("Content with Chips")
             }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-fun AppContainerLoadingPreview() {
-    DLearnTheme(darkTheme = true) {
-        AppContainer(
-            topBar = { AppTopBar(title = "Loading...") },
-            isLoading = true
-        ) { modifier ->
-            Text("This should not be visible", modifier = modifier)
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-fun AppContainerErrorPreview() {
-    DLearnTheme(darkTheme = true) {
-        AppContainer(
-            topBar = { AppTopBar(title = "Error") },
-            error = Throwable("Timeout"),
-            onRetry = {}
-        ) { modifier ->
-            Text("This should not be visible", modifier = modifier)
         }
     }
 }

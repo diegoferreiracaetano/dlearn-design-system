@@ -37,10 +37,121 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 private val FeedbackImageSize = 160.dp
 
 /**
- * A layout variation for feedback states without the Scaffold and AppTopBar.
+ * A generic feedback component used as a base for error states, empty states, and success messages.
+ * This version accepts [StringResource] for title and description.
+ *
+ * @param title The main title of the feedback.
+ * @param description A detailed description of the state.
+ * @param imageSource The illustrative image for the feedback.
+ * @param modifier The [Modifier] to be applied to the root layout.
+ * @param fullScreen If true, displays the feedback within a Scaffold and TopBar. Defaults to false.
+ * @param primaryText Text for the primary action button.
+ * @param onPrimary Callback for the primary action button.
+ * @param secondaryText Text for the secondary action button.
+ * @param onSecondary Callback for the secondary action button.
+ * @param onClose Callback for the close icon in the toolbar (only used if fullScreen is true).
  */
 @Composable
-fun AppFeedbackContent(
+fun AppFeedback(
+    title: StringResource,
+    description: StringResource,
+    imageSource: AppImageSource?,
+    modifier: Modifier = Modifier,
+    fullScreen: Boolean = false,
+    primaryText: StringResource? = null,
+    onPrimary: (() -> Unit)? = null,
+    secondaryText: StringResource? = null,
+    onSecondary: (() -> Unit)? = null,
+    onClose: (() -> Unit)? = null,
+) {
+    AppFeedback(
+        title = stringResource(title),
+        description = stringResource(description),
+        imageSource = imageSource,
+        modifier = modifier,
+        fullScreen = fullScreen,
+        primaryText = primaryText?.let { stringResource(it) },
+        onPrimary = onPrimary,
+        secondaryText = secondaryText?.let { stringResource(it) },
+        onSecondary = onSecondary,
+        onClose = onClose
+    )
+}
+
+/**
+ * A generic feedback component used as a base for error states, empty states, and success messages.
+ * This version accepts raw [String] for title and description.
+ *
+ * @param title The main title of the feedback.
+ * @param description A detailed description of the state.
+ * @param imageSource The illustrative image for the feedback.
+ * @param modifier The [Modifier] to be applied to the root layout.
+ * @param fullScreen If true, displays the feedback within a Scaffold and TopBar. Defaults to false.
+ * @param primaryText Text for the primary action button.
+ * @param onPrimary Callback for the primary action button.
+ * @param secondaryText Text for the secondary action button.
+ * @param onSecondary Callback for the secondary action button.
+ * @param onClose Callback for the close icon in the toolbar (only used if fullScreen is true).
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppFeedback(
+    title: String,
+    description: String,
+    imageSource: AppImageSource?,
+    modifier: Modifier = Modifier,
+    fullScreen: Boolean = false,
+    primaryText: String? = null,
+    onPrimary: (() -> Unit)? = null,
+    secondaryText: String? = null,
+    onSecondary: (() -> Unit)? = null,
+    onClose: (() -> Unit)? = null,
+) {
+    if (fullScreen) {
+        Scaffold(
+            modifier = modifier,
+            topBar = {
+                AppTopBar(
+                    actions = {
+                        if (onClose != null) {
+                            IconButton(onClick = onClose) {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = stringResource(Res.string.action_close)
+                                )
+                            }
+                        }
+                    }
+                )
+            }
+        ) { paddingValues ->
+            FeedbackLayout(
+                modifier = Modifier.padding(paddingValues),
+                title = title,
+                description = description,
+                imageSource = imageSource,
+                primaryText = primaryText,
+                onPrimary = onPrimary,
+                secondaryText = secondaryText,
+                onSecondary = onSecondary
+            )
+        }
+    } else {
+        FeedbackLayout(
+            modifier = modifier,
+            title = title,
+            description = description,
+            imageSource = imageSource,
+            primaryText = primaryText,
+            onPrimary = onPrimary,
+            secondaryText = secondaryText,
+            onSecondary = onSecondary
+        )
+    }
+}
+
+@Composable
+private fun FeedbackLayout(
     title: String,
     description: String,
     imageSource: AppImageSource?,
@@ -116,130 +227,12 @@ fun AppFeedbackContent(
     }
 }
 
-@Composable
-fun AppFeedbackContent(
-    title: StringResource,
-    description: StringResource,
-    imageSource: AppImageSource?,
-    modifier: Modifier = Modifier,
-    primaryText: StringResource? = null,
-    onPrimary: (() -> Unit)? = null,
-    secondaryText: StringResource? = null,
-    onSecondary: (() -> Unit)? = null,
-) {
-    AppFeedbackContent(
-        title = stringResource(title),
-        description = stringResource(description),
-        imageSource = imageSource,
-        modifier = modifier,
-        primaryText = primaryText?.let { stringResource(it) },
-        onPrimary = onPrimary,
-        secondaryText = secondaryText?.let { stringResource(it) },
-        onSecondary = onSecondary
-    )
-}
-
-/**
- * A generic feedback component used as a base for error states, empty states, and success messages.
- * This version accepts [StringResource] for title and description.
- *
- * @param title The main title of the feedback.
- * @param description A detailed description of the state.
- * @param imageSource The illustrative image for the feedback.
- * @param modifier The [Modifier] to be applied to the root layout.
- * @param primaryText Text for the primary action button.
- * @param onPrimary Callback for the primary action button.
- * @param secondaryText Text for the secondary action button.
- * @param onSecondary Callback for the secondary action button.
- * @param onClose Callback for the close icon in the toolbar.
- */
-@Composable
-fun AppFeedback(
-    title: StringResource,
-    description: StringResource,
-    imageSource: AppImageSource?,
-    modifier: Modifier = Modifier,
-    primaryText: StringResource? = null,
-    onPrimary: (() -> Unit)? = null,
-    secondaryText: StringResource? = null,
-    onSecondary: (() -> Unit)? = null,
-    onClose: (() -> Unit)? = null,
-) {
-    AppFeedback(
-        title = stringResource(title),
-        description = stringResource(description),
-        imageSource = imageSource,
-        modifier = modifier,
-        primaryText = primaryText?.let { stringResource(it) },
-        onPrimary = onPrimary,
-        secondaryText = secondaryText?.let { stringResource(it) },
-        onSecondary = onSecondary,
-        onClose = onClose
-    )
-}
-
-/**
- * A generic feedback component used as a base for error states, empty states, and success messages.
- * This version accepts raw [String] for title and description.
- *
- * @param title The main title of the feedback.
- * @param description A detailed description of the state.
- * @param imageSource The illustrative image for the feedback.
- * @param modifier The [Modifier] to be applied to the root layout.
- * @param primaryText Text for the primary action button.
- * @param onPrimary Callback for the primary action button.
- * @param secondaryText Text for the secondary action button.
- * @param onSecondary Callback for the secondary action button.
- * @param onClose Callback for the close icon in the toolbar.
- */
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun AppFeedback(
-    title: String,
-    description: String,
-    imageSource: AppImageSource?,
-    modifier: Modifier = Modifier,
-    primaryText: String? = null,
-    onPrimary: (() -> Unit)? = null,
-    secondaryText: String? = null,
-    onSecondary: (() -> Unit)? = null,
-    onClose: (() -> Unit)? = null,
-) {
-    Scaffold(
-        modifier = modifier,
-        topBar = {
-            AppTopBar(
-                actions = {
-                    if (onClose != null) {
-                        IconButton(onClick = onClose) {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = stringResource(Res.string.action_close)
-                            )
-                        }
-                    }
-                }
-            )
-        }
-    ) { paddingValues ->
-        AppFeedbackContent(
-            modifier = Modifier.padding(paddingValues),
-            title = title,
-            description = description,
-            imageSource = imageSource,
-            primaryText = primaryText,
-            onPrimary = onPrimary,
-            secondaryText = secondaryText,
-            onSecondary = onSecondary
-        )
-    }
-}
-
 @Preview
 @Composable
 fun AppFeedbackPreview() {
     DLearnTheme {
         AppFeedback(
+            fullScreen = true,
             title = "Feedback Title",
             description = "This is a detailed description of the feedback state.",
             imageSource = AppImageSource.Resource(Res.drawable.placeholder),
@@ -256,7 +249,7 @@ fun AppFeedbackPreview() {
 @Composable
 fun AppFeedbackContentPreview() {
     DLearnTheme {
-        AppFeedbackContent(
+        AppFeedback(
             title = "Content Title",
             description = "This is the description for the feedback content preview.",
             imageSource = AppImageSource.Resource(Res.drawable.placeholder),

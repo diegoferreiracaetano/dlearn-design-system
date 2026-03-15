@@ -18,7 +18,7 @@ class AppErrorTest {
         var secondaryClicked = false
 
         setContent {
-            AppErrorContent(
+            AppError(
                 throwable = Throwable("Unknown Error"),
                 primaryText = "Retry",
                 secondaryText = "Cancel",
@@ -41,13 +41,14 @@ class AppErrorTest {
     }
 
     @Test
-    fun shouldDisplayGenericErrorAndHandleAllClicks() = runComposeUiTest {
+    fun shouldDisplayGenericErrorFullScreenAndHandleAllClicks() = runComposeUiTest {
         var primaryClicked = false
         var secondaryClicked = false
         var closeClicked = false
 
         setContent {
             AppError(
+                fullScreen = true,
                 throwable = Throwable("Unknown Error"),
                 primaryText = "Retry Action",
                 secondaryText = "Cancel Action",

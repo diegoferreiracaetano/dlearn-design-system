@@ -22,6 +22,7 @@ kotlin {
 
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
         publishLibraryVariants("release") // Publicar apenas a variante release
     }
@@ -41,20 +42,34 @@ kotlin {
                 )
             }
         }
+        iosTarget.compilerOptions {
+            freeCompilerArgs.add("-Xexpect-actual-classes")
+        }
     }
     
     js {
         browser()
         binaries.executable()
+        compilerOptions {
+            freeCompilerArgs.add("-Xexpect-actual-classes")
+        }
     }
     
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
         binaries.executable()
+        compilerOptions {
+            freeCompilerArgs.add("-Xexpect-actual-classes")
+        }
     }
     
     sourceSets {
+        all {
+            languageSettings {
+                optIn("kotlin.experimental.ExperimentalObjCName")
+            }
+        }
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
             implementation(libs.youtube.player.core)

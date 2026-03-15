@@ -50,8 +50,10 @@ actual fun AppYoutubePlayer(
         webView.evaluateJavaScript(jsCommand, null)
     }
 
+    @OptIn(androidx.compose.ui.InternalComposeUiApi::class)
     UIKitView(
         factory = { webView },
-        modifier = modifier
+        modifier = modifier,
+        onRelease = { it.stopLoading() }
     )
 }

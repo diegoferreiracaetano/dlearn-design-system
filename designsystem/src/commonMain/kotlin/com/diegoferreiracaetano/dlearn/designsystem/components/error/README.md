@@ -1,14 +1,17 @@
 # Error Handling System
 
-O sistema de erro do DLearn Design System é composto por uma UI flexível (`AppError`, `AppErrorContent`) e uma fábrica inteligente (`AppErrorFactory`) que mapeia exceções e estado de rede para modelos de erro amigáveis (`AppErrorData`).
+O sistema de erro do DLearn Design System é composto por uma UI flexível (`AppError`) e uma fábrica inteligente (`AppErrorFactory`) que mapeia exceções e estado de rede para modelos de erro amigáveis (`AppErrorData`).
 
 ## Componentes
 
-### `AppErrorContent`
-Um componente de conteúdo que exibe o estado de erro com suporte a ações primárias e secundárias empilhadas verticalmente, sem incluir uma TopBar ou Scaffold. Ideal para uso dentro de outros containers como `AppContainer`.
+### `AppError`
+Um componente versátil que exibe o estado de erro com suporte a ações primárias e secundárias empilhadas verticalmente. Ele pode ser usado como apenas o conteúdo ou em tela cheia.
+
+#### Apenas Conteúdo (Padrão)
+Ideal para uso dentro de outros containers como `AppContainer`.
 
 ```kotlin
-AppErrorContent(
+AppError(
     throwable = exception, // Opcional: determina o tipo de erro via factory
     onPrimary = { /* lógica de tentativa */ },
     primaryText = "Tentar Novamente", // Opcional: padrão é extraído do recurso
@@ -17,16 +20,14 @@ AppErrorContent(
 )
 ```
 
-### `AppError`
-Um componente de tela cheia que encapsula o `AppErrorContent` dentro de um `Scaffold` com uma `AppTopBar`.
+#### Tela Cheia (`fullScreen = true`)
+Encapsula o layout de erro dentro de um `Scaffold` com uma `AppTopBar`.
 
 ```kotlin
 AppError(
+    fullScreen = true,
     throwable = exception, 
     onPrimary = { /* lógica de tentativa */ },
-    primaryText = "Tentar Novamente", 
-    onSecondary = { /* ação secundária */ },
-    secondaryText = "Voltar", 
     onClose = { /* fechar a tela no topo */ }
 )
 ```

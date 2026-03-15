@@ -13,7 +13,7 @@ import kotlin.test.assertTrue
 class AppFeedbackTest {
 
     @Test
-    fun shouldDisplayAllElementsAndHandleClicks() = runComposeUiTest {
+    fun shouldDisplayFullScreenFeedbackAndHandleAllClicks() = runComposeUiTest {
         val title = "Feedback Title"
         val description = "Feedback Description"
         val primaryText = "Primary Action"
@@ -25,6 +25,7 @@ class AppFeedbackTest {
 
         setContent {
             AppFeedback(
+                fullScreen = true,
                 title = title,
                 description = description,
                 imageSource = null,
@@ -49,13 +50,12 @@ class AppFeedbackTest {
         assertTrue(secondaryClicked, "Secondary button was not clicked")
 
         // Verify and click close button (close icon has string resource action_close)
-        // action_close translates to "Fechar" natively. Let's try finding the icon by its text if it has one or rely on the contentDescription.
         onNodeWithContentDescription("Fechar").assertIsDisplayed().performClick()
         assertTrue(closeClicked, "Close button was not clicked")
     }
 
     @Test
-    fun shouldDisplayAllElementsAndHandleClicksInContent() = runComposeUiTest {
+    fun shouldDisplayContentOnlyFeedbackAndHandleClicks() = runComposeUiTest {
         val title = "Content Title"
         val description = "Content Description"
         val primaryText = "Primary Action"
@@ -65,7 +65,8 @@ class AppFeedbackTest {
         var secondaryClicked = false
 
         setContent {
-            AppFeedbackContent(
+            AppFeedback(
+                fullScreen = false,
                 title = title,
                 description = description,
                 imageSource = null,
