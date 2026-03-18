@@ -53,12 +53,14 @@ data class AppBottomNavigation(
  * @property label The display text for the tab.
  * @property selectedIcon The icon to show when the tab is selected.
  * @property unselectedIcon The icon to show when the tab is not selected.
+ * @property topBarConfig The configuration for the TopBar when this tab is selected.
  */
 data class AppNavigationTab(
     val route: String,
     val label: String,
     val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector
+    val unselectedIcon: ImageVector,
+    val topBarConfig: TopBarConfig = TopBarConfig(title = label)
 )
 
 /**

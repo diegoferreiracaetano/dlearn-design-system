@@ -6,6 +6,9 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_close
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_retry
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
@@ -20,23 +23,23 @@ class AppErrorTest {
         setContent {
             AppError(
                 throwable = Throwable("Unknown Error"),
-                primaryText = "Retry",
-                secondaryText = "Cancel",
+                primaryText = Res.string.action_retry,
+                secondaryText = Res.string.action_close,
                 onPrimary = { primaryClicked = true },
                 onSecondary = { secondaryClicked = true }
             )
         }
         
-        // Assert texts from GenericError
+        // Assert texts from GenericError (Actual strings from strings.xml)
         onNodeWithText("Erro Inesperado").assertIsDisplayed()
         onNodeWithText("Ocorreu um erro inesperado. Por favor, tente novamente.").assertIsDisplayed()
         
-        // Primary button
-        onNodeWithText("Retry").assertIsDisplayed().performClick()
+        // Primary button ("Tentar novamente")
+        onNodeWithText("Tentar novamente", ignoreCase = true).assertIsDisplayed().performClick()
         assertTrue(primaryClicked, "Primary button was not clicked")
 
-        // Secondary button
-        onNodeWithText("Cancel").assertIsDisplayed().performClick()
+        // Secondary button ("Fechar")
+        onNodeWithText("Fechar", ignoreCase = true).assertIsDisplayed().performClick()
         assertTrue(secondaryClicked, "Secondary button was not clicked")
     }
 
@@ -50,8 +53,8 @@ class AppErrorTest {
             AppError(
                 fullScreen = true,
                 throwable = Throwable("Unknown Error"),
-                primaryText = "Retry Action",
-                secondaryText = "Cancel Action",
+                primaryText = Res.string.action_retry,
+                secondaryText = Res.string.action_close,
                 onPrimary = { primaryClicked = true },
                 onSecondary = { secondaryClicked = true },
                 onClose = { closeClicked = true }
@@ -63,15 +66,15 @@ class AppErrorTest {
         onNodeWithText("Ocorreu um erro inesperado. Por favor, tente novamente.").assertIsDisplayed()
         
         // Primary button
-        onNodeWithText("Retry Action").assertIsDisplayed().performClick()
+        onNodeWithText("Tentar novamente", ignoreCase = true).assertIsDisplayed().performClick()
         assertTrue(primaryClicked, "Primary button was not clicked")
 
         // Secondary button
-        onNodeWithText("Cancel Action").assertIsDisplayed().performClick()
+        onNodeWithText("Fechar", ignoreCase = true).assertIsDisplayed().performClick()
         assertTrue(secondaryClicked, "Secondary button was not clicked")
 
         // Close button (TopBar)
-        onNodeWithContentDescription("Fechar").assertIsDisplayed().performClick()
+        onNodeWithContentDescription("Fechar", ignoreCase = true).assertIsDisplayed().performClick()
         assertTrue(closeClicked, "Close button was not clicked")
     }
 }

@@ -1,13 +1,14 @@
 package com.diegoferreiracaetano.dlearn.designsystem.components.search
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -19,49 +20,32 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageCircular
+import com.diegoferreiracaetano.dlearn.designsystem.components.feedback.AppFeedback
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
+import com.diegoferreiracaetano.dlearn.designsystem.components.loading.AppLoading
+import com.diegoferreiracaetano.dlearn.designsystem.components.movie.AppMovieItem
+import com.diegoferreiracaetano.dlearn.designsystem.components.movie.MovieItem
+import com.diegoferreiracaetano.dlearn.designsystem.components.movie.MovieItemType
+import com.diegoferreiracaetano.dlearn.designsystem.components.state.AppEmptyState
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_back
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_menu
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_profile
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_search
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.profile_placeholder
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.placeholder
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.search
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.search_placeholder
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-private val PROFILE_IMAGE_SIZE = 32.dp
-
-/**
- * A custom [SearchBar] styled for the application based on Material 3.
- *
- * @param query The current text value of the search field.
- * @param onQueryChange Callback when the search value changes.
- * @param onSearch Callback when the search action is triggered (e.g., keyboard search button).
- * @param active Whether the search bar is currently active (expanded).
- * @param onActiveChange Callback when the active state changes.
- * @param modifier The [Modifier] to be applied to the search bar.
- * @param placeholder The placeholder text to display.
- * @param onMenuClick Callback for the menu icon. If provided, replaces the search icon when not active.
- * @param profileImageSource The source of the profile image to be displayed in the trailing icon slot.
- * @param onProfileClick Callback when the profile image is clicked.
- * @param content The content to display when the search bar is active (e.g., search results or suggestions).
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppSearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
     onSearch: (String) -> Unit,
-    active: Boolean,
-    onActiveChange: (Boolean) -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = stringResource(Res.string.search_placeholder),
-    onMenuClick: (() -> Unit)? = null,
-    profileImageSource: AppImageSource? = null,
-    onProfileClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit = {}
 ) {
     SearchBar(
@@ -70,8 +54,8 @@ fun AppSearchBar(
                 query = query,
                 onQueryChange = onQueryChange,
                 onSearch = onSearch,
-                expanded = active,
-                onExpandedChange = onActiveChange,
+                expanded = true,
+                onExpandedChange = {},
                 placeholder = {
                     Text(
                         text = placeholder,
@@ -79,18 +63,19 @@ fun AppSearchBar(
                     )
                 },
                 leadingIcon = {
-                    if (active) {
-                        IconButton(onClick = { onActiveChange(false) }) {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = null
+                        )
+                    }
+                },
+                trailingIcon = {
+                    if (query.isNotEmpty()) {
+                        IconButton(onClick = { onQueryChange("") }) {
                             Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(Res.string.action_back)
-                            )
-                        }
-                    } else if (onMenuClick != null) {
-                        IconButton(onClick = onMenuClick) {
-                            Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = stringResource(Res.string.action_menu)
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = null
                             )
                         }
                     } else {
@@ -99,62 +84,116 @@ fun AppSearchBar(
                             contentDescription = stringResource(Res.string.action_search)
                         )
                     }
-                },
-                trailingIcon = {
-                    if (active) {
-                        if (query.isNotEmpty()) {
-                            IconButton(onClick = { onQueryChange("") }) {
-                                Icon(
-                                    imageVector = Icons.Default.Clear,
-                                    contentDescription = null
-                                )
-                            }
-                        }
-                    } else {
-                        if (profileImageSource != null || onProfileClick != null) {
-                            IconButton(onClick = { onProfileClick?.invoke() }) {
-                                AppImageCircular(
-                                    modifier = Modifier.size(PROFILE_IMAGE_SIZE),
-                                    source = profileImageSource,
-                                    contentDescription = stringResource(Res.string.action_profile)
-                                )
-                            }
-                        } else {
-                            Icon(
-                                imageVector = Icons.Default.Search,
-                                contentDescription = stringResource(Res.string.action_search)
-                            )
-                        }
-                    }
                 }
             )
         },
-        expanded = active,
-        onExpandedChange = onActiveChange,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = if (active) 0.dp else 16.dp),
+        expanded = true,
+        onExpandedChange = {},
+        modifier = modifier.fillMaxWidth(),
         colors = SearchBarDefaults.colors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
         ),
-        content = {
-            content()
-        }
+        content = content
     )
 }
 
 @Preview
 @Composable
-fun AppSearchBarPreview() {
+fun AppSearchBarSuccessPreview() {
+    val sampleMovies = List(5) { index ->
+        MovieItem(
+            id = index.toString(),
+            title = "Spider-Man No Way Home $index",
+            imageSource = AppImageSource.Resource(Res.drawable.banner),
+            rating = 4.5,
+            year = "2021",
+            duration = "148 Minutes",
+            contentRating = "PG-13",
+            genre = "Action",
+            type = "Movie",
+            isPremium = true
+        )
+    }
+
     DLearnTheme {
         AppSearchBar(
-            query = "",
+            query = "Spider-Man",
             onQueryChange = {},
             onSearch = {},
-            active = false,
-            onActiveChange = {},
-            onMenuClick = {},
-            profileImageSource = AppImageSource.Resource(Res.drawable.profile_placeholder)
+            onBackClick = {},
+            content = {
+                LazyColumn(
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(sampleMovies) { movie ->
+                        AppMovieItem(
+                            movie = movie,
+                            onClick = {},
+                            type = MovieItemType.HORIZONTAL
+                        )
+                    }
+                }
+            }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun AppSearchBarLoadingPreview() {
+    DLearnTheme {
+        AppSearchBar(
+            query = "Spider-Man",
+            onQueryChange = {},
+            onSearch = {},
+            onBackClick = {},
+            content = {
+                AppLoading()
+            }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun AppSearchBarEmptyPreview() {
+    DLearnTheme {
+        AppSearchBar(
+            query = "Unknown Movie",
+            onQueryChange = {},
+            onSearch = {},
+            onBackClick = {},
+            content = {
+                AppEmptyState(
+                    title = "Nenhum resultado encontrado",
+                    description = "Não encontramos filmes para \"Unknown Movie\". Tente outros termos.",
+                    imageSource = AppImageSource.Resource(Res.drawable.search)
+                )
+            }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun AppSearchBarErrorPreview() {
+    DLearnTheme {
+        AppSearchBar(
+            query = "Spider-Man",
+            onQueryChange = {},
+            onSearch = {},
+            onBackClick = {},
+            content = {
+                AppFeedback(
+                    title = "Erro de conexão",
+                    description = "Ocorreu um problema ao buscar os filmes. Verifique sua internet.",
+                    imageSource = AppImageSource.Resource(Res.drawable.placeholder),
+                    primaryText = "Tentar novamente",
+                    onPrimary = {}
+                )
+            }
         )
     }
 }

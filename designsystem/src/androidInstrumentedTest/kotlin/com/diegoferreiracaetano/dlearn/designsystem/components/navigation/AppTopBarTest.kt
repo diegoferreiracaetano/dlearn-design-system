@@ -6,10 +6,8 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.runComposeUiTest
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalTestApi::class, ExperimentalMaterial3Api::class)
@@ -74,22 +72,17 @@ class AppTopBarTest {
     }
 
     @Test
-    fun shouldEnterSearchModeWhenSearchIconIsClicked() = runComposeUiTest {
-        var searchValue = ""
+    fun shouldTriggerOnSearchClickWhenSearchIconIsClicked() = runComposeUiTest {
+        var searchClicked = false
         setContent {
             AppTopBar(
-                onSearchValueChange = { searchValue = it },
-                searchValue = searchValue
+                onSearchClick = { searchClicked = true }
             )
         }
 
         // Open search
         onNodeWithContentDescription("Pesquisar", ignoreCase = true).performClick()
-        
-        // Type in search
-        val query = "Kotlin"
-        onNodeWithText("Pesquisar...", ignoreCase = true).performTextInput(query)
 
-        assertEquals(query, searchValue)
+        assertTrue(searchClicked)
     }
 }

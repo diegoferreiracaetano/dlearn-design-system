@@ -37,14 +37,7 @@ fun AppYoutubePlayerPreview() {
                     title = stringResource(Res.string.youtube_player_title),
                     subtitle = "dQw4w9WgXcQ",
                     onBack = {},
-                    actions = {
-                        Icon(
-                            imageVector = Icons.Default.Favorite,
-                            contentDescription = null,
-                            tint = Color.Red,
-                            modifier = Modifier.padding(end = 16.dp)
-                        )
-                    }
+                    onFavorite = {}
                 )
             }
         ) { containerModifier ->

@@ -112,16 +112,7 @@ fun AppFeedback(
             modifier = modifier,
             topBar = {
                 AppTopBar(
-                    actions = {
-                        if (onClose != null) {
-                            IconButton(onClick = onClose) {
-                                Icon(
-                                    imageVector = Icons.Default.Close,
-                                    contentDescription = stringResource(Res.string.action_close)
-                                )
-                            }
-                        }
-                    }
+                    onBack = onClose
                 )
             }
         ) { paddingValues ->

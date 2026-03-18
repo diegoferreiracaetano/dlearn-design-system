@@ -52,6 +52,9 @@ private fun AppScaffoldContent(
     bottomBar: @Composable (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState,
     scrollBehavior: TopAppBarScrollBehavior,
+    isLoading: Boolean = false,
+    error: Throwable? = null,
+    onRetry: (() -> Unit)? = null,
     content: @Composable (Modifier) -> Unit
 ) {
     Scaffold(
@@ -86,7 +89,21 @@ private fun AppScaffoldContent(
                 .fillMaxSize(),
             contentAlignment = Alignment.TopCenter
         ) {
-            content(baseModifier)
+            when {
+                isLoading -> {
+                    AppLoading(modifier = Modifier.fillMaxSize())
+                }
+                error != null -> {
+                    AppError(
+                        throwable = error,
+                        onPrimary = onRetry,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                else -> {
+                    content(baseModifier)
+                }
+            }
         }
     }
 }
@@ -122,6 +139,9 @@ fun AppContainer(
     bottomBar: @Composable (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState()),
+    isLoading: Boolean = false,
+    error: Throwable? = null,
+    onRetry: (() -> Unit)? = null,
     content: @Composable (Modifier) -> Unit
 ) {
     if (drawerContent != null) {
@@ -145,6 +165,9 @@ fun AppContainer(
                             bottomBar = bottomBar,
                             snackBarHostState = snackBarHostState,
                             scrollBehavior = scrollBehavior,
+                            isLoading = isLoading,
+                            error = error,
+                            onRetry = onRetry,
                             content = content
                         )
                     }
@@ -176,6 +199,9 @@ fun AppContainer(
                             bottomBar = bottomBar,
                             snackBarHostState = snackBarHostState,
                             scrollBehavior = scrollBehavior,
+                            isLoading = isLoading,
+                            error = error,
+                            onRetry = onRetry,
                             content = content
                         )
                     }
@@ -191,6 +217,9 @@ fun AppContainer(
             bottomBar = bottomBar,
             snackBarHostState = snackBarHostState,
             scrollBehavior = scrollBehavior,
+            isLoading = isLoading,
+            error = error,
+            onRetry = onRetry,
             content = content
         )
     }

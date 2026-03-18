@@ -12,12 +12,12 @@ import kotlin.test.Test
 class ScreenLoadingTest {
 
     @Test
-    fun shouldDisplayScreenLoadingWhenRendered() = runComposeUiTest {
-        val testTag = "ScreenLoading"
+    fun shouldDisplayAppLoadingWhenRendered() = runComposeUiTest {
+        // ScreenLoading was removed/renamed to AppLoading in this refactor
         setContent {
-            ScreenLoading(modifier = Modifier.testTag(testTag))
+            AppLoading(modifier = Modifier.testTag("AppLoading"))
         }
 
-        onNodeWithTag(testTag).assertIsDisplayed()
+        onNodeWithTag("AppLoading").assertIsDisplayed()
     }
 }

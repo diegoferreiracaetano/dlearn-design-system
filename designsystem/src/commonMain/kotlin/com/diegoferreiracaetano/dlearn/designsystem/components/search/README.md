@@ -1,29 +1,54 @@
 # AppSearchBar
-Barra de busca baseada no Material 3 SearchBar, com suporte a estados ativo/inativo e sugestões.
 
-### Props
-| Prop | Tipo | Padrão | Descrição |
+Barra de busca simplificada baseada no Material 3 SearchBar. Ela é projetada para estar sempre ativa/expandida, focada na funcionalidade de busca com um botão de navegação para voltar.
+
+## Propriedades
+
+| Propriedade | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
-| `query` | `String` | - | O valor atual da busca. |
-| `onQueryChange` | `(String) -> Unit` | - | Callback invocado quando o texto muda. |
-| `onSearch` | `(String) -> Unit` | - | Callback invocado ao disparar a busca (ex: botão de busca do teclado). |
-| `active` | `Boolean` | - | Controla se a barra de busca está expandida (ativa). |
-| `onActiveChange` | `(Boolean) -> Unit` | - | Callback invocado quando o estado ativo muda. |
-| `placeholder` | `String` | `Res.string.search_placeholder` | Texto exibido quando o campo está vazio. |
-| `content` | `@Composable ColumnScope.() -> Unit` | `{}` | Conteúdo exibido quando a barra está ativa (sugestões, histórico). |
+| `query` | `String` | - | O valor atual do texto no campo de busca. |
+| `onQueryChange` | `(String) -> Unit` | - | Callback invocado quando o texto da busca é alterado. |
+| `onSearch` | `(String) -> Unit` | - | Callback invocado quando a ação de busca é disparada (ex: tecla enter). |
+| `onBackClick` | `() -> Unit` | - | Callback invocado ao clicar no botão de voltar (ícone à esquerda). |
+| `modifier` | `Modifier` | `Modifier` | O modificador a ser aplicado à barra de busca. |
+| `placeholder` | `String` | `Res.string.search_placeholder` | Texto de placeholder exibido quando o campo está vazio. |
+| `content` | `@Composable ColumnScope.() -> Unit` | `{}` | Conteúdo exibido abaixo do campo de entrada (resultados, loading, erro). |
 
-### Usage
+## Estados Suportados
+
+O componente é flexível e permite exibir diferentes estados através do parâmetro `content`:
+
+1.  **Sucesso**: Exiba uma lista de resultados (ex: `LazyColumn` com `AppMovieItem`).
+2.  **Carregamento**: Use o componente `AppLoading`.
+3.  **Vazio**: Use o componente `AppEmptyState`.
+4.  **Erro**: Use o componente `AppFeedback`.
+
+## Exemplo de Uso
+
 ```kotlin
 var query by remember { mutableStateOf("") }
-var active by remember { mutableStateOf(false) }
 
 AppSearchBar(
     query = query,
     onQueryChange = { query = it },
-    onSearch = { active = false },
-    active = active,
-    onActiveChange = { active = it }
+    onSearch = { /* Executar busca */ },
+    onBackClick = { /* Navegar de volta */ },
+    placeholder = "Buscar filmes..."
 ) {
-    // Sugestões ou histórico de busca aqui
+    if (isLoading) {
+        AppLoading()
+    } else if (results.isEmpty()) {
+        AppEmptyState(
+            title = "Sem resultados",
+            description = "Tente buscar por outro termo.",
+            imageSource = AppImageSource.Resource(Res.drawable.search)
+        )
+    } else {
+        LazyColumn {
+            items(results) { movie ->
+                AppMovieItem(movie = movie, onClick = { /* ... */ })
+            }
+        }
+    }
 }
 ```
