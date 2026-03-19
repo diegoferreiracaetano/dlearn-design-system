@@ -80,4 +80,7 @@
 
     <string name="error_server_title">Erro no Servidor</string>
     <string name="error_server_description">Ocorreu um erro em nossos servidores. Nossa equipe já foi notificada. Tente novamente mais tarde.</string>
+
+    <string name="error_service_unavailable_title">Serviço Indisponível</string>
+    <string name="error_service_unavailable_description">O serviço está temporariamente indisponível para manutenção. Por favor, tente novamente em instantes.</string>
 </resources>
