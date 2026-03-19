@@ -1,5 +1,9 @@
 package com.diegoferreiracaetano.dlearn.designsystem.components.navigation
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -67,7 +71,13 @@ private fun AppScaffoldContent(
         topBar = {
             if (topBar != null || searchBar != null || chipGroup != null) {
                 Column {
-                    topBar?.invoke()
+                    AnimatedContent(
+                        targetState = topBar,
+                        transitionSpec = { fadeIn() togetherWith fadeOut() },
+                        label = "TopBarTransition"
+                    ) { currentTopBar ->
+                        currentTopBar?.invoke()
+                    }
                     searchBar?.invoke()
                     chipGroup?.invoke()
                 }
@@ -101,7 +111,13 @@ private fun AppScaffoldContent(
                     )
                 }
                 else -> {
-                    content(baseModifier)
+                    AnimatedContent(
+                        targetState = content,
+                        transitionSpec = { fadeIn() togetherWith fadeOut() },
+                        label = "ContentTransition"
+                    ) { currentContent ->
+                        currentContent(baseModifier)
+                    }
                 }
             }
         }
