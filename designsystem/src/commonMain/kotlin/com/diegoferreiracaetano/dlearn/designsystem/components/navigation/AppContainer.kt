@@ -15,6 +15,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,8 +38,11 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -252,6 +262,46 @@ fun AppContainerPreview() {
         ) { modifier ->
             Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text("Content Screen")
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun AppContainerWithListTopBarPreview() {
+    DLearnTheme(darkTheme = true) {
+        var selectedRoute by remember { mutableStateOf("home") }
+        val configs = listOf(
+            TopBarConfig(route = "home", title = "Página Inicial"),
+            TopBarConfig(route = "search", title = "Pesquisar"),
+            TopBarConfig(route = "profile", title = "Meu Perfil")
+        )
+
+        val navigationTabs = listOf(
+            AppNavigationTab("home", "Home", Icons.Filled.Home, Icons.Outlined.Home),
+            AppNavigationTab("search", "Busca", Icons.Filled.Search, Icons.Outlined.Search),
+            AppNavigationTab("profile", "Perfil", Icons.Filled.Person, Icons.Outlined.Person)
+        )
+
+        AppContainer(
+            topBar = {
+                AppTopBar(
+                    configs = configs,
+                    selectedRoute = selectedRoute
+                )
+            },
+            bottomBar = {
+                AppBottomNavigationBar(
+                    selectedRoute = selectedRoute,
+                    onTabSelected = { selectedRoute = it },
+                    items = navigationTabs
+                )
+            }
+        ) { modifier ->
+            Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("Conteúdo da Rota: $selectedRoute")
             }
         }
     }

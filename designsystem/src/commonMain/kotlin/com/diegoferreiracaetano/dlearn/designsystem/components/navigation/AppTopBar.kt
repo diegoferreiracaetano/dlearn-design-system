@@ -43,6 +43,7 @@ private val PROFILE_IMAGE_SIZE = 32.dp
 /**
  * Configuration for the TopBar that can be dynamically applied.
  *
+ * @property route The route identifier for this configuration.
  * @property title The title to display in the TopBar.
  * @property subtitle The optional subtitle to display.
  * @property onBack Optional callback for back navigation.
@@ -55,6 +56,7 @@ private val PROFILE_IMAGE_SIZE = 32.dp
  * @property onProfileClick Optional callback for profile action.
  */
 data class TopBarConfig(
+    val route: String? = null,
     val title: String? = null,
     val subtitle: String? = null,
     val onBack: (() -> Unit)? = null,
@@ -125,6 +127,13 @@ fun AppTopBar(
     }
 }
 
+/**
+ * A custom [TopAppBar] that uses a [TopBarConfig] to determine its state.
+ *
+ * @param config The [TopBarConfig] to use.
+ * @param modifier The [Modifier] to be applied to the top bar.
+ * @param scrollBehavior The [TopAppBarScrollBehavior] to use.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar(
@@ -145,6 +154,30 @@ fun AppTopBar(
         scrollBehavior = scrollBehavior,
         profileImageSource = config.profileImageSource,
         onProfileClick = config.onProfileClick
+    )
+}
+
+/**
+ * A custom [TopAppBar] that selects the appropriate configuration from a list based on the selected route.
+ *
+ * @param configs The list of [TopBarConfig] to choose from.
+ * @param selectedRoute The currently selected route.
+ * @param modifier The [Modifier] to be applied to the top bar.
+ * @param scrollBehavior The [TopAppBarScrollBehavior] to use.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppTopBar(
+    configs: List<TopBarConfig>,
+    selectedRoute: String,
+    modifier: Modifier = Modifier,
+    scrollBehavior: TopAppBarScrollBehavior? = null,
+) {
+    val config = configs.find { it.route == selectedRoute } ?: TopBarConfig()
+    AppTopBar(
+        config = config,
+        modifier = modifier,
+        scrollBehavior = scrollBehavior
     )
 }
 
@@ -317,6 +350,14 @@ fun AppTopBarComponentPreview() {
                 onBack = {},
                 onFavorite = {},
                 onProfileClick = {}
+            )
+
+            AppTopBar(
+                configs = listOf(
+                    TopBarConfig(route = "home", title = "Home"),
+                    TopBarConfig(route = "favorites", title = "Favorites")
+                ),
+                selectedRoute = "home"
             )
         }
     }

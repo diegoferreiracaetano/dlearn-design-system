@@ -1,6 +1,9 @@
 package com.diegoferreiracaetano.dlearn.designsystem.components.navigation
 
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -84,5 +87,24 @@ class AppTopBarTest {
         onNodeWithContentDescription("Pesquisar", ignoreCase = true).performClick()
 
         assertTrue(searchClicked)
+    }
+
+    @Test
+    fun shouldUpdateContentWhenSelectedRouteChangesInList() = runComposeUiTest {
+        val configs = listOf(
+            TopBarConfig(route = "home", title = "Home Screen"),
+            TopBarConfig(route = "settings", title = "Settings Screen")
+        )
+        var selectedRoute by mutableStateOf("home")
+
+        setContent {
+            AppTopBar(configs = configs, selectedRoute = selectedRoute)
+        }
+
+        onNodeWithText("Home Screen").assertIsDisplayed()
+
+        selectedRoute = "settings"
+
+        onNodeWithText("Settings Screen").assertIsDisplayed()
     }
 }

@@ -37,10 +37,26 @@ A flexible top app bar that supports titles, subtitles, navigation icons, and ac
 
 ### TopBarConfig
 Used to configure the `AppTopBar` dynamically.
-- `title`, `subtitle`
-- `onBack`, `onMenuClick`, `onSearchClick`, `onFavorite`
-- `useTransparent`, `backgroundColor`
-- `profileImageSource`, `onProfileClick`
+- `route`: Unique identifier used for automatic selection in lists.
+- `title`, `subtitle`: Main and secondary text labels.
+- `onBack`, `onMenuClick`, `onSearchClick`, `onFavorite`: Action callbacks.
+- `useTransparent`, `backgroundColor`: Styling for overlay or immersive headers.
+- `profileImageSource`, `onProfileClick`: User profile integration.
+
+### List-based usage
+You can provide a list of configurations that automatically syncs with a `selectedRoute`. This is ideal for main navigation where each tab has a different toolbar.
+
+```kotlin
+val configs = listOf(
+    TopBarConfig(route = "home", title = "Home"),
+    TopBarConfig(route = "search", title = "Search")
+)
+
+AppTopBar(
+    configs = configs,
+    selectedRoute = currentRoute
+)
+```
 
 ---
 
