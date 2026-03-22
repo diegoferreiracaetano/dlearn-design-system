@@ -39,6 +39,7 @@ import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.title_pa
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import kotlinx.coroutines.flow.distinctUntilChanged
 import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -60,8 +61,19 @@ data class TextRowItem(
     val value: StringResource? = null,
     val leadingIcon: ImageVector? = null,
     val isEnabled: Boolean = false,
+    val trailingIcon: ImageVector? = null,
     val onClick: (() -> Unit)? = null,
     val onCheckedChange: ((Boolean) -> Unit)? = null
+) : AppListItem
+
+/**
+ * A row item designed for selection.
+ */
+data class SelectableRowItem(
+    val label: StringResource? = null,
+    val labelString: String? = null,
+    val isSelected: Boolean,
+    val onClick: () -> Unit
 ) : AppListItem
 
 /**
@@ -179,23 +191,29 @@ fun AppList(
             when (item) {
                 is SectionTitleItem -> AppSectionTitle(title = item.title)
                 is TextRowItem -> {
-                    if (item.value != null) {
-                        AppTextRow(
+                    AppTextRow(
+                        label = stringResource(item.label),
+                        value = item.valueString ?: item.value?.let { stringResource(it) },
+                        leadingIcon = item.leadingIcon,
+                        isEnabled = item.isEnabled,
+                        trailingIcon = item.trailingIcon,
+                        onClick = item.onClick,
+                        onCheckedChange = item.onCheckedChange
+                    )
+                }
+
+                is SelectableRowItem -> {
+                    if (item.label != null) {
+                        AppSelectableRow(
                             label = item.label,
-                            value = item.value,
-                            leadingIcon = item.leadingIcon,
-                            isEnabled = item.isEnabled,
-                            onClick = item.onClick,
-                            onCheckedChange = item.onCheckedChange
+                            isSelected = item.isSelected,
+                            onClick = item.onClick
                         )
-                    } else {
-                        AppTextRow(
-                            label = item.label,
-                            value = item.valueString,
-                            leadingIcon = item.leadingIcon,
-                            isEnabled = item.isEnabled,
-                            onClick = item.onClick,
-                            onCheckedChange = item.onCheckedChange
+                    } else if (item.labelString != null) {
+                        AppSelectableRow(
+                            label = item.labelString,
+                            isSelected = item.isSelected,
+                            onClick = item.onClick
                         )
                     }
                 }
