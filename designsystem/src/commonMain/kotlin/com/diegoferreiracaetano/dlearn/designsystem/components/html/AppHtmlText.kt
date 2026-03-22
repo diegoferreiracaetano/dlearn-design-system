@@ -1,9 +1,15 @@
 package com.diegoferreiracaetano.dlearn.designsystem.components.html
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -18,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.diegoferreiracaetano.dlearn.designsystem.components.navigation.AppTopBar
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -32,6 +39,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  * - <s>, <strike>: Strikethrough text
  * - <a>: Colored and underlined text (links)
  * - <br>: Line break
+ * - <p>: Paragraph (adds spacing)
  * - <h1>, <h2>, <h3>: Headings
  *
  * @param html The HTML string to be rendered.
@@ -39,6 +47,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  * @param style The [TextStyle] to be applied as the base style.
  * @param color The base color for the text. If [Color.Unspecified], uses the default from [style].
  * @param linkColor The color to be used for <a> tags. Defaults to the theme's primary color.
+ * @param headingColor The color to be used for headings. Defaults to onSurface.
  */
 @Composable
 fun AppHtmlText(
@@ -46,16 +55,18 @@ fun AppHtmlText(
     modifier: Modifier = Modifier,
     style: TextStyle = MaterialTheme.typography.bodyMedium,
     color: Color = Color.Unspecified,
-    linkColor: Color = MaterialTheme.colorScheme.primary
+    linkColor: Color = MaterialTheme.colorScheme.primary,
+    headingColor: Color = MaterialTheme.colorScheme.onSurface
 ) {
     val h1Size = MaterialTheme.typography.headlineLarge.fontSize
     val h2Size = MaterialTheme.typography.headlineMedium.fontSize
-    val h3Size = MaterialTheme.typography.headlineSmall.fontSize
+    val h3Size = MaterialTheme.typography.titleLarge.fontSize
 
-    val annotatedString = remember(html, linkColor, h1Size, h2Size, h3Size) {
+    val annotatedString = remember(html, linkColor, headingColor, h1Size, h2Size, h3Size) {
         HtmlParser.parse(
             html = html,
             linkColor = linkColor,
+            headingColor = headingColor,
             h1Size = h1Size,
             h2Size = h2Size,
             h3Size = h3Size
@@ -65,79 +76,143 @@ fun AppHtmlText(
     Text(
         text = annotatedString,
         modifier = modifier,
-        style = style,
+        style = style.copy(
+            lineHeight = style.fontSize * 1.4
+        ),
         color = color
     )
 }
 
 internal object HtmlParser {
+
+    private val tagRegex = Regex("<(/?)([a-zA-Z0-9]+)([^>]*)>")
+
     fun parse(
         html: String,
         linkColor: Color,
-        h1Size: TextUnit = TextUnit.Unspecified,
-        h2Size: TextUnit = TextUnit.Unspecified,
-        h3Size: TextUnit = TextUnit.Unspecified
+        headingColor: Color,
+        h1Size: TextUnit,
+        h2Size: TextUnit,
+        h3Size: TextUnit
     ): AnnotatedString {
         return buildAnnotatedString {
-            var currentIndex = 0
-            val tagRegex = Regex("<(/?[a-z1-6]+)([^>]*)>")
-            
-            val matches = tagRegex.findAll(html)
-            val tagStack = mutableListOf<TagInfo>()
+            val stack = mutableListOf<String>()
+            var lastIndex = 0
 
-            matches.forEach { match ->
-                val textBefore = html.substring(currentIndex, match.range.first)
-                append(textBefore)
+            tagRegex.findAll(html).forEach { match ->
+                val (closingSlash, tag, attrs) = match.destructured
+                val tagName = tag.lowercase()
 
-                val tagName = match.groupValues[1].lowercase()
-                val isClosing = tagName.startsWith("/")
-                val actualTagName = if (isClosing) tagName.substring(1) else tagName
+                // Texto antes da tag
+                val text = html.substring(lastIndex, match.range.first)
+                append(decodeHtml(text))
 
-                if (isClosing) {
-                    val lastTag = tagStack.lastOrNull { it.name == actualTagName }
-                    if (lastTag != null) {
-                        // Close tag: pop all styles until this one
-                        while (tagStack.isNotEmpty()) {
-                            val popped = tagStack.removeAt(tagStack.size - 1)
-                            pop()
-                            if (popped.name == actualTagName) break
+                val isClosing = closingSlash.isNotEmpty()
+
+                if (!isClosing) {
+                    when (tagName) {
+                        "br" -> append("\n")
+                        "b", "strong" -> pushStyleAndTrack(tagName, SpanStyle(fontWeight = FontWeight.Bold), stack)
+                        "i", "em" -> pushStyleAndTrack(tagName, SpanStyle(fontStyle = FontStyle.Italic), stack)
+                        "u" -> pushStyleAndTrack(tagName, SpanStyle(textDecoration = TextDecoration.Underline), stack)
+                        "s", "strike" -> pushStyleAndTrack(tagName, SpanStyle(textDecoration = TextDecoration.LineThrough), stack)
+                        "p" -> {
+                            if (length > 0) append("\n")
+                        }
+                        "a" -> {
+                            val href = extractHref(attrs)
+                            pushStyle(SpanStyle(color = linkColor, textDecoration = TextDecoration.Underline))
+                            if (href != null) {
+                                pushStringAnnotation("URL", href)
+                            }
+                            stack.add(tagName)
+                        }
+
+                        "h1" -> {
+                            append("\n")
+                            pushStyleAndTrack(tagName, SpanStyle(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = h1Size,
+                                color = headingColor
+                            ), stack)
+                        }
+
+                        "h2" -> {
+                            append("\n")
+                            pushStyleAndTrack(tagName, SpanStyle(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = h2Size,
+                                color = headingColor
+                            ), stack)
+                        }
+
+                        "h3" -> {
+                            append("\n")
+                            pushStyleAndTrack(tagName, SpanStyle(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = h3Size,
+                                color = headingColor
+                            ), stack)
                         }
                     }
                 } else {
-                    if (actualTagName == "br") {
+                    closeTag(tagName, stack)
+                    if (tagName in listOf("p", "h1", "h2", "h3")) {
                         append("\n")
-                    } else {
-                        val spanStyle = when (actualTagName) {
-                            "b", "strong" -> SpanStyle(fontWeight = FontWeight.Bold)
-                            "i", "em" -> SpanStyle(fontStyle = FontStyle.Italic)
-                            "u" -> SpanStyle(textDecoration = TextDecoration.Underline)
-                            "s", "strike" -> SpanStyle(textDecoration = TextDecoration.LineThrough)
-                            "a" -> SpanStyle(color = linkColor, textDecoration = TextDecoration.Underline)
-                            "h1" -> SpanStyle(fontWeight = FontWeight.Bold, fontSize = h1Size)
-                            "h2" -> SpanStyle(fontWeight = FontWeight.Bold, fontSize = h2Size)
-                            "h3" -> SpanStyle(fontWeight = FontWeight.Bold, fontSize = h3Size)
-                            else -> null
-                        }
-                        
-                        if (spanStyle != null) {
-                            pushStyle(spanStyle)
-                            tagStack.add(TagInfo(actualTagName, spanStyle))
-                        }
                     }
                 }
-                currentIndex = match.range.last + 1
+
+                lastIndex = match.range.last + 1
             }
-            
-            if (currentIndex < html.length) {
-                append(html.substring(currentIndex))
+
+            // resto do texto
+            if (lastIndex < html.length) {
+                append(decodeHtml(html.substring(lastIndex)))
             }
-            
-            // Close any remaining tags
-            repeat(tagStack.size) { pop() }
+
+            // limpa stack
+            repeat(stack.size) { pop() }
         }
     }
 
-    private data class TagInfo(val name: String, val style: SpanStyle)
+    private fun AnnotatedString.Builder.pushStyleAndTrack(
+        tag: String,
+        style: SpanStyle,
+        stack: MutableList<String>
+    ) {
+        pushStyle(style)
+        stack.add(tag)
+    }
+
+    private fun AnnotatedString.Builder.closeTag(
+        tag: String,
+        stack: MutableList<String>
+    ) {
+        while (stack.isNotEmpty()) {
+            val last = stack.removeAt(stack.lastIndex)
+
+            if (last == "a") {
+                pop() // annotation
+            }
+
+            pop() // style
+
+            if (last == tag) break
+        }
+    }
+
+    private fun extractHref(attrs: String): String? {
+        val match = Regex("href\\s*=\\s*['\"](.*?)['\"]").find(attrs)
+        return match?.groupValues?.get(1)
+    }
+
+    private fun decodeHtml(text: String): String {
+        return text
+            .replace("&nbsp;", " ")
+            .replace("&amp;", "&")
+            .replace("&lt;", "<")
+            .replace("&gt;", ">")
+    }
 }
 
 @Preview
@@ -150,15 +225,53 @@ fun AppHtmlTextPreview() {
         ) {
             AppHtmlText(
                 html = "<h3>Terms</h3>" +
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. <br><br>" +
+                        "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. </p>" +
                         "<h3>Changes to the Service and/or Terms:</h3>" +
-                        "<s><u>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. Sapien, consequat ultrices morbi orci semper sit nulla.</u></s>"
+                        "<p><s><u>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. Sapien, consequat ultrices morbi orci semper sit nulla.</u></s></p>"
             )
 
             AppHtmlText(
                 html = "Check our <a href='https://google.com'>Privacy Policy</a> for more details.",
                 style = MaterialTheme.typography.bodyLarge
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun AppPrivacyPolicyPreview() {
+    DLearnTheme(darkTheme = true) {
+        Scaffold(
+            topBar = {
+                AppTopBar(
+                    title = "Privacy Policy",
+                    onBack = {}
+                )
+            }
+        ) { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(paddingValues)
+                    .padding(horizontal = 24.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                AppHtmlText(
+                    html = """
+                        <h3>Terms</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. Sapien, consequat ultrices morbi orci semper sit nulla. Leo auctor ut etiam est, amet aliquet ut vivamus. Odio vulputate est id tincidunt fames.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. Sapien, consequat ultrices morbi orci semper sit nulla. Leo auctor ut etiam est, amet aliquet ut vivamus. Odio vulputate est id tincidunt fames.</p>
+                        <h3>Changes to the Service and/or Terms:</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. Sapien, consequat ultrices morbi orci semper sit nulla. Leo auctor ut etiam est, amet aliquet ut vivamus. Odio vulputate est id tincidunt fames.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. Sapien, consequat ultrices morbi orci semper sit nulla. Leo auctor ut etiam est, amet aliquet ut vivamus. Odio vulputate est id tincidunt fames.</p>
+                    """.trimIndent(),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
         }
     }
 }
