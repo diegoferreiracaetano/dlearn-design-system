@@ -87,7 +87,7 @@ fun AppCarousel(
     title: String? = null,
     isPager: Boolean = true,
     spacing: Dp = if (isPager) 0.dp else 8.dp,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    contentPadding: PaddingValues = if (isPager) PaddingValues(0.dp) else PaddingValues(horizontal = 16.dp),
     pagerState: PagerState = rememberPagerState { itemCount },
     showIndicator: Boolean = isPager,
     itemContent: @Composable (index: Int) -> Unit,
@@ -186,8 +186,7 @@ fun AppCarouselListPreview() {
         AppCarousel(
             itemCount = 5,
             title = "List Carousel",
-            isPager = false,
-            contentPadding = PaddingValues(horizontal = 16.dp),
+            isPager = false
         ) { index ->
             Box(
                 modifier = Modifier
