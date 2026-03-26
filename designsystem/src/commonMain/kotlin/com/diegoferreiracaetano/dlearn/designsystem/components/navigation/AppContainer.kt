@@ -51,6 +51,7 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.alert.AppSnackbar
 import com.diegoferreiracaetano.dlearn.designsystem.components.chip.AppChipGroup
 import com.diegoferreiracaetano.dlearn.designsystem.components.chip.AppChipItem
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.AppError
+import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.AppErrorData
 import com.diegoferreiracaetano.dlearn.designsystem.components.loading.AppLoading
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import kotlinx.coroutines.launch
@@ -60,15 +61,15 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 private fun AppScaffoldContent(
     modifier: Modifier = Modifier,
+    isLoading: Boolean = false,
+    error: AppErrorData? = null,
+    onRetry: (() -> Unit)? = null,
     topBar: @Composable (() -> Unit)? = null,
     searchBar: @Composable (() -> Unit)? = null,
     chipGroup: @Composable (() -> Unit)? = null,
     bottomBar: @Composable (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState,
     scrollBehavior: TopAppBarScrollBehavior,
-    isLoading: Boolean = false,
-    error: Throwable? = null,
-    onRetry: (() -> Unit)? = null,
     content: @Composable (Modifier) -> Unit
 ) {
     Scaffold(
@@ -111,13 +112,13 @@ private fun AppScaffoldContent(
         ) {
             when {
                 isLoading -> {
-                    AppLoading(modifier = Modifier.fillMaxSize())
+                    AppLoading(modifier = baseModifier)
                 }
                 error != null -> {
                     AppError(
-                        throwable = error,
-                        onPrimary = onRetry,
-                        modifier = Modifier.fillMaxSize()
+                        errorData = error,
+                        modifier = baseModifier,
+                        onPrimary = onRetry
                     )
                 }
                 else -> {
@@ -137,9 +138,13 @@ private fun AppScaffoldContent(
 /**
  * A root container component that provides a common layout structure including a top bar,
  * bottom bar, navigation drawer, and snackbar host. It automatically handles responsive
- * drawer behavior (modal for small screens, permanent for large screens).
+ * drawer behavior (modal for small screens, permanent for large screens) and centralized
+ * loading/error states.
  *
  * @param modifier The [Modifier] to be applied to the container.
+ * @param isLoading Displays a centered loading state if true.
+ * @param error Displays an error state if provided.
+ * @param onRetry Callback for the primary action in the error state.
  * @param topBar Optional top app bar composable.
  * @param searchBar Optional search bar composable.
  * @param chipGroup Optional chip group composable.
@@ -148,15 +153,15 @@ private fun AppScaffoldContent(
  * @param bottomBar Optional bottom navigation bar composable.
  * @param snackBarHostState The [SnackbarHostState] for managing snackbars.
  * @param scrollBehavior The [TopAppBarScrollBehavior] to coordinate with the top bar.
- * @param isLoading Whether to display the centralized loading state.
- * @param error The [Throwable] representing an error state to be displayed.
- * @param onRetry Callback invoked when the user requests to retry after an error.
  * @param content The main content of the container, receiving a [Modifier] with appropriate padding and insets.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppContainer(
     modifier: Modifier = Modifier,
+    isLoading: Boolean = false,
+    error: AppErrorData? = null,
+    onRetry: (() -> Unit)? = null,
     topBar: @Composable (() -> Unit)? = null,
     searchBar: @Composable (() -> Unit)? = null,
     chipGroup: @Composable (() -> Unit)? = null,
@@ -165,9 +170,6 @@ fun AppContainer(
     bottomBar: @Composable (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState()),
-    isLoading: Boolean = false,
-    error: Throwable? = null,
-    onRetry: (() -> Unit)? = null,
     content: @Composable (Modifier) -> Unit
 ) {
     if (drawerContent != null) {
@@ -185,15 +187,15 @@ fun AppContainer(
                     content = {
                         AppScaffoldContent(
                             modifier = Modifier,
+                            isLoading = isLoading,
+                            error = error,
+                            onRetry = onRetry,
                             topBar = topBar,
                             searchBar = searchBar,
                             chipGroup = chipGroup,
                             bottomBar = bottomBar,
                             snackBarHostState = snackBarHostState,
                             scrollBehavior = scrollBehavior,
-                            isLoading = isLoading,
-                            error = error,
-                            onRetry = onRetry,
                             content = content
                         )
                     }
@@ -219,15 +221,15 @@ fun AppContainer(
                     content = {
                         AppScaffoldContent(
                             modifier = Modifier,
+                            isLoading = isLoading,
+                            error = error,
+                            onRetry = onRetry,
                             topBar = topBarWithMenu,
                             searchBar = searchBar,
                             chipGroup = chipGroup,
                             bottomBar = bottomBar,
                             snackBarHostState = snackBarHostState,
                             scrollBehavior = scrollBehavior,
-                            isLoading = isLoading,
-                            error = error,
-                            onRetry = onRetry,
                             content = content
                         )
                     }
@@ -237,15 +239,15 @@ fun AppContainer(
     } else {
         AppScaffoldContent(
             modifier = modifier,
+            isLoading = isLoading,
+            error = error,
+            onRetry = onRetry,
             topBar = topBar,
             searchBar = searchBar,
             chipGroup = chipGroup,
             bottomBar = bottomBar,
             snackBarHostState = snackBarHostState,
             scrollBehavior = scrollBehavior,
-            isLoading = isLoading,
-            error = error,
-            onRetry = onRetry,
             content = content
         )
     }

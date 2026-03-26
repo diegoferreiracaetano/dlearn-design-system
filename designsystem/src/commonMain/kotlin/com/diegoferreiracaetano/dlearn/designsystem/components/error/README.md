@@ -12,11 +12,11 @@ Ideal para uso dentro de outros containers como `AppContainer`.
 
 ```kotlin
 AppError(
-    throwable = exception, // Opcional: determina o tipo de erro via factory
+    errorData = GenericError(), // Obrigatório: define o título, descrição e imagem
     onPrimary = { /* lógica de tentativa */ },
-    primaryText = "Tentar Novamente", // Opcional: padrão é extraído do recurso
+    primaryText = Res.string.action_retry, // Opcional: padrão é extraído do recurso
     onSecondary = { /* ação secundária */ },
-    secondaryText = "Voltar" // Opcional: padrão é "Fechar"
+    secondaryText = Res.string.action_close // Opcional: padrão é "Fechar"
 )
 ```
 
@@ -26,7 +26,7 @@ Encapsula o layout de erro dentro de um `Scaffold` com uma `AppTopBar`.
 ```kotlin
 AppError(
     fullScreen = true,
-    throwable = exception, 
+    errorData = errorData,
     onPrimary = { /* lógica de tentativa */ },
     onClose = { /* fechar a tela no topo */ }
 )

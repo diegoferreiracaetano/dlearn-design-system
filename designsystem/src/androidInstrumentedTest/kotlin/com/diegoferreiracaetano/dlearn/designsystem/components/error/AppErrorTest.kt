@@ -6,6 +6,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
+import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.GenericError
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_close
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_retry
@@ -22,7 +23,7 @@ class AppErrorTest {
 
         setContent {
             AppError(
-                throwable = Throwable("Unknown Error"),
+                errorData = GenericError(),
                 primaryText = Res.string.action_retry,
                 secondaryText = Res.string.action_close,
                 onPrimary = { primaryClicked = true },
@@ -51,8 +52,8 @@ class AppErrorTest {
 
         setContent {
             AppError(
+                errorData = GenericError(),
                 fullScreen = true,
-                throwable = Throwable("Unknown Error"),
                 primaryText = Res.string.action_retry,
                 secondaryText = Res.string.action_close,
                 onPrimary = { primaryClicked = true },

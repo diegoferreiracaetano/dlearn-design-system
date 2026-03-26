@@ -21,6 +21,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
+import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.GenericError
 import kotlinx.coroutines.launch
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -149,8 +150,7 @@ class AppContainerTest {
     fun shouldDisplayErrorAndPreserveBarsWhenErrorIsProvided() = runComposeUiTest {
         val topBarText = "Top Bar"
         val bottomBarText = "Bottom Bar"
-        val errorMsg = "Something went wrong"
-        val error = Throwable(errorMsg)
+        val error = GenericError()
         
         var retryClicked = false
 
@@ -176,7 +176,7 @@ class AppContainerTest {
         onNodeWithText("Content").assertDoesNotExist()
 
         // Perform click on Retry and verify
-        onNodeWithText("Tentar Novamente").performClick()
+        onNodeWithText("Tentar Novamente", ignoreCase = true).performClick()
         assertTrue(retryClicked, "Retry button should be clicked")
     }
 

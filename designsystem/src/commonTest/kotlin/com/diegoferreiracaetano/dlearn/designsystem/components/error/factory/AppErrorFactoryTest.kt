@@ -1,6 +1,7 @@
 package com.diegoferreiracaetano.dlearn.designsystem.components.error.factory
 
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.AuthError
+import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.ChallengeError
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.GenericError
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.NoInternetError
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.NotFoundError
@@ -12,62 +13,51 @@ import kotlin.test.assertTrue
 class AppErrorFactoryTest {
 
     @Test
+    fun whenKtorAuthChallenge403_shouldReturnAuthError() {
+        val errorMessage = """
+            io.ktor.client.plugins.ClientRequestException: Client request(POST http://192.168.15.3:8081/v1/auth/challenge/resolve) invalid: 403 Forbidden. Text: "{ "success": false, "message": "Código ou tipo de desafio inválido", "validatedToken": null }"
+        """.trimIndent()
+        
+        val error = AppErrorFactory(throwable = Throwable(errorMessage))
+        assertTrue(error is AuthError, "Expected AuthError for 403, but got ${error::class.simpleName}")
+    }
+
+    @Test
+    fun whenKtorAuthChallenge422_shouldReturnAuthError() {
+        val errorMessage = """
+            Error(message=io.ktor.client.plugins.ClientRequestException: Client request(POST http://192.168.15.3:8081/v1/auth/challenge/resolve) invalid: 422 Unprocessable Entity. Text: "{
+                "success": false,
+                "message": "Código ou tipo de desafio inválido",
+                "validatedToken": null
+            }")
+        """.trimIndent()
+        
+        val error = AppErrorFactory(throwable = Throwable(errorMessage))
+        assertTrue(error is AuthError, "Expected AuthError for 422, but got ${error::class.simpleName}")
+    }
+
+    @Test
+    fun whenChallengeRequired428_shouldReturnChallengeError() {
+        val errorMessage = "invalid: 428 Precondition Required"
+        val error = AppErrorFactory(throwable = Throwable(errorMessage))
+        assertTrue(error is ChallengeError, "Expected ChallengeError for 428, but got ${error::class.simpleName}")
+    }
+
+    @Test
     fun whenNetworkIsNotAvailable_shouldReturnNoInternetError() {
         val error = AppErrorFactory(isNetworkAvailable = false)
         assertTrue(error is NoInternetError)
     }
 
     @Test
-    fun whenAuthErrorInRange_shouldReturnAuthError() {
-        val codes = listOf(401, 402, 403)
-        codes.forEach { code ->
-            val error = AppErrorFactory(throwable = Throwable("$code Error"))
-            assertTrue(error is AuthError, "Failed for code $code")
-        }
-    }
-
-    @Test
-    fun whenAuthErrorByMessage_shouldReturnAuthError() {
-        val error = AppErrorFactory(throwable = Throwable("Unauthorized access"))
-        assertTrue(error is AuthError)
-    }
-
-    @Test
     fun whenNotFound_shouldReturnNotFoundError() {
-        val error = AppErrorFactory(throwable = Throwable("404 Not Found"))
+        val error = AppErrorFactory(throwable = Throwable("invalid: 404 Not Found"))
         assertTrue(error is NotFoundError)
     }
 
     @Test
-    fun whenServerErrorInRange_shouldReturnServerError() {
-        val codes = listOf(500, 502, 504, 599)
-        codes.forEach { code ->
-            val error = AppErrorFactory(throwable = Throwable("$code Internal Error"))
-            assertTrue(error is ServerError, "Failed for code $code")
-        }
-    }
-
-    @Test
-    fun whenTimeoutByCode_shouldReturnTimeoutError() {
-        val error = AppErrorFactory(throwable = Throwable("408 Request Timeout"))
-        assertTrue(error is TimeoutError)
-    }
-
-    @Test
-    fun whenTimeoutByMessage_shouldReturnTimeoutError() {
-        val error = AppErrorFactory(throwable = Throwable("Connection timed out"))
-        assertTrue(error is TimeoutError)
-    }
-
-    @Test
-    fun whenGenericThrowable_shouldReturnGenericError() {
-        val error = AppErrorFactory(throwable = Throwable("Some random error"))
-        assertTrue(error is GenericError)
-    }
-
-    @Test
-    fun whenThrowableIsNull_shouldReturnGenericError() {
-        val error = AppErrorFactory(throwable = null)
-        assertTrue(error is GenericError)
+    fun whenServerError_shouldReturnServerError() {
+        val error = AppErrorFactory(throwable = Throwable("invalid: 500 Internal Server Error"))
+        assertTrue(error is ServerError)
     }
 }

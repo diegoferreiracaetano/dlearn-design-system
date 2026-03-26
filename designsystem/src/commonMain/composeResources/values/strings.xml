@@ -83,4 +83,7 @@
 
     <string name="error_service_unavailable_title">Serviço Indisponível</string>
     <string name="error_service_unavailable_description">O serviço está temporariamente indisponível para manutenção. Por favor, tente novamente em instantes.</string>
+
+    <string name="error_challenge_title">Verificação Necessária</string>
+    <string name="error_challenge_description">Para sua segurança, precisamos validar sua identidade via OTP, SMS, E-mail ou Biometria.</string>
 </resources>

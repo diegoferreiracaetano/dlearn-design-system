@@ -17,7 +17,8 @@ A root container component that provides a common layout structure including a t
 | `chipGroup` | `@Composable () -> Unit` | `null` | Slot for filter chips. |
 | `bottomBar` | `@Composable () -> Unit` | `null` | Slot for the bottom navigation bar. |
 | `isLoading` | `Boolean` | `false` | Displays a centered loading state if true. |
-| `error` | `Throwable?` | `null` | Displays an error state if provided. |
+| `error` | `AppErrorData?` | `null` | Displays an error state if provided. |
+| `onRetry` | `() -> Unit` | `null` | Callback for the primary action in the error state. |
 | `content` | `@Composable (Modifier) -> Unit` | - | Main content area (Animated). |
 
 ### Usage
