@@ -18,8 +18,6 @@ class AppSearchBarTest {
         composeTestRule.setContent {
             DLearnTheme {
                 AppSearchBar(
-                    query = "",
-                    onQueryChange = {},
                     onSearch = {},
                     onBackClick = {},
                     placeholder = "Search Placeholder"
@@ -31,14 +29,12 @@ class AppSearchBarTest {
     }
 
     @Test
-    fun appSearchBar_callsOnQueryChange() {
+    fun appSearchBar_callsOnSearch() {
         var queryValue = ""
         composeTestRule.setContent {
             DLearnTheme {
                 AppSearchBar(
-                    query = queryValue,
-                    onQueryChange = { queryValue = it },
-                    onSearch = {},
+                    onSearch = { queryValue = it },
                     onBackClick = {}
                 )
             }

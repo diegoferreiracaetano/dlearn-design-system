@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -32,10 +33,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 @Composable
 fun AppList(
     modifier: Modifier = Modifier,
+    listState: LazyListState = rememberLazyListState(),
     collapsibleContent: @Composable (() -> Unit)? = null,
     content: LazyListScope.() -> Unit
 ) {
-    val listState = rememberLazyListState()
     var collapsibleContentVisible by remember { mutableStateOf(true) }
 
     LaunchedEffect(listState) {

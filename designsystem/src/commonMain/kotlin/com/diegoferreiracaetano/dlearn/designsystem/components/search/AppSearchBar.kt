@@ -18,9 +18,14 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.diegoferreiracaetano.dlearn.designsystem.components.feedback.AppFeedback
+import com.diegoferreiracaetano.dlearn.designsystem.components.error.AppError
+import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.GenericError
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.components.loading.AppLoading
 import com.diegoferreiracaetano.dlearn.designsystem.components.movie.AppMovieItem
@@ -30,30 +35,44 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.state.AppEmptySta
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_search
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.banner
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.placeholder
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.search
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.search_placeholder
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+/**
+ * A simplified search bar component based on Material 3 SearchBar.
+ * It manages its own query state internally and provides a single callback for search actions.
+ *
+ * @param onSearch Callback invoked whenever the search text changes or the search action is triggered.
+ * @param onBackClick Callback invoked when the back navigation button is clicked.
+ * @param modifier The [Modifier] to be applied to the search bar.
+ * @param placeholder The placeholder text displayed when the search field is empty.
+ * @param content The content to be displayed below the search input (e.g., search results).
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppSearchBar(
-    query: String,
-    onQueryChange: (String) -> Unit,
     onSearch: (String) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = stringResource(Res.string.search_placeholder),
     content: @Composable ColumnScope.() -> Unit = {}
 ) {
+    var query by rememberSaveable { mutableStateOf("") }
+
     SearchBar(
         inputField = {
             SearchBarDefaults.InputField(
                 query = query,
-                onQueryChange = onQueryChange,
-                onSearch = onSearch,
+                onQueryChange = {
+                    query = it
+                    onSearch(it)
+                },
+                onSearch = {
+                    onSearch(it)
+                },
                 expanded = true,
                 onExpandedChange = {},
                 placeholder = {
@@ -72,7 +91,10 @@ fun AppSearchBar(
                 },
                 trailingIcon = {
                     if (query.isNotEmpty()) {
-                        IconButton(onClick = { onQueryChange("") }) {
+                        IconButton(onClick = {
+                            query = ""
+                            onSearch("")
+                        }) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
                                 contentDescription = null
@@ -117,8 +139,6 @@ fun AppSearchBarSuccessPreview() {
 
     DLearnTheme {
         AppSearchBar(
-            query = "Spider-Man",
-            onQueryChange = {},
             onSearch = {},
             onBackClick = {},
             content = {
@@ -145,8 +165,6 @@ fun AppSearchBarSuccessPreview() {
 fun AppSearchBarLoadingPreview() {
     DLearnTheme {
         AppSearchBar(
-            query = "Spider-Man",
-            onQueryChange = {},
             onSearch = {},
             onBackClick = {},
             content = {
@@ -161,14 +179,12 @@ fun AppSearchBarLoadingPreview() {
 fun AppSearchBarEmptyPreview() {
     DLearnTheme {
         AppSearchBar(
-            query = "Unknown Movie",
-            onQueryChange = {},
             onSearch = {},
             onBackClick = {},
             content = {
                 AppEmptyState(
                     title = "Nenhum resultado encontrado",
-                    description = "Não encontramos filmes para \"Unknown Movie\". Tente outros termos.",
+                    description = "Não encontramos filmes para o termo pesquisado. Tente outros termos.",
                     imageSource = AppImageSource.Resource(Res.drawable.search)
                 )
             }
@@ -181,16 +197,11 @@ fun AppSearchBarEmptyPreview() {
 fun AppSearchBarErrorPreview() {
     DLearnTheme {
         AppSearchBar(
-            query = "Spider-Man",
-            onQueryChange = {},
             onSearch = {},
             onBackClick = {},
             content = {
-                AppFeedback(
-                    title = "Erro de conexão",
-                    description = "Ocorreu um problema ao buscar os filmes. Verifique sua internet.",
-                    imageSource = AppImageSource.Resource(Res.drawable.placeholder),
-                    primaryText = "Tentar novamente",
+                AppError(
+                    errorData = GenericError(),
                     onPrimary = {}
                 )
             }

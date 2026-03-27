@@ -1,70 +1,71 @@
 # List Components
 
-This package contains components used for building lists, settings screens, and profile sections.
+Este pacote contém componentes fundamentais para a construção de listas, telas de configurações e seções de perfil, seguindo os padrões visuais do DLearn.
 
-## Components
+## AppList
+
+O `AppList` é um wrapper sobre o `LazyColumn` que adiciona suporte nativo a um cabeçalho colapsável (collapsible header). O cabeçalho se esconde ao rolar para baixo e reaparece ao rolar para cima ou atingir o topo da lista.
+
+### Propriedades
+
+| Propriedade | Tipo | Padrão | Descrição |
+| :--- | :--- | :--- | :--- |
+| `modifier` | `Modifier` | `Modifier` | O modificador a ser aplicado à lista. |
+| `listState` | `LazyListState` | `rememberLazyListState()` | Estado da lista para controle de scroll externo. |
+| `collapsibleContent` | `@Composable (() -> Unit)?` | `null` | Composable opcional para o cabeçalho colapsável. |
+| `content` | `LazyListScope.() -> Unit` | - | O conteúdo da `LazyColumn` (items, stickyHeaders, etc). |
+
+### Exemplo de Uso
+
+```kotlin
+AppList(
+    collapsibleContent = {
+        AppSectionTitle(title = "Destaques")
+    }
+) {
+    items(movies) { movie ->
+        AppMovieItem(movie = movie, onClick = { /* ... */ })
+    }
+}
+```
+
+---
+
+## Componentes de Linha
 
 ### AppSectionTitle
 
-A text component used as a header for sections in lists or carousels. It follows the design system's typography and spacing guidelines.
+Componente de texto usado como cabeçalho de seções.
 
-**Features:**
-- Uses `MaterialTheme.typography.labelMedium` with `onSurfaceVariant` color.
-- Consistent padding (24dp top, 16dp bottom).
-- Supports both `String` and `StringResource`.
-
-**Usage:**
-
+**Uso:**
 ```kotlin
-// Using StringResource
-AppSectionTitle(title = Res.string.settings_section)
-
-// Using raw String
-AppSectionTitle(title = "Suggested Languages")
+AppSectionTitle(title = "Configurações da Conta")
 ```
 
 ### AppSelectableRow
 
-A row component designed for selection lists (e.g., Language Selection). It highlights the selected item with a checkmark and font weight change.
+Uma linha projetada para listas de seleção (ex: Idiomas). Exibe um ícone de check e altera o peso da fonte quando selecionada.
 
-**Features:**
-- Displays a `Check` icon when `isSelected` is true.
-- Label font weight becomes `SemiBold` when selected.
-- Supports both `String` and `StringResource`.
-
-**Usage:**
-
+**Uso:**
 ```kotlin
 AppSelectableRow(
-    label = "English (UK)",
+    label = "Português (Brasil)",
     isSelected = true,
-    onClick = { /* Handle selection */ }
+    onClick = { /* ... */ }
 )
-```
-
-### AppList
-
-A high-level component that manages a `LazyColumn` with support for:
-- Collapsible headers (hides on scroll down, shows on scroll up).
-- Predefined item types: `ProfileHeaderItem`, `BannerItem`, `SectionTitleItem`, `TextRowItem`, `SelectableRowItem`, etc.
-- Custom composable items.
-
-**Usage:**
-
-```kotlin
-val items = listOf(
-    SectionTitleItem(title = Res.string.profile_title),
-    ProfileHeaderItem(name = "User", email = "user@example.com"),
-    SectionTitleItem(title = Res.string.settings_title),
-    SelectableRowItem(label = Res.string.english, isSelected = true, onClick = { ... })
-)
-
-AppList(items = items)
 ```
 
 ### AppTextRow
 
-A row component for settings or menus with a label and optional trailing value or switch.
+Componente de linha genérico para menus, com suporte a label e um valor ou switch opcional à direita.
+
+**Uso:**
+```kotlin
+AppTextRow(
+    label = "Notificações",
+    onClick = { /* ... */ }
+)
+```
 
 ---
-*Maintained by the Design System Team*
+*Mantido pelo Time de Design System*

@@ -5,7 +5,9 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.runComposeUiTest
+import androidx.compose.ui.test.swipeUp
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
@@ -28,18 +30,38 @@ class AppListTest {
     }
 
     @Test
-    fun shouldDisplayCollapsibleContentWhenProvided() = runComposeUiTest {
+    fun shouldDisplayCollapsibleContentWhenAtTop() = runComposeUiTest {
         val collapsibleText = "Header Content"
         setContent {
             AppList(
                 collapsibleContent = { Text(text = collapsibleText) }
             ) {
-                items(1) {
-                    Text(text = "Body")
+                items(50) { index ->
+                    Text(text = "Item $index")
                 }
             }
         }
 
         onNodeWithText(collapsibleText).assertIsDisplayed()
+    }
+
+    @Test
+    fun shouldHideCollapsibleContentWhenScrollingDown() = runComposeUiTest {
+        val collapsibleText = "Header Content"
+        setContent {
+            AppList(
+                collapsibleContent = { Text(text = collapsibleText) }
+            ) {
+                items(100) { index ->
+                    Text(text = "Item $index")
+                }
+            }
+        }
+
+        // Swipe up scrolls the content down
+        onNodeWithText("Item 0").performTouchInput { swipeUp() }
+        waitForIdle()
+
+        onNodeWithText(collapsibleText).assertDoesNotExist()
     }
 }

@@ -1,14 +1,12 @@
 # AppSearchBar
 
-Barra de busca simplificada baseada no Material 3 SearchBar. Ela é projetada para estar sempre ativa/expandida, focada na funcionalidade de busca com um botão de navegação para voltar.
+Barra de busca simplificada baseada no Material 3 SearchBar. Ela é projetada para estar sempre ativa/expandida, focada na funcionalidade de busca com um botão de navegação para voltar e gerenciamento interno de estado.
 
 ## Propriedades
 
 | Propriedade | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
-| `query` | `String` | - | O valor atual do texto no campo de busca. |
-| `onQueryChange` | `(String) -> Unit` | - | Callback invocado quando o texto da busca é alterado. |
-| `onSearch` | `(String) -> Unit` | - | Callback invocado quando a ação de busca é disparada (ex: tecla enter). |
+| `onSearch` | `(String) -> Unit` | - | Callback invocado quando o texto da busca é alterado ou a busca é disparada. |
 | `onBackClick` | `() -> Unit` | - | Callback invocado ao clicar no botão de voltar (ícone à esquerda). |
 | `modifier` | `Modifier` | `Modifier` | O modificador a ser aplicado à barra de busca. |
 | `placeholder` | `String` | `Res.string.search_placeholder` | Texto de placeholder exibido quando o campo está vazio. |
@@ -21,17 +19,13 @@ O componente é flexível e permite exibir diferentes estados através do parâm
 1.  **Sucesso**: Exiba uma lista de resultados (ex: `LazyColumn` com `AppMovieItem`).
 2.  **Carregamento**: Use o componente `AppLoading`.
 3.  **Vazio**: Use o componente `AppEmptyState`.
-4.  **Erro**: Use o componente `AppFeedback`.
+4.  **Erro**: Use o componente `AppError`.
 
 ## Exemplo de Uso
 
 ```kotlin
-var query by remember { mutableStateOf("") }
-
 AppSearchBar(
-    query = query,
-    onQueryChange = { query = it },
-    onSearch = { /* Executar busca */ },
+    onSearch = { query -> /* Executar busca ou filtrar lista */ },
     onBackClick = { /* Navegar de volta */ },
     placeholder = "Buscar filmes..."
 ) {
