@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
@@ -28,6 +29,7 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageCir
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_back
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_close
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_favorite
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_menu
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_profile
@@ -47,6 +49,7 @@ private val PROFILE_IMAGE_SIZE = 32.dp
  * @property title The title to display in the TopBar.
  * @property subtitle The optional subtitle to display.
  * @property onBack Optional callback for back navigation.
+ * @property onClose Optional callback for close navigation.
  * @property onFavorite Optional callback for favorite action.
  * @property onMenuClick Optional callback for menu action.
  * @property onSearchClick Optional callback for search action.
@@ -60,6 +63,7 @@ data class TopBarConfig(
     val title: String? = null,
     val subtitle: String? = null,
     val onBack: (() -> Unit)? = null,
+    val onClose: (() -> Unit)? = null,
     val onFavorite: (() -> Unit)? = null,
     val onMenuClick: (() -> Unit)? = null,
     val onSearchClick: (() -> Unit)? = null,
@@ -71,12 +75,13 @@ data class TopBarConfig(
 
 /**
  * A custom [TopAppBar] that can switch between a default and a transparent style.
- * It supports a title, subtitle, back button, favorite button, menu button, and actions.
+ * It supports a title, subtitle, back button, close button, favorite button, menu button, and actions.
  *
  * @param modifier The [Modifier] to be applied to the top bar.
  * @param title The title text to be displayed.
  * @param subtitle The subtitle text to be displayed below the title.
  * @param onBack Callback for the back navigation icon.
+ * @param onClose Callback for the close navigation icon.
  * @param onFavorite Callback for the favorite action icon.
  * @param onMenuClick Callback for the menu navigation icon.
  * @param onSearchClick Callback when the search icon is clicked.
@@ -93,6 +98,7 @@ fun AppTopBar(
     title: String? = null,
     subtitle: String? = null,
     onBack: (() -> Unit)? = null,
+    onClose: (() -> Unit)? = null,
     onFavorite: (() -> Unit)? = null,
     onMenuClick: (() -> Unit)? = null,
     onSearchClick: (() -> Unit)? = null,
@@ -107,6 +113,7 @@ fun AppTopBar(
             modifier = modifier,
             backgroundColor = backgroundColor,
             onBack = onBack,
+            onClose = onClose,
             onFavorite = onFavorite,
             scrollBehavior = scrollBehavior,
             profileImageSource = profileImageSource,
@@ -118,6 +125,7 @@ fun AppTopBar(
             title = title,
             subtitle = subtitle,
             onBack = onBack,
+            onClose = onClose,
             onMenuClick = onMenuClick,
             onSearchClick = onSearchClick,
             scrollBehavior = scrollBehavior,
@@ -146,6 +154,7 @@ fun AppTopBar(
         title = config.title,
         subtitle = config.subtitle,
         onBack = config.onBack,
+        onClose = config.onClose,
         onFavorite = config.onFavorite,
         onMenuClick = config.onMenuClick,
         onSearchClick = config.onSearchClick,
@@ -188,6 +197,7 @@ private fun AppTopBarDefault(
     title: String?,
     subtitle: String?,
     onBack: (() -> Unit)?,
+    onClose: (() -> Unit)?,
     onMenuClick: (() -> Unit)?,
     onSearchClick: (() -> Unit)?,
     scrollBehavior: TopAppBarScrollBehavior?,
@@ -232,6 +242,13 @@ private fun AppTopBarDefault(
                         contentDescription = stringResource(Res.string.action_menu),
                     )
                 }
+            } else if (onClose != null) {
+                IconButton(onClick = onClose) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = stringResource(Res.string.action_close),
+                    )
+                }
             } else if (onBack != null) {
                 IconButton(onClick = onBack) {
                     Icon(
@@ -261,6 +278,7 @@ private fun AppTopBarTransparent(
     modifier: Modifier = Modifier,
     backgroundColor: Color,
     onBack: (() -> Unit)?,
+    onClose: (() -> Unit)?,
     onFavorite: (() -> Unit)?,
     scrollBehavior: TopAppBarScrollBehavior?,
     profileImageSource: AppImageSource?,
@@ -276,6 +294,14 @@ private fun AppTopBarTransparent(
                         modifier = Modifier.size(PROFILE_IMAGE_SIZE),
                         source = profileImageSource,
                         contentDescription = stringResource(Res.string.action_profile)
+                    )
+                }
+            } else if (onClose != null) {
+                IconButton(onClick = onClose) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = stringResource(Res.string.action_close),
+                        tint = backgroundColor.contrastTextColor(),
                     )
                 }
             } else if (onBack != null) {
@@ -318,6 +344,11 @@ fun AppTopBarComponentPreview() {
             AppTopBar(
                 title = "Default Top Bar",
                 onBack = {}
+            )
+
+            AppTopBar(
+                title = "With Close",
+                onClose = {}
             )
 
             AppTopBar(

@@ -94,7 +94,7 @@ fun AppMovieInfo(
                     textAlign = TextAlign.Center
                 )
                 Text(
-                    text = "$year • $genre",
+                    text = "$genre  •  $year",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.outline,
                     maxLines = 1,
