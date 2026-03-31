@@ -104,7 +104,7 @@ fun AppUserRow(
 
 @Preview
 @Composable
-private fun AppUserRowPreview() {
+fun AppUserRowPreview() {
     DLearnTheme {
         AppUserRow(
             name = "Jon Watts",
@@ -116,7 +116,7 @@ private fun AppUserRowPreview() {
 
 @Preview
 @Composable
-private fun AppUserRowCarouselPreview() {
+fun AppUserRowCarouselPreview() {
     val names = listOf("Jon Watts", "Chris McKenna", "Erik Sommers")
     val roles = listOf("Directors", "Writers", "Writers")
 

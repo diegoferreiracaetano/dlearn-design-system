@@ -108,10 +108,17 @@ fun AppMovieInfo(
                 modifier = modifier,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
+                val premiumLabel = if (isPremium) Res.string.label_premium else Res.string.label_free
+                val premiumColor = if (isPremium) {
+                    MaterialTheme.colorScheme.tertiary
+                } else {
+                    MaterialTheme.colorScheme.primary
+                }
+
                 AppBadge(
-                    text = stringResource(if (isPremium) Res.string.label_premium else Res.string.label_free),
+                    text = stringResource(premiumLabel),
                     type = AppBadgeType.TAG,
-                    containerColor = if (isPremium) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary
+                    containerColor = premiumColor
                 )
 
                 Text(

@@ -71,11 +71,18 @@ fun AppSelectableRow(
             .clickable { onClick() }
             .padding(vertical = RowPaddingVertical, horizontal = RowPaddingHorizontal)
     ) {
+        val fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium
+        val textColor = if (isSelected) {
+            MaterialTheme.colorScheme.onSurface
+        } else {
+            MaterialTheme.colorScheme.onSurfaceVariant
+        }
+
         Text(
             text = label,
             style = MaterialTheme.typography.bodyLarge,
-            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
-            color = if (isSelected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+            fontWeight = fontWeight,
+            color = textColor,
             modifier = Modifier.weight(1f)
         )
 
@@ -92,7 +99,7 @@ fun AppSelectableRow(
 
 @Preview
 @Composable
-private fun AppSelectableRowPreview() {
+fun AppSelectableRowPreview() {
     DLearnTheme(darkTheme = true) {
         androidx.compose.foundation.layout.Column {
             AppSelectableRow(

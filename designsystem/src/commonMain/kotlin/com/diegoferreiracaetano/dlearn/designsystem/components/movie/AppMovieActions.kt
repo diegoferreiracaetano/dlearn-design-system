@@ -96,7 +96,8 @@ fun AppMovieActions(
             AppButton(
                 onClick = onAddToListClick,
                 type = ButtonType.SECONDARY,
-                imageSource = (if (isInList) Icons.Default.Check else Icons.Default.Add).toAppImageSource(),
+                imageSource = (if (isInList) Icons.Default.Check else Icons.Default.Add)
+                    .toAppImageSource(),
                 backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
                 testTag = AppMovieActionsTags.ADD_BUTTON
             )
@@ -104,7 +105,8 @@ fun AppMovieActions(
             AppButton(
                 onClick = onFavoriteClick,
                 type = ButtonType.SECONDARY,
-                imageSource = (if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder).toAppImageSource(),
+                imageSource = (if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder)
+                    .toAppImageSource(),
                 backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
                 testTag = AppMovieActionsTags.FAVORITE_BUTTON
             )
@@ -126,7 +128,11 @@ fun AppMovieActions(
 @Composable
 fun AppMovieActionsPreview() {
     val providers = listOf(
-        WatchProvider("Mercado Play", Res.drawable.ic_netflix.toAppImageSource(), "Sem custo financeiro"),
+        WatchProvider(
+            "Mercado Play",
+            Res.drawable.ic_netflix.toAppImageSource(),
+            "Sem custo financeiro"
+        ),
         WatchProvider("Netflix", Res.drawable.ic_netflix.toAppImageSource(), "Assinatura"),
         WatchProvider(
             "Amazon Prime Video",

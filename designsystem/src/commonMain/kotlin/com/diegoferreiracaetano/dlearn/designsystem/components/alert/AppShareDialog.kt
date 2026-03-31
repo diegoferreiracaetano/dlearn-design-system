@@ -37,7 +37,7 @@ private val ShareSpacing = 24.dp
 private val ShareTitleTopPadding = 8.dp
 private val CloseButtonSize = 32.dp
 private val CloseIconSize = 20.dp
-private val CloseButtonBackgroundAlpha = 0.2f
+private const val CLOSE_BUTTON_BACKGROUND_ALPHA = 0.2f
 private val ShareOptionsSpacing = 16.dp
 
 /**
@@ -57,10 +57,26 @@ object AppShareDialogDefaults {
     const val CloseContentDescription = "Close"
 
     val SocialOptions = listOf(
-        ShareOption(id = "facebook", imageVector = AppIcons.Facebook, contentDescription = "Facebook"),
-        ShareOption(id = "instagram", imageVector = AppIcons.Instagram, contentDescription = "Instagram"),
-        ShareOption(id = "messenger", imageVector = AppIcons.Messenger, contentDescription = "Messenger"),
-        ShareOption(id = "telegram", imageVector = AppIcons.Telegram, contentDescription = "Telegram")
+        ShareOption(
+            id = "facebook",
+            imageVector = AppIcons.Facebook,
+            contentDescription = "Facebook"
+        ),
+        ShareOption(
+            id = "instagram",
+            imageVector = AppIcons.Instagram,
+            contentDescription = "Instagram"
+        ),
+        ShareOption(
+            id = "messenger",
+            imageVector = AppIcons.Messenger,
+            contentDescription = "Messenger"
+        ),
+        ShareOption(
+            id = "telegram",
+            imageVector = AppIcons.Telegram,
+            contentDescription = "Telegram"
+        )
     )
 
     fun getShareUrl(option: ShareOption, text: String): String? = when (option.id) {
@@ -102,7 +118,7 @@ fun AppShareDialog(
                     .align(Alignment.TopEnd)
                     .size(CloseButtonSize)
                     .background(
-                        color = Color.Black.copy(alpha = CloseButtonBackgroundAlpha),
+                        color = Color.Black.copy(alpha = CLOSE_BUTTON_BACKGROUND_ALPHA),
                         shape = CircleShape
                     )
             ) {
@@ -129,7 +145,10 @@ fun AppShareDialog(
 
                 LazyRow(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(ShareOptionsSpacing, Alignment.CenterHorizontally),
+                    horizontalArrangement = Arrangement.spacedBy(
+                        ShareOptionsSpacing,
+                        Alignment.CenterHorizontally
+                    ),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     items(options, key = { it.id }) { option ->

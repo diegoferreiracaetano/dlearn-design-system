@@ -201,7 +201,7 @@ fun AppProfileHeader(
 
 @Preview
 @Composable
-private fun AppProfileHeaderPreview() {
+fun AppProfileHeaderPreview() {
     DLearnTheme(darkTheme = true) {
         Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
             AppProfileHeader(

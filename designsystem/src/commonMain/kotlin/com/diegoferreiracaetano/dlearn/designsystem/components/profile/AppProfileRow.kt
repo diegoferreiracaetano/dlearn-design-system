@@ -113,7 +113,9 @@ fun AppProfileRow(
                     modifier = Modifier
                         .size(ActionBoxSize)
                         .background(
-                            color = MaterialTheme.colorScheme.primary.copy(alpha = ACTION_BACKGROUND_ALPHA),
+                            color = MaterialTheme.colorScheme.primary.copy(
+                                alpha = ACTION_BACKGROUND_ALPHA
+                            ),
                             shape = CircleShape
                         )
                         .clip(CircleShape)
@@ -154,7 +156,8 @@ fun AppProfileRow(
     containerColor: Color? = null,
     contentColor: Color? = null
 ) {
-    val finalContainerColor = containerColor ?: MaterialTheme.colorScheme.surfaceVariant.copy(alpha = CONTAINER_BACKGROUND_ALPHA)
+    val finalContainerColor = containerColor
+        ?: MaterialTheme.colorScheme.surfaceVariant.copy(alpha = CONTAINER_BACKGROUND_ALPHA)
     val finalContentColor = contentColor ?: MaterialTheme.colorScheme.onSurface
 
     Card(
@@ -200,7 +203,7 @@ fun AppProfileRow(
 
 @Preview
 @Composable
-private fun AppProfileRowPreview() {
+fun AppProfileRowPreview() {
     DLearnTheme {
         Box(modifier = Modifier.padding(16.dp)) {
             AppProfileRow(

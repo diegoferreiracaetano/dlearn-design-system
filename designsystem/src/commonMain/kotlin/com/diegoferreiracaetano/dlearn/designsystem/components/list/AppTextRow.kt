@@ -113,11 +113,13 @@ fun AppTextRow(
             .padding(vertical = RowPaddingVertical, horizontal = RowPaddingHorizontal)
     ) {
         leadingIcon?.let { icon ->
+            val iconBgColor = MaterialTheme.colorScheme.surfaceVariant
+                .copy(alpha = ICON_BACKGROUND_ALPHA)
             Box(
                 modifier = Modifier
                     .size(IconBoxSize)
                     .background(
-                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = ICON_BACKGROUND_ALPHA),
+                        color = iconBgColor,
                         shape = CircleShape
                     ),
                 contentAlignment = Alignment.Center
@@ -179,7 +181,7 @@ fun AppTextRow(
 
 @Preview
 @Composable
-private fun AppTextRowPreview() {
+fun AppTextRowPreview() {
     DLearnTheme {
         Column(
             modifier = Modifier

@@ -8,13 +8,25 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.PlayCircleOutline
-import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,10 +75,10 @@ private val SummaryDividerWidth = 1.dp
 private val SummaryDividerHeight = 40.dp
 private val SummaryTextSpacing = 4.dp
 private val ProviderActionSpacing = 8.dp
-private const val BackgroundAlpha = 0.5f
-private const val DividerAlpha = 0.1f
-private const val SummaryDividerAlpha = 0.15f
-private const val SummaryVisibleCount = 3
+private const val BACKGROUND_ALPHA = 0.5f
+private const val DIVIDER_ALPHA = 0.1f
+private const val SUMMARY_DIVIDER_ALPHA = 0.15f
+private const val SUMMARY_VISIBLE_COUNT = 3
 
 /**
  * A component that displays a list of watch providers where a movie can be streamed.
@@ -93,7 +105,7 @@ fun AppWatchProviders(
     Column(
         modifier = modifier
             .clip(MaterialTheme.shapes.large)
-            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = BackgroundAlpha))
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = BACKGROUND_ALPHA))
             .animateContentSize()
             .padding(ContainerPadding)
     ) {
@@ -125,7 +137,7 @@ fun AppWatchProviders(
                                 .width(SummaryDividerWidth)
                                 .height(SummaryDividerHeight)
                                 .background(
-                                    MaterialTheme.colorScheme.onSurface.copy(alpha = SummaryDividerAlpha)
+                                    MaterialTheme.colorScheme.onSurface.copy(alpha = SUMMARY_DIVIDER_ALPHA)
                                 )
                         )
 
@@ -137,7 +149,7 @@ fun AppWatchProviders(
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(SummaryIconOverlap)
                             ) {
-                                remainingProviders.take(SummaryVisibleCount).forEach {
+                                remainingProviders.take(SUMMARY_VISIBLE_COUNT).forEach {
                                     AppImageCircular(
                                         source = it.icon,
                                         modifier = Modifier
@@ -174,7 +186,7 @@ fun AppWatchProviders(
                 remainingProviders.forEach {
                     HorizontalDivider(
                         modifier = Modifier.padding(vertical = DividerVerticalPadding),
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = DividerAlpha)
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = DIVIDER_ALPHA)
                     )
 
                     WatchProviderItem(
@@ -282,7 +294,11 @@ private fun WatchProviderItem(
 @Composable
 fun AppWatchProvidersPreview() {
     val providers = listOf(
-        WatchProvider("Mercado Play", Res.drawable.ic_netflix.toAppImageSource(), "Sem custo financeiro"),
+        WatchProvider(
+            "Mercado Play",
+            Res.drawable.ic_netflix.toAppImageSource(),
+            "Sem custo financeiro"
+        ),
         WatchProvider("Netflix", Res.drawable.ic_netflix.toAppImageSource(), "Assinatura"),
         WatchProvider("Amazon Prime Video", Res.drawable.ic_netflix.toAppImageSource(), "Assinatura"),
         WatchProvider("Google TV", Res.drawable.ic_netflix.toAppImageSource(), "A partir de R$ 6,90"),

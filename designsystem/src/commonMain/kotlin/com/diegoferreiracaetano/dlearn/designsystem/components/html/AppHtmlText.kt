@@ -65,11 +65,13 @@ fun AppHtmlText(
     val annotatedString = remember(html, linkColor, headingColor, h1Size, h2Size, h3Size) {
         HtmlParser.parse(
             html = html,
-            linkColor = linkColor,
-            headingColor = headingColor,
-            h1Size = h1Size,
-            h2Size = h2Size,
-            h3Size = h3Size
+            styleConfig = HtmlStyleConfig(
+                linkColor = linkColor,
+                headingColor = headingColor,
+                h1Size = h1Size,
+                h2Size = h2Size,
+                h3Size = h3Size
+            )
         )
     }
 
@@ -83,17 +85,21 @@ fun AppHtmlText(
     )
 }
 
+internal data class HtmlStyleConfig(
+    val linkColor: Color,
+    val headingColor: Color,
+    val h1Size: TextUnit,
+    val h2Size: TextUnit,
+    val h3Size: TextUnit
+)
+
 internal object HtmlParser {
 
     private val tagRegex = Regex("<(/?)([a-zA-Z0-9]+)([^>]*)>")
 
     fun parse(
         html: String,
-        linkColor: Color,
-        headingColor: Color,
-        h1Size: TextUnit,
-        h2Size: TextUnit,
-        h3Size: TextUnit
+        styleConfig: HtmlStyleConfig
     ): AnnotatedString {
         return buildAnnotatedString {
             val stack = mutableListOf<String>()
@@ -103,75 +109,88 @@ internal object HtmlParser {
                 val (closingSlash, tag, attrs) = match.destructured
                 val tagName = tag.lowercase()
 
-                // Texto antes da tag
                 val text = html.substring(lastIndex, match.range.first)
                 append(decodeHtml(text))
 
-                val isClosing = closingSlash.isNotEmpty()
-
-                if (!isClosing) {
-                    when (tagName) {
-                        "br" -> append("\n")
-                        "b", "strong" -> pushStyleAndTrack(tagName, SpanStyle(fontWeight = FontWeight.Bold), stack)
-                        "i", "em" -> pushStyleAndTrack(tagName, SpanStyle(fontStyle = FontStyle.Italic), stack)
-                        "u" -> pushStyleAndTrack(tagName, SpanStyle(textDecoration = TextDecoration.Underline), stack)
-                        "s", "strike" -> pushStyleAndTrack(tagName, SpanStyle(textDecoration = TextDecoration.LineThrough), stack)
-                        "p" -> {
-                            if (length > 0) append("\n")
-                        }
-                        "a" -> {
-                            val href = extractHref(attrs)
-                            pushStyle(SpanStyle(color = linkColor, textDecoration = TextDecoration.Underline))
-                            if (href != null) {
-                                pushStringAnnotation("URL", href)
-                            }
-                            stack.add(tagName)
-                        }
-
-                        "h1" -> {
-                            append("\n")
-                            pushStyleAndTrack(tagName, SpanStyle(
-                                fontWeight = FontWeight.Bold,
-                                fontSize = h1Size,
-                                color = headingColor
-                            ), stack)
-                        }
-
-                        "h2" -> {
-                            append("\n")
-                            pushStyleAndTrack(tagName, SpanStyle(
-                                fontWeight = FontWeight.Bold,
-                                fontSize = h2Size,
-                                color = headingColor
-                            ), stack)
-                        }
-
-                        "h3" -> {
-                            append("\n")
-                            pushStyleAndTrack(tagName, SpanStyle(
-                                fontWeight = FontWeight.Bold,
-                                fontSize = h3Size,
-                                color = headingColor
-                            ), stack)
-                        }
-                    }
+                if (closingSlash.isEmpty()) {
+                    handleOpenTag(tagName, attrs, stack, styleConfig)
                 } else {
-                    closeTag(tagName, stack)
-                    if (tagName in listOf("p", "h1", "h2", "h3")) {
-                        append("\n")
-                    }
+                    handleCloseTag(tagName, stack)
                 }
 
                 lastIndex = match.range.last + 1
             }
 
-            // resto do texto
             if (lastIndex < html.length) {
                 append(decodeHtml(html.substring(lastIndex)))
             }
 
-            // limpa stack
             repeat(stack.size) { pop() }
+        }
+    }
+
+    private fun AnnotatedString.Builder.handleOpenTag(
+        tagName: String,
+        attrs: String,
+        stack: MutableList<String>,
+        styleConfig: HtmlStyleConfig
+    ) {
+        when (tagName) {
+            "br" -> append("\n")
+            "b", "strong" -> pushStyleAndTrack(tagName, SpanStyle(fontWeight = FontWeight.Bold), stack)
+            "i", "em" -> pushStyleAndTrack(tagName, SpanStyle(fontStyle = FontStyle.Italic), stack)
+            "u" -> pushStyleAndTrack(tagName, SpanStyle(textDecoration = TextDecoration.Underline), stack)
+            "s", "strike" -> pushStyleAndTrack(
+                tagName,
+                SpanStyle(textDecoration = TextDecoration.LineThrough),
+                stack
+            )
+            "p" -> if (length > 0) append("\n")
+            "a" -> handleAnchorTag(attrs, stack, styleConfig.linkColor)
+            "h1" -> handleHeadingTag(tagName, styleConfig.h1Size, styleConfig.headingColor, stack)
+            "h2" -> handleHeadingTag(tagName, styleConfig.h2Size, styleConfig.headingColor, stack)
+            "h3" -> handleHeadingTag(tagName, styleConfig.h3Size, styleConfig.headingColor, stack)
+        }
+    }
+
+    private fun AnnotatedString.Builder.handleAnchorTag(
+        attrs: String,
+        stack: MutableList<String>,
+        linkColor: Color
+    ) {
+        val href = extractHref(attrs)
+        pushStyle(SpanStyle(color = linkColor, textDecoration = TextDecoration.Underline))
+        if (href != null) {
+            pushStringAnnotation("URL", href)
+        }
+        stack.add("a")
+    }
+
+    private fun AnnotatedString.Builder.handleHeadingTag(
+        tagName: String,
+        fontSize: TextUnit,
+        headingColor: Color,
+        stack: MutableList<String>
+    ) {
+        append("\n")
+        pushStyleAndTrack(
+            tagName,
+            SpanStyle(
+                fontWeight = FontWeight.Bold,
+                fontSize = fontSize,
+                color = headingColor
+            ),
+            stack
+        )
+    }
+
+    private fun AnnotatedString.Builder.handleCloseTag(
+        tagName: String,
+        stack: MutableList<String>
+    ) {
+        closeTag(tagName, stack)
+        if (tagName in listOf("p", "h1", "h2", "h3")) {
+            append("\n")
         }
     }
 
@@ -225,9 +244,12 @@ fun AppHtmlTextPreview() {
         ) {
             AppHtmlText(
                 html = "<h3>Terms</h3>" +
-                        "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. </p>" +
+                        "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+                        "Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. </p>" +
                         "<h3>Changes to the Service and/or Terms:</h3>" +
-                        "<p><s><u>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. Sapien, consequat ultrices morbi orci semper sit nulla.</u></s></p>"
+                        "<p><s><u>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+                        "Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. " +
+                        "Sapien, consequat ultrices morbi orci semper sit nulla.</u></s></p>"
             )
 
             AppHtmlText(

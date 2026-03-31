@@ -1,7 +1,12 @@
 package com.diegoferreiracaetano.dlearn.designsystem.components.alert
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -47,9 +52,12 @@ fun AppSnackbarHost(
             val snackbarType = visuals?.type ?: SnackbarType.ERROR
 
             val (containerColor, contentColor) = when (snackbarType) {
-                SnackbarType.ERROR -> MaterialTheme.colorScheme.error to MaterialTheme.colorScheme.onError
-                SnackbarType.SUCCESS -> extendedColors.success.color to extendedColors.success.onColor
-                SnackbarType.WARNING -> extendedColors.warning.color to extendedColors.warning.onColor
+                SnackbarType.ERROR ->
+                    MaterialTheme.colorScheme.error to MaterialTheme.colorScheme.onError
+                SnackbarType.SUCCESS ->
+                    extendedColors.success.color to extendedColors.success.onColor
+                SnackbarType.WARNING ->
+                    extendedColors.warning.color to extendedColors.warning.onColor
             }
 
             Snackbar(

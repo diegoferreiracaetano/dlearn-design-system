@@ -59,7 +59,7 @@ enum class AppBadgeType {
  * @param text The text to display inside the badge.
  * @param type The [AppBadgeType] to determine the badge's style.
  * @param modifier Modifier to be applied to the badge layout.
- * @param icon Optional icon to display before the text. If [type] is [AppBadgeType.RATING], 
+ * @param icon Optional icon to display before the text. If [type] is [AppBadgeType.RATING],
  * defaults to [Icons.Default.Star].
  * @param containerColor Optional background color override.
  * @param contentColor Optional color for the text and icon.
@@ -73,36 +73,11 @@ fun AppBadge(
     containerColor: Color? = null,
     contentColor: Color? = null,
 ) {
-    val defaultContainerColor = when (type) {
-        AppBadgeType.RATING -> Color.Black.copy(alpha = 0.6f)
-        AppBadgeType.TAG -> containerColor ?: MaterialTheme.colorScheme.primary
-        AppBadgeType.OUTLINE -> Color.Transparent
-    }
-
-    val defaultContentColor = when (type) {
-        AppBadgeType.RATING -> MaterialTheme.colorScheme.primary
-        AppBadgeType.TAG -> contentColor ?: Color.White
-        AppBadgeType.OUTLINE -> contentColor ?: MaterialTheme.colorScheme.primary
-    }
-
-    val finalContainerColor = if (type == AppBadgeType.TAG) (containerColor ?: defaultContainerColor) else defaultContainerColor
-    val finalContentColor = contentColor ?: defaultContentColor
-
-    val shape: Shape = when (type) {
-        AppBadgeType.OUTLINE -> RoundedCornerShape(4.dp)
-        else -> RoundedCornerShape(8.dp)
-    }
-
-    val padding = when (type) {
-        AppBadgeType.TAG -> PaddingValues(horizontal = 12.dp, vertical = 4.dp)
-        AppBadgeType.OUTLINE -> PaddingValues(horizontal = 4.dp, vertical = 2.dp)
-        else -> PaddingValues(horizontal = 6.dp, vertical = 4.dp)
-    }
-
-    val border = if (type == AppBadgeType.OUTLINE) {
-        BorderStroke(1.dp, finalContentColor)
-    } else null
-
+    val finalContainerColor = getContainerColor(type, containerColor)
+    val finalContentColor = getContentColor(type, contentColor)
+    val shape = getShape(type)
+    val padding = getPadding(type)
+    val border = if (type == AppBadgeType.OUTLINE) BorderStroke(1.dp, finalContentColor) else null
     val finalIcon = if (type == AppBadgeType.RATING) Icons.Default.Star else icon
 
     Card(
@@ -134,6 +109,39 @@ fun AppBadge(
                 ),
             )
         }
+    }
+}
+
+@Composable
+private fun getContainerColor(type: AppBadgeType, overrideColor: Color?): Color {
+    return when (type) {
+        AppBadgeType.RATING -> Color.Black.copy(alpha = 0.6f)
+        AppBadgeType.TAG -> overrideColor ?: MaterialTheme.colorScheme.primary
+        AppBadgeType.OUTLINE -> Color.Transparent
+    }
+}
+
+@Composable
+private fun getContentColor(type: AppBadgeType, overrideColor: Color?): Color {
+    return when (type) {
+        AppBadgeType.RATING -> MaterialTheme.colorScheme.primary
+        AppBadgeType.TAG -> overrideColor ?: Color.White
+        AppBadgeType.OUTLINE -> overrideColor ?: MaterialTheme.colorScheme.primary
+    }
+}
+
+private fun getShape(type: AppBadgeType): Shape {
+    return when (type) {
+        AppBadgeType.OUTLINE -> RoundedCornerShape(4.dp)
+        else -> RoundedCornerShape(8.dp)
+    }
+}
+
+private fun getPadding(type: AppBadgeType): PaddingValues {
+    return when (type) {
+        AppBadgeType.TAG -> PaddingValues(horizontal = 12.dp, vertical = 4.dp)
+        AppBadgeType.OUTLINE -> PaddingValues(horizontal = 4.dp, vertical = 2.dp)
+        else -> PaddingValues(horizontal = 6.dp, vertical = 4.dp)
     }
 }
 

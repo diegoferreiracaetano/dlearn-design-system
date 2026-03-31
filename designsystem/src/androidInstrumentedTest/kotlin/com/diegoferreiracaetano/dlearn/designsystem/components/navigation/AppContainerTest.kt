@@ -12,7 +12,6 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
@@ -22,7 +21,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.GenericError
-import kotlinx.coroutines.launch
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
@@ -124,7 +122,7 @@ class AppContainerTest {
     fun shouldDisplayLoadingAndPreserveBarsWhenIsLoadingIsTrue() = runComposeUiTest {
         val topBarText = "Top Bar"
         val bottomBarText = "Bottom Bar"
-        
+
         setContent {
             AppContainer(
                 isLoading = true,
@@ -134,14 +132,14 @@ class AppContainerTest {
                 Text(text = "Content")
             }
         }
-        
+
         // Assert Loading is visible
         onNodeWithTag("AppLoading").assertIsDisplayed()
-        
+
         // Assert Bars are visible
         onNodeWithText(topBarText).assertIsDisplayed()
         onNodeWithText(bottomBarText).assertIsDisplayed()
-        
+
         // Assert Content is not visible
         onNodeWithText("Content").assertDoesNotExist()
     }
@@ -151,7 +149,7 @@ class AppContainerTest {
         val topBarText = "Top Bar"
         val bottomBarText = "Bottom Bar"
         val error = GenericError()
-        
+
         var retryClicked = false
 
         setContent {
@@ -164,14 +162,14 @@ class AppContainerTest {
                 Text(text = "Content")
             }
         }
-        
+
         // Assert Bars are visible
         onNodeWithText(topBarText).assertIsDisplayed()
         onNodeWithText(bottomBarText).assertIsDisplayed()
-        
+
         // Assert Error State is visible (by checking the retry action button and default title)
         onNodeWithText("Erro Inesperado").assertIsDisplayed() // The generic error title
-        
+
         // Assert Content is not visible
         onNodeWithText("Content").assertDoesNotExist()
 
@@ -235,7 +233,7 @@ class AppContainerTest {
         // Drawer should be hidden initially
         onNodeWithText(drawerText).assertDoesNotExist()
 
-        // Click Menu (AppContainer injects its own TopBar with Menu if drawerContent is provided and no topBar is given)
+        // Click Menu
         onNodeWithContentDescription("Menu", ignoreCase = true).performClick()
 
         // Drawer should be visible

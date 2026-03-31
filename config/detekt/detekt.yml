@@ -7,7 +7,6 @@ build:
     - '**/generated/**'
     - '**/composeApp/build/**'
     - '**/composeApp/generated/**'
-    - '**/composeApp/**/*.kt'
     - '**/preview/**'
     - '**/Colors.kt'
     - '**/*Test*.*'
