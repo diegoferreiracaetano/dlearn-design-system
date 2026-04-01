@@ -18,7 +18,8 @@ class AppMovieInfoTest {
                 contentRating = "PG-13",
                 genre = "Sci-Fi",
                 type = "Movie",
-                isPremium = true
+                isPremium = true,
+                layoutType = AppMovieInfoType.HORIZONTAL
             )
         }
 
@@ -27,7 +28,6 @@ class AppMovieInfoTest {
         onNodeWithText("148 min").assertExists()
         onNodeWithText("PG-13").assertExists()
         onNodeWithText("Sci-Fi  |  Movie").assertExists()
-        // Assuming "Premium" for isPremium = true
         onNodeWithText("Premium").assertExists()
     }
 
@@ -42,10 +42,12 @@ class AppMovieInfoTest {
                 genre = "Sci-Fi",
                 type = "Movie",
                 isPremium = true,
+                layoutType = AppMovieInfoType.VERTICAL
             )
         }
 
         onNodeWithText("Inception").assertExists()
-        onNodeWithText("Sci-Fi  •  2010").assertExists()
+        onNodeWithText("Sci-Fi", substring = true).assertExists()
+        onNodeWithText("2010", substring = true).assertExists()
     }
 }
