@@ -3,6 +3,7 @@ package com.diegoferreiracaetano.dlearn.designsystem.components.list
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,6 +31,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
  * @param collapsibleContent Optional composable for the header that can be collapsed.
  * @param content The content of the [LazyColumn].
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppList(
     modifier: Modifier = Modifier,
@@ -52,7 +54,14 @@ fun AppList(
                     currentOffset > previousOffset
                 }
 
-                collapsibleContentVisible = currentIndex == 0 || !isScrollingDown
+                val isScrolling = currentIndex != previousIndex || currentOffset != previousOffset
+                val isAtTop = currentIndex == 0 && currentOffset == 0
+
+                if (isAtTop) {
+                    collapsibleContentVisible = true
+                } else if (isScrolling) {
+                    collapsibleContentVisible = !isScrollingDown
+                }
 
                 previousIndex = currentIndex
                 previousOffset = currentOffset
