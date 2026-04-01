@@ -1,6 +1,7 @@
 package com.diegoferreiracaetano.dlearn.designsystem.components.html
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -62,10 +63,19 @@ class HtmlParserTest {
         val result = HtmlParser.parse(html, styleConfig.copy(linkColor = linkColor))
 
         assertEquals("Hello World", result.text)
+
+        val linkAnnotation = result.getLinkAnnotations(0, result.length).firstOrNull()?.item
+        val style = linkAnnotation?.styles?.style
+
         val spanStyle = result.spanStyles.find {
             it.item.color == linkColor && it.item.textDecoration == TextDecoration.Underline
-        }
-        assertTrue(spanStyle != null, "Should have link style with color and underline")
+        }?.item
+
+        val effectiveStyle = style ?: spanStyle
+
+        assertTrue(effectiveStyle != null, "Should have link style with color and underline")
+        assertEquals(linkColor, effectiveStyle.color)
+        assertEquals(TextDecoration.Underline, effectiveStyle.textDecoration)
     }
 
     @Test
