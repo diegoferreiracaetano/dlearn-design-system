@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -230,8 +231,9 @@ class AppContainerTest {
             }
         }
 
-        // Drawer should be hidden initially
-        onNodeWithText(drawerText).assertDoesNotExist()
+        // Drawer should be hidden initially. 
+        // ModalNavigationDrawer might keep content in tree, so we use assertIsNotDisplayed
+        onNodeWithText(drawerText).assertIsNotDisplayed()
 
         // Click Menu
         onNodeWithContentDescription("Menu", ignoreCase = true).performClick()

@@ -16,7 +16,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
@@ -48,6 +50,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  * @param color The base color for the text. If [Color.Unspecified], uses the default from [style].
  * @param linkColor The color to be used for <a> tags. Defaults to the theme's primary color.
  * @param headingColor The color to be used for headings. Defaults to onSurface.
+ * @param onLinkClick Optional callback for when a link (<a> tag) is clicked. 
+ * If provided, overrides default URI handling.
  */
 @Composable
 fun AppHtmlText(
@@ -56,13 +60,14 @@ fun AppHtmlText(
     style: TextStyle = MaterialTheme.typography.bodyMedium,
     color: Color = Color.Unspecified,
     linkColor: Color = MaterialTheme.colorScheme.primary,
-    headingColor: Color = MaterialTheme.colorScheme.onSurface
+    headingColor: Color = MaterialTheme.colorScheme.onSurface,
+    onLinkClick: ((String) -> Unit)? = null
 ) {
     val h1Size = MaterialTheme.typography.headlineLarge.fontSize
     val h2Size = MaterialTheme.typography.headlineMedium.fontSize
     val h3Size = MaterialTheme.typography.titleLarge.fontSize
 
-    val annotatedString = remember(html, linkColor, headingColor, h1Size, h2Size, h3Size) {
+    val annotatedString = remember(html, linkColor, headingColor, h1Size, h2Size, h3Size, onLinkClick) {
         HtmlParser.parse(
             html = html,
             styleConfig = HtmlStyleConfig(
@@ -70,7 +75,8 @@ fun AppHtmlText(
                 headingColor = headingColor,
                 h1Size = h1Size,
                 h2Size = h2Size,
-                h3Size = h3Size
+                h3Size = h3Size,
+                onLinkClick = onLinkClick
             )
         )
     }
@@ -90,7 +96,8 @@ internal data class HtmlStyleConfig(
     val headingColor: Color,
     val h1Size: TextUnit,
     val h2Size: TextUnit,
-    val h3Size: TextUnit
+    val h3Size: TextUnit,
+    val onLinkClick: ((String) -> Unit)? = null
 )
 
 internal object HtmlParser {
@@ -146,7 +153,7 @@ internal object HtmlParser {
                 stack
             )
             "p" -> if (length > 0) append("\n")
-            "a" -> handleAnchorTag(attrs, stack, styleConfig.linkColor)
+            "a" -> handleAnchorTag(attrs, stack, styleConfig)
             "h1" -> handleHeadingTag(tagName, styleConfig.h1Size, styleConfig.headingColor, stack)
             "h2" -> handleHeadingTag(tagName, styleConfig.h2Size, styleConfig.headingColor, stack)
             "h3" -> handleHeadingTag(tagName, styleConfig.h3Size, styleConfig.headingColor, stack)
@@ -156,12 +163,31 @@ internal object HtmlParser {
     private fun AnnotatedString.Builder.handleAnchorTag(
         attrs: String,
         stack: MutableList<String>,
-        linkColor: Color
+        styleConfig: HtmlStyleConfig
     ) {
         val href = extractHref(attrs)
-        pushStyle(SpanStyle(color = linkColor, textDecoration = TextDecoration.Underline))
         if (href != null) {
-            pushStringAnnotation("URL", href)
+            val linkStyles = TextLinkStyles(
+                style = SpanStyle(
+                    color = styleConfig.linkColor,
+                    textDecoration = TextDecoration.Underline
+                )
+            )
+            val link = if (styleConfig.onLinkClick != null) {
+                LinkAnnotation.Clickable(
+                    tag = href,
+                    styles = linkStyles,
+                    linkInteractionListener = { styleConfig.onLinkClick.invoke(href) }
+                )
+            } else {
+                LinkAnnotation.Url(
+                    url = href,
+                    styles = linkStyles
+                )
+            }
+            pushLink(link)
+        } else {
+            pushStyle(SpanStyle(color = styleConfig.linkColor, textDecoration = TextDecoration.Underline))
         }
         stack.add("a")
     }
@@ -209,13 +235,7 @@ internal object HtmlParser {
     ) {
         while (stack.isNotEmpty()) {
             val last = stack.removeAt(stack.lastIndex)
-
-            if (last == "a") {
-                pop() // annotation
-            }
-
-            pop() // style
-
+            pop()
             if (last == tag) break
         }
     }

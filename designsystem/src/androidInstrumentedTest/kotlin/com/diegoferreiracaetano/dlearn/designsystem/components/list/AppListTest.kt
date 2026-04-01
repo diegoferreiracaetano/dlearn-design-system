@@ -4,6 +4,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.runComposeUiTest
@@ -62,6 +63,8 @@ class AppListTest {
         onNodeWithText("Item 0").performTouchInput { swipeUp() }
         waitForIdle()
 
-        onNodeWithText(collapsibleText).assertDoesNotExist()
+        // Use assertIsNotDisplayed instead of assertDoesNotExist because AnimatedVisibility
+        // might keep the node in the tree while it's hidden or during transition.
+        onNodeWithText(collapsibleText).assertIsNotDisplayed()
     }
 }
