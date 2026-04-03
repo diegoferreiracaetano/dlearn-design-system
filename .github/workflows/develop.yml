@@ -51,7 +51,7 @@ jobs:
           script: ./gradlew connectedDebugAndroidTest
 
       - name: Run Kover Verification
-        run: ./gradlew koverVerify
+        run: ./gradlew :designsystem:koverVerifyDebug
 
   build:
     name: Build

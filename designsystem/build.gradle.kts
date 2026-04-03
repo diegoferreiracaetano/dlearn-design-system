@@ -18,14 +18,12 @@ plugins {
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
-
+        // Removido o redirecionamento de sourceSetTree para evitar conflitos no Kover
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
             freeCompilerArgs.add("-Xexpect-actual-classes")
         }
-        publishLibraryVariants("release") // Publicar apenas a variante release
+        publishLibraryVariants("release")
     }
 
     listOf(
@@ -133,7 +131,6 @@ dependencies {
 
 kover {
     reports {
-        // Configuramos os filtros globais para excluir o que não é testável
         filters {
             excludes {
                 classes(
@@ -143,13 +140,15 @@ kover {
                     "*.BuildConfig",
                     "*Resource*",
                     "*.Res",
-                    "*.Res$*"
+                    "*.Res$*",
+                    "**/*_androidKt", // Exclui extensões específicas de plataforma se necessário
+                    "**/*_iosKt"
                 )
                 annotatedBy("androidx.compose.ui.tooling.preview.Preview")
             }
         }
 
-        // Relatório para a variante Debug (onde rodam os testes instrumentados)
+        // Verificação específica da variante Debug que engloba os testes de UI do Android
         variant("debug") {
             verify {
                 rule {
@@ -157,8 +156,8 @@ kover {
                 }
             }
         }
-        
-        // Relatório Total para o CI
+
+        // Verificação total (Fallback)
         total {
             verify {
                 rule {
@@ -180,11 +179,3 @@ kmmbridge {
 }
 
 addGithubPackagesRepository()
-
-//tasks.matching {
-//            it.name.startsWith("publishIos") ||
-//            it.name.startsWith("publishWasm") ||
-//            it.name.startsWith("publishJs")
-//}.configureEach {
-//    enabled = false
-//}
