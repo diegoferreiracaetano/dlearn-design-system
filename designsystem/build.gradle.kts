@@ -18,7 +18,10 @@ plugins {
 
 kotlin {
     androidTarget {
-        // Removido o redirecionamento de sourceSetTree para evitar conflitos no Kover
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
+        unitTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
+
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
             freeCompilerArgs.add("-Xexpect-actual-classes")
@@ -91,6 +94,19 @@ kotlin {
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
         }
+        
+        androidUnitTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.robolectric)
+        }
+
+        // Adicionando as dependências para os testes instrumentados
+        val androidInstrumentedTest by getting {
+            dependencies {
+                implementation(libs.kotlin.test)
+                implementation(libs.androidx.ui.test.junit4)
+            }
+        }
     }
 }
 
@@ -102,6 +118,13 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+    
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -111,6 +134,7 @@ android {
     buildTypes {
         debug {
             enableAndroidTestCoverage = true
+            enableUnitTestCoverage = true
         }
         getByName("release") {
             isMinifyEnabled = false
@@ -124,6 +148,7 @@ android {
 }
 
 dependencies {
+    // Estas dependências do Android são necessárias para o Runner e Manifest de testes
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.ui.test.manifest)
     debugImplementation(compose.uiTooling)
@@ -136,19 +161,17 @@ kover {
                 classes(
                     "*.ComposableSingletons*",
                     "*PreviewKt*",
-                    "*_BuildKonfig*",
                     "*.BuildConfig",
                     "*Resource*",
                     "*.Res",
                     "*.Res$*",
-                    "**/*_androidKt", // Exclui extensões específicas de plataforma se necessário
-                    "**/*_iosKt"
+                    "**_androidKt",
+                    "**_iosKt"
                 )
                 annotatedBy("androidx.compose.ui.tooling.preview.Preview")
             }
         }
 
-        // Verificação específica da variante Debug que engloba os testes de UI do Android
         variant("debug") {
             verify {
                 rule {
@@ -157,7 +180,6 @@ kover {
             }
         }
 
-        // Verificação total (Fallback)
         total {
             verify {
                 rule {
