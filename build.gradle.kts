@@ -1,6 +1,4 @@
 plugins {
-    // this is necessary to avoid the plugins to be loaded multiple times
-    // in each subproject's classloader
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.composeMultiplatform) apply false
@@ -9,10 +7,31 @@ plugins {
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.touchlab.kmmbridge) apply false
     alias(libs.plugins.kover) apply false
+    alias(libs.plugins.sonar) // Plugin do Sonar adicionado
+}
+
+// Configuração Global do Sonar
+sonar {
+    properties {
+        property("sonar.projectKey", "DLearnDesignSystem")
+        property("sonar.projectName", "DLearn Design System")
+        property("sonar.host.url", "https://sonarcloud.io") // Ou URL do seu servidor SonarQube
+        
+        // Caminho consolidado do XML de cobertura gerado pelo Kover
+        property("sonar.coverage.jacoco.xmlReportPaths", "${project.rootDir}/designsystem/build/reports/kover/report.xml")
+        
+        // Exclusões para não sujar as métricas do Sonar
+        property("sonar.exclusions", "**/build/**, **/*.json, **/*Test.kt, **/composableResources/**, **/BuildConfig.kt")
+    }
+}
+
+// Garante que o Sonar dependa da geração do relatório e da verificação de cobertura
+tasks.named("sonar") {
+    dependsOn(":designsystem:koverXmlReport")
+    dependsOn(":designsystem:koverVerify")
 }
 
 subprojects {
-
     group = findProperty("GROUP") as String? ?: "com.diegoferreiracaetano.dlearn"
     version = findProperty("VERSION_NAME") as String? ?: "0.0.1"
 

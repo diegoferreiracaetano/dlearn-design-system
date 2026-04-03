@@ -20,13 +20,12 @@ kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
-        unitTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
 
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
             freeCompilerArgs.add("-Xexpect-actual-classes")
         }
-        publishLibraryVariants("release")
+        publishLibraryVariants("release") // Publicar apenas a variante release
     }
 
     listOf(
@@ -48,7 +47,7 @@ kotlin {
             freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
-    
+
     js {
         browser()
         binaries.executable()
@@ -56,7 +55,7 @@ kotlin {
             freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
-    
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
@@ -65,7 +64,7 @@ kotlin {
             freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
-    
+
     sourceSets {
         all {
             languageSettings {
@@ -94,19 +93,6 @@ kotlin {
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
         }
-        
-        androidUnitTest.dependencies {
-            implementation(libs.kotlin.test)
-            implementation(libs.robolectric)
-        }
-
-        // Adicionando as dependências para os testes instrumentados
-        val androidInstrumentedTest by getting {
-            dependencies {
-                implementation(libs.kotlin.test)
-                implementation(libs.androidx.ui.test.junit4)
-            }
-        }
     }
 }
 
@@ -118,13 +104,6 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-    
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
-    
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -134,7 +113,6 @@ android {
     buildTypes {
         debug {
             enableAndroidTestCoverage = true
-            enableUnitTestCoverage = true
         }
         getByName("release") {
             isMinifyEnabled = false
@@ -148,7 +126,6 @@ android {
 }
 
 dependencies {
-    // Estas dependências do Android são necessárias para o Runner e Manifest de testes
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.ui.test.manifest)
     debugImplementation(compose.uiTooling)
@@ -156,35 +133,14 @@ dependencies {
 
 kover {
     reports {
-        filters {
-            excludes {
-                classes(
-                    "*.ComposableSingletons*",
-                    "*PreviewKt*",
-                    "*.BuildConfig",
-                    "*Resource*",
-                    "*.Res",
-                    "*.Res$*",
-                    "**_androidKt",
-                    "**_iosKt"
-                )
-                annotatedBy("androidx.compose.ui.tooling.preview.Preview")
-            }
-        }
-
-        variant("debug") {
-            verify {
-                rule {
-                    minBound(80)
-                }
-            }
-        }
-
         total {
-            verify {
-                rule {
-                    minBound(80)
-                }
+            xml {
+                onCheck = true
+            }
+        }
+        verify {
+            rule {
+                minBound(80)
             }
         }
     }

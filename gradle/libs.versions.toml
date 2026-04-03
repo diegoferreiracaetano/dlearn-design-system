@@ -19,6 +19,7 @@ swiftBridge = "1.2.1"
 dokka = "2.1.0"
 youtubePlayer = "13.0.0"
 kover = "0.9.8"
+sonar = "7.2.3.7755"
 
 [libraries]
 androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "composeMultiplatform" }
@@ -49,3 +50,4 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 touchlab-kmmbridge = { id = "co.touchlab.kmmbridge.github", version.ref = "swiftBridge" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+sonar = { id = "org.sonarqube", version.ref = "sonar" }
