@@ -133,9 +133,37 @@ dependencies {
 
 kover {
     reports {
-        verify {
-            rule {
-                minBound(80)
+        // Configuramos os filtros globais para excluir o que não é testável
+        filters {
+            excludes {
+                classes(
+                    "*.ComposableSingletons*",
+                    "*PreviewKt*",
+                    "*_BuildKonfig*",
+                    "*.BuildConfig",
+                    "*Resource*",
+                    "*.Res",
+                    "*.Res$*"
+                )
+                annotatedBy("androidx.compose.ui.tooling.preview.Preview")
+            }
+        }
+
+        // Relatório para a variante Debug (onde rodam os testes instrumentados)
+        variant("debug") {
+            verify {
+                rule {
+                    minBound(80)
+                }
+            }
+        }
+        
+        // Relatório Total para o CI
+        total {
+            verify {
+                rule {
+                    minBound(80)
+                }
             }
         }
     }
