@@ -2,6 +2,8 @@
 
 [![Latest Release](https://img.shields.io/github/v/release/diegoferreiracaetano/dlearn-design-system)](https://github.com/diegoferreiracaetano/dlearn-design-system/releases)
 [![Documentation](https://img.shields.io/badge/docs-dokka-brightgreen)](https://diegoferreiracaetano.github.io/dlearn-design-system/)
+[![Kover Coverage](https://img.shields.io/badge/coverage-80%25-brightgreen)](https://github.com/diegoferreiracaetano/dlearn-design-system/actions)
+[![Build Status](https://github.com/diegoferreiracaetano/dlearn-design-system/actions/workflows/develop.yml/badge.svg)](https://github.com/diegoferreiracaetano/dlearn-design-system/actions)
 
 Este é um projeto **Kotlin Multiplatform (KMP)** focado em Design System, atendendo Android, iOS e Web utilizando Compose Multiplatform.
 

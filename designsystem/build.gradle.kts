@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.touchlab.kmmbridge)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.kover)
 }
 
 kotlin {
@@ -110,6 +111,9 @@ android {
         }
     }
     buildTypes {
+        debug {
+            enableAndroidTestCoverage = true
+        }
         getByName("release") {
             isMinifyEnabled = false
         }
@@ -127,7 +131,15 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
-
+kover {
+    reports {
+        verify {
+            rule {
+                minBound(80)
+            }
+        }
+    }
+}
 
 kmmbridge {
     gitHubReleaseArtifacts()
