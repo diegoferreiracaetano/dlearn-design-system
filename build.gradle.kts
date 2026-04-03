@@ -7,62 +7,12 @@ plugins {
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.touchlab.kmmbridge) apply false
     alias(libs.plugins.kover) apply false
-    alias(libs.plugins.sonar) // Plugin do Sonar adicionado
 }
 
-// Configuração Global do Sonar
-sonar {
-    properties {
-        property("sonar.projectKey", "DLearnDesignSystem")
-        property("sonar.projectName", "DLearn Design System")
-        property("sonar.host.url", "https://sonarcloud.io") // Ou URL do seu servidor SonarQube
-        
-        // Caminho consolidado do XML de cobertura gerado pelo Kover
-        property("sonar.coverage.jacoco.xmlReportPaths", "${project.rootDir}/designsystem/build/reports/kover/report.xml")
-        
-        // Exclusões para não sujar as métricas do Sonar
-        property("sonar.exclusions", "**/build/**, **/*.json, **/*Test.kt, **/composableResources/**, **/BuildConfig.kt")
-    }
-}
-
-// Garante que o Sonar dependa da geração do relatório e da verificação de cobertura
-tasks.named("sonar") {
-    dependsOn(":designsystem:koverXmlReport")
-    dependsOn(":designsystem:koverVerify")
-}
+// Importa apenas o Detekt (Lint gratuito)
+apply(from = "gradle/detekt.gradle")
 
 subprojects {
     group = findProperty("GROUP") as String? ?: "com.diegoferreiracaetano.dlearn"
     version = findProperty("VERSION_NAME") as String? ?: "0.0.1"
-
-    apply(plugin = "io.gitlab.arturbosch.detekt")
-
-    configure<io.gitlab.arturbosch.detekt.extensions.DetektExtension> {
-        config.setFrom("${rootDir}/config/detekt/detekt.yml")
-        buildUponDefaultConfig = true
-        allRules = false
-        source.setFrom("src")
-    }
-
-    tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-        jvmTarget = "21"
-        exclude("**/build/**")
-
-        reports {
-            html.required.set(true)
-            xml.required.set(true)
-            txt.required.set(false)
-        }
-    }
-
-    tasks.register("detektAll") {
-        group = "verification"
-        description = "Runs Detekt on all subprojects"
-
-        dependsOn(
-            rootProject.subprojects.flatMap { sub ->
-                sub.tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().toList()
-            }
-        )
-    }
 }
