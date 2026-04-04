@@ -6,9 +6,9 @@ let packageNameUI = "DesignSystemUI"
 let swiftSourcePath = "designsystem/src/iosMain/swift"
 
 // BEGIN KMMBRIDGE VARIABLES BLOCK (do not edit)
+let remoteKotlinUrl = "https://api.github.com/repos/diegoferreiracaetano/dlearn-design-system/releases/assets/388309592.zip"
+let remoteKotlinChecksum = "b97dab612ca2def52048595442b1cf895ca846d882719766ff811173ccb58a93"
 let packageName = "DesignSystem"
-let remoteKotlinUrl = "remoteKotlinUrl"
-let remoteKotlinChecksum = "remoteKotlinChecksum"
 // END KMMBRIDGE BLOCK
 
 let binaryPath = "designsystem/build/XCFrameworks/debug/\(packageName).xcframework"
