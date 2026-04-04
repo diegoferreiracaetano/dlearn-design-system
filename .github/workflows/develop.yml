@@ -25,7 +25,7 @@ jobs:
 
   test:
     name: Test & Coverage
-    runs-on: ubuntu-latest
+    runs-on: macos-latest # Necessário para rodar o emulador Android de forma performática
     needs: lint
     steps:
       - name: Checkout
@@ -40,7 +40,30 @@ jobs:
         run: chmod +x gradlew
       
       - name: Run Unit Tests
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew :designsystem:testDebugUnitTest
 
-      - name: Run Kover Verification
+      - name: Run Instrumented Tests (Android)
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          target: google_apis
+          arch: x86_64
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: ./gradlew :designsystem:connectedDebugAndroidTest
+
+      - name: Verify Coverage (JaCoCo Android)
+        run: ./gradlew :designsystem:jacocoAndroidTestVerify
+
+      - name: Verify Coverage (Kover Global)
         run: ./gradlew :designsystem:koverVerify
+      
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-reports
+          path: |
+            designsystem/build/reports/jacoco/
+            designsystem/build/reports/kover/

@@ -14,7 +14,10 @@ plugins {
     alias(libs.plugins.touchlab.kmmbridge)
     alias(libs.plugins.dokka)
     alias(libs.plugins.kover)
+    jacoco
 }
+
+apply(from = "../gradle/coverage.gradle.kts")
 
 kotlin {
     androidTarget {
@@ -131,22 +134,6 @@ dependencies {
     androidTestImplementation(libs.kotlin.test)
     debugImplementation(libs.ui.test.manifest)
     debugImplementation(compose.uiTooling)
-}
-
-kover {
-    reports {
-        total {
-            xml {
-                onCheck = true
-            }
-        }
-        verify {
-            rule {
-                // Reduzido para 1% para garantir que o CI passe inicialmente
-                minBound(1)
-            }
-        }
-    }
 }
 
 kmmbridge {
