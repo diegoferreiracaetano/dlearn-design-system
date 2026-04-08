@@ -6,6 +6,7 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.AppEr
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.AuthError
 import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.NoInternetError
 import com.diegoferreiracaetano.dlearn.designsystem.components.feedback.AppFeedback
+import com.diegoferreiracaetano.dlearn.designsystem.components.feedback.AppFeedbackTags
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_close
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_retry
@@ -38,6 +39,8 @@ fun AppError(
     secondaryText: StringResource? = null,
     onSecondary: (() -> Unit)? = null,
     onClose: (() -> Unit)? = null,
+    primaryTestTag: String = AppFeedbackTags.PRIMARY_BUTTON,
+    secondaryTestTag: String = AppFeedbackTags.SECONDARY_BUTTON,
 ) {
 
     AppFeedback(
@@ -50,7 +53,9 @@ fun AppError(
         onPrimary = onPrimary,
         secondaryText = secondaryText ?: Res.string.action_close,
         onSecondary = onSecondary,
-        onClose = onClose
+        onClose = onClose,
+        primaryTestTag = primaryTestTag,
+        secondaryTestTag = secondaryTestTag,
     )
 }
 
