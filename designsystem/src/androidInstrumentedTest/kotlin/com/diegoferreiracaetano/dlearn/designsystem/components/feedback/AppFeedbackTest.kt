@@ -1,8 +1,10 @@
 package com.diegoferreiracaetano.dlearn.designsystem.components.feedback
 
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.assertDoesNotExist
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
@@ -18,7 +20,7 @@ class AppFeedbackTest {
         val description = "Feedback Description"
         val primaryText = "Primary Action"
         val secondaryText = "Secondary Action"
-        
+
         var primaryClicked = false
         var secondaryClicked = false
         var closeClicked = false
@@ -37,19 +39,15 @@ class AppFeedbackTest {
             )
         }
 
-        // Verify title and description
         onNodeWithText(title).assertIsDisplayed()
         onNodeWithText(description).assertIsDisplayed()
 
-        // Verify and click primary button
-        onNodeWithText(primaryText).assertIsDisplayed().performClick()
+        onNodeWithTag(AppFeedbackTags.PRIMARY_BUTTON).assertIsDisplayed().performClick()
         assertTrue(primaryClicked, "Primary button was not clicked")
 
-        // Verify and click secondary button
-        onNodeWithText(secondaryText).assertIsDisplayed().performClick()
+        onNodeWithTag(AppFeedbackTags.SECONDARY_BUTTON).assertIsDisplayed().performClick()
         assertTrue(secondaryClicked, "Secondary button was not clicked")
 
-        // Verify and click close button (close icon has string resource action_close)
         onNodeWithContentDescription("Fechar").assertIsDisplayed().performClick()
         assertTrue(closeClicked, "Close button was not clicked")
     }
@@ -60,7 +58,7 @@ class AppFeedbackTest {
         val description = "Content Description"
         val primaryText = "Primary Action"
         val secondaryText = "Secondary Action"
-        
+
         var primaryClicked = false
         var secondaryClicked = false
 
@@ -77,16 +75,50 @@ class AppFeedbackTest {
             )
         }
 
-        // Verify title and description
         onNodeWithText(title).assertIsDisplayed()
         onNodeWithText(description).assertIsDisplayed()
 
-        // Verify and click primary button
-        onNodeWithText(primaryText).assertIsDisplayed().performClick()
+        onNodeWithTag(AppFeedbackTags.PRIMARY_BUTTON).assertIsDisplayed().performClick()
         assertTrue(primaryClicked, "Primary button was not clicked")
 
-        // Verify and click secondary button
-        onNodeWithText(secondaryText).assertIsDisplayed().performClick()
+        onNodeWithTag(AppFeedbackTags.SECONDARY_BUTTON).assertIsDisplayed().performClick()
         assertTrue(secondaryClicked, "Secondary button was not clicked")
+    }
+
+    @Test
+    fun shouldNotShowButtonsWhenCallbacksAreNull() = runComposeUiTest {
+        setContent {
+            AppFeedback(
+                title = "Title",
+                description = "Description",
+                imageSource = null
+            )
+        }
+
+        onNodeWithTag(AppFeedbackTags.PRIMARY_BUTTON).assertDoesNotExist()
+        onNodeWithTag(AppFeedbackTags.SECONDARY_BUTTON).assertDoesNotExist()
+    }
+
+    @Test
+    fun shouldRespectCustomTestTags() = runComposeUiTest {
+        val customPrimaryTag = "my_screen_primary_btn"
+        val customSecondaryTag = "my_screen_secondary_btn"
+
+        setContent {
+            AppFeedback(
+                title = "Title",
+                description = "Description",
+                imageSource = null,
+                primaryText = "Primary",
+                onPrimary = {},
+                secondaryText = "Secondary",
+                onSecondary = {},
+                primaryTestTag = customPrimaryTag,
+                secondaryTestTag = customSecondaryTag,
+            )
+        }
+
+        onNodeWithTag(customPrimaryTag).assertIsDisplayed()
+        onNodeWithTag(customSecondaryTag).assertIsDisplayed()
     }
 }

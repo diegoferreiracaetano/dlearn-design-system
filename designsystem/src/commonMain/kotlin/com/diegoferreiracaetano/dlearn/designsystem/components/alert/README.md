@@ -42,6 +42,27 @@ AppDialog(
 )
 ```
 
+### Testing
+
+Os botões expõem tags via parâmetros com valores default definidos em `AppDialogTags`:
+
+| Parâmetro | Default | Descrição |
+| :--- | :--- | :--- |
+| `confirmTestTag` | `AppDialogTags.CONFIRM_BUTTON` | Tag do botão de confirmação. |
+| `dismissTestTag` | `AppDialogTags.DISMISS_BUTTON` | Tag do botão de descarte. |
+
+```kotlin
+// Usando os defaults
+composeTestRule.onNodeWithTag(AppDialogTags.CONFIRM_BUTTON).performClick()
+
+// Sobrescrevendo para isolar testes por tela
+AppDialog(
+    confirmButtonText = "Cancelar",
+    onConfirmClick = { /* ... */ },
+    confirmTestTag = "logout_dialog_confirm",
+)
+```
+
 ---
 
 # AppShareDialog

@@ -112,6 +112,36 @@ Pager component for full-screen banner display, ideal for the top of home or det
 
 ---
 
+## FullScreenVideo
+Full-screen banner card with an image, title, subtitle, and two action buttons.
+
+### Props
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `title` | `String` | - | Title of the content. |
+| `subtitle` | `String` | - | Subtitle/description. |
+| `imageSource` | `AppImageSource?` | `null` | Banner image. |
+| `onItemClick` | `() -> Unit` | - | Action when the card is clicked. |
+| `onWatchClick` | `() -> Unit` | - | Action for the watch button. |
+| `onAddToListClick` | `() -> Unit` | - | Action for the add to list button. |
+| `watchTestTag` | `String` | `FullScreenVideoTags.WATCH_BUTTON` | Test tag for the watch button. |
+| `addToListTestTag` | `String` | `FullScreenVideoTags.ADD_TO_LIST_BUTTON` | Test tag for the add to list button. |
+
+### Testing
+```kotlin
+composeTestRule.onNodeWithTag(FullScreenVideoTags.WATCH_BUTTON).performClick()
+composeTestRule.onNodeWithTag(FullScreenVideoTags.ADD_TO_LIST_BUTTON).performClick()
+
+// Sobrescrevendo por tela
+FullScreenVideo(
+    watchTestTag = "home_banner_watch",
+    addToListTestTag = "home_banner_add",
+    ...
+)
+```
+
+---
+
 ## PageCarousel
 Specialized carousel for Onboarding flows. Features a floating info card and an action button.
 
@@ -120,5 +150,11 @@ Specialized carousel for Onboarding flows. Features a floating info card and an 
 | :--- | :--- | :--- | :--- |
 | `pageCount` | `Int` | - | Total number of pages. |
 | `onFinish` | `() -> Unit` | - | Callback triggered when clicking the button on the last page. |
+| `nextButtonTestTag` | `String` | `PAGE_CAROUSEL_NEXT_BUTTON_TAG` | Test tag for the next/finish button. |
 | `imageContent` | `Composable (Int) -> Unit` | - | Background image for each page. |
 | `infoContent` | `Composable (Int) -> Unit` | - | Textual/informative content for each page. |
+
+### Testing
+```kotlin
+composeTestRule.onNodeWithTag(PAGE_CAROUSEL_NEXT_BUTTON_TAG).performClick()
+```

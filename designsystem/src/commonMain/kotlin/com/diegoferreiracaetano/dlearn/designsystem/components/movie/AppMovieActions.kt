@@ -55,6 +55,9 @@ object AppMovieActionsTags {
  * @param isPlaying Whether the video is currently playing.
  * @param isFavorite Whether the movie is favorited.
  * @param isInList Whether the movie is in the user's list.
+ * @param playTestTag Test tag for the play button.
+ * @param addTestTag Test tag for the add to list button.
+ * @param favoriteTestTag Test tag for the favorite button.
  */
 @Composable
 fun AppMovieActions(
@@ -67,7 +70,10 @@ fun AppMovieActions(
     playText: String = stringResource(Res.string.movie_action_play_trailer),
     isPlaying: Boolean = false,
     isFavorite: Boolean = false,
-    isInList: Boolean = false
+    isInList: Boolean = false,
+    playTestTag: String = AppMovieActionsTags.PLAY_BUTTON,
+    addTestTag: String = AppMovieActionsTags.ADD_BUTTON,
+    favoriteTestTag: String = AppMovieActionsTags.FAVORITE_BUTTON,
 ) {
     var watchProvidersExpanded by remember { mutableStateOf(false) }
 
@@ -90,7 +96,7 @@ fun AppMovieActions(
                 imageSource = playIcon.toAppImageSource(),
                 backgroundColor = MaterialTheme.colorScheme.tertiary,
                 modifier = Modifier.weight(1f),
-                testTag = AppMovieActionsTags.PLAY_BUTTON
+                testTag = playTestTag,
             )
 
             AppButton(
@@ -99,7 +105,7 @@ fun AppMovieActions(
                 imageSource = (if (isInList) Icons.Default.Check else Icons.Default.Add)
                     .toAppImageSource(),
                 backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
-                testTag = AppMovieActionsTags.ADD_BUTTON
+                testTag = addTestTag,
             )
 
             AppButton(
@@ -108,7 +114,7 @@ fun AppMovieActions(
                 imageSource = (if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder)
                     .toAppImageSource(),
                 backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
-                testTag = AppMovieActionsTags.FAVORITE_BUTTON
+                testTag = favoriteTestTag,
             )
         }
 

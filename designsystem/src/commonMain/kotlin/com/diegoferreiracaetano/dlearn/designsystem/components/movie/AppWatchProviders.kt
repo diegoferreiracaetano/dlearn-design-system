@@ -62,6 +62,10 @@ data class WatchProvider(
     val watchUrl: String? = null
 )
 
+object AppWatchProvidersTags {
+    const val WATCH_BUTTON = "AppWatchProviders_WatchButton"
+}
+
 private val ContainerPadding = 16.dp
 private val HeaderSpacing = 16.dp
 private val ProviderIconSize = 40.dp
@@ -90,6 +94,7 @@ private const val SUMMARY_VISIBLE_COUNT = 3
  * @param modifier The [Modifier] to be applied to this component.
  * @param isExpanded Whether the component is currently expanded to show all providers.
  * @param onExpandClick Callback invoked when the expand/collapse header or summary is clicked.
+ * @param watchButtonTestTag Test tag for the watch button on each provider item.
  */
 @Composable
 fun AppWatchProviders(
@@ -97,7 +102,8 @@ fun AppWatchProviders(
     onProviderClick: (WatchProvider) -> Unit,
     modifier: Modifier = Modifier,
     isExpanded: Boolean = false,
-    onExpandClick: () -> Unit = {}
+    onExpandClick: () -> Unit = {},
+    watchButtonTestTag: String = AppWatchProvidersTags.WATCH_BUTTON,
 ) {
     val firstProvider = providers.firstOrNull()
     val remainingProviders = providers.drop(1)
@@ -121,7 +127,8 @@ fun AppWatchProviders(
                     WatchProviderItem(
                         provider = firstProvider,
                         showWatchButton = isExpanded,
-                        onClick = { onProviderClick(firstProvider) }
+                        onClick = { onProviderClick(firstProvider) },
+                        watchButtonTestTag = watchButtonTestTag,
                     )
                 }
 
@@ -192,7 +199,8 @@ fun AppWatchProviders(
                     WatchProviderItem(
                         provider = it,
                         showWatchButton = isExpanded,
-                        onClick = { onProviderClick(it) }
+                        onClick = { onProviderClick(it) },
+                        watchButtonTestTag = watchButtonTestTag,
                     )
                 }
             }
@@ -238,7 +246,8 @@ private fun Header(
 private fun WatchProviderItem(
     provider: WatchProvider,
     onClick: () -> Unit,
-    showWatchButton: Boolean = true
+    showWatchButton: Boolean = true,
+    watchButtonTestTag: String = AppWatchProvidersTags.WATCH_BUTTON,
 ) {
     Row(
         modifier = Modifier
@@ -283,7 +292,8 @@ private fun WatchProviderItem(
                     onClick = onClick,
                     type = ButtonType.SECONDARY,
                     imageSource = Icons.Default.PlayCircleOutline.toAppImageSource(),
-                    modifier = Modifier.height(WatchButtonHeight)
+                    modifier = Modifier.height(WatchButtonHeight),
+                    testTag = watchButtonTestTag,
                 )
             }
         }

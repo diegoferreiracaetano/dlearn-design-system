@@ -14,6 +14,16 @@ A vertical action bar typically used in movie detail screens. It includes the ma
 - `modifier`: `Modifier` - Modifier for the container.
 - `playText`: `String` - Label for the play button (default: "Trailer").
 - `isPlaying`: `Boolean` - Whether the video is currently playing.
+- `playTestTag`: `String` - Test tag for the play button (default: `AppMovieActionsTags.PLAY_BUTTON`).
+- `addTestTag`: `String` - Test tag for the add to list button (default: `AppMovieActionsTags.ADD_BUTTON`).
+- `favoriteTestTag`: `String` - Test tag for the favorite button (default: `AppMovieActionsTags.FAVORITE_BUTTON`).
+
+**Testing:**
+```kotlin
+composeTestRule.onNodeWithTag(AppMovieActionsTags.PLAY_BUTTON).performClick()
+composeTestRule.onNodeWithTag(AppMovieActionsTags.ADD_BUTTON).assertIsDisplayed()
+composeTestRule.onNodeWithTag(AppMovieActionsTags.FAVORITE_BUTTON).assertIsDisplayed()
+```
 
 ### AppWatchProviders
 A component that shows where a movie can be watched. It supports a collapsed view with a summary and an expanded view with a detailed list and direct links.
@@ -24,6 +34,7 @@ A component that shows where a movie can be watched. It supports a collapsed vie
 - `modifier`: `Modifier` - Modifier for the container.
 - `isExpanded`: `Boolean` - Initial expansion state.
 - `onExpandClick`: `() -> Unit` - Callback for toggling expansion.
+- `watchButtonTestTag`: `String` - Test tag applied to each provider's watch button (default: `AppWatchProvidersTags.WATCH_BUTTON`).
 
 **Usage:**
 ```kotlin
@@ -37,6 +48,11 @@ AppWatchProviders(
     isExpanded = false,
     onExpandClick = { /* Toggle State */ }
 )
+```
+
+**Testing:**
+```kotlin
+composeTestRule.onNodeWithTag(AppWatchProvidersTags.WATCH_BUTTON).performClick()
 ```
 
 ### AppMovieDetailHeader

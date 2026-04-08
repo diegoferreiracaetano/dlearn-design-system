@@ -29,6 +29,11 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+object AppFeedbackTags {
+    const val PRIMARY_BUTTON = "AppFeedback_PrimaryButton"
+    const val SECONDARY_BUTTON = "AppFeedback_SecondaryButton"
+}
+
 private val FeedbackImageSize = 160.dp
 
 /**
@@ -45,6 +50,8 @@ private val FeedbackImageSize = 160.dp
  * @param secondaryText Text for the secondary action button.
  * @param onSecondary Callback for the secondary action button.
  * @param onClose Callback for the close icon in the toolbar (only used if fullScreen is true).
+ * @param primaryTestTag Test tag for the primary action button.
+ * @param secondaryTestTag Test tag for the secondary action button.
  */
 @Composable
 fun AppFeedback(
@@ -58,6 +65,8 @@ fun AppFeedback(
     secondaryText: StringResource? = null,
     onSecondary: (() -> Unit)? = null,
     onClose: (() -> Unit)? = null,
+    primaryTestTag: String = AppFeedbackTags.PRIMARY_BUTTON,
+    secondaryTestTag: String = AppFeedbackTags.SECONDARY_BUTTON,
 ) {
     AppFeedback(
         title = stringResource(title),
@@ -69,7 +78,9 @@ fun AppFeedback(
         onPrimary = onPrimary,
         secondaryText = secondaryText?.let { stringResource(it) },
         onSecondary = onSecondary,
-        onClose = onClose
+        onClose = onClose,
+        primaryTestTag = primaryTestTag,
+        secondaryTestTag = secondaryTestTag,
     )
 }
 
@@ -87,6 +98,8 @@ fun AppFeedback(
  * @param secondaryText Text for the secondary action button.
  * @param onSecondary Callback for the secondary action button.
  * @param onClose Callback for the close icon in the toolbar (only used if fullScreen is true).
+ * @param primaryTestTag Test tag for the primary action button.
+ * @param secondaryTestTag Test tag for the secondary action button.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -101,6 +114,8 @@ fun AppFeedback(
     secondaryText: String? = null,
     onSecondary: (() -> Unit)? = null,
     onClose: (() -> Unit)? = null,
+    primaryTestTag: String = AppFeedbackTags.PRIMARY_BUTTON,
+    secondaryTestTag: String = AppFeedbackTags.SECONDARY_BUTTON,
 ) {
     if (fullScreen) {
         Scaffold(
@@ -119,7 +134,9 @@ fun AppFeedback(
                 primaryText = primaryText,
                 onPrimary = onPrimary,
                 secondaryText = secondaryText,
-                onSecondary = onSecondary
+                onSecondary = onSecondary,
+                primaryTestTag = primaryTestTag,
+                secondaryTestTag = secondaryTestTag,
             )
         }
     } else {
@@ -131,7 +148,9 @@ fun AppFeedback(
             primaryText = primaryText,
             onPrimary = onPrimary,
             secondaryText = secondaryText,
-            onSecondary = onSecondary
+            onSecondary = onSecondary,
+            primaryTestTag = primaryTestTag,
+            secondaryTestTag = secondaryTestTag,
         )
     }
 }
@@ -146,6 +165,8 @@ private fun FeedbackLayout(
     onPrimary: (() -> Unit)? = null,
     secondaryText: String? = null,
     onSecondary: (() -> Unit)? = null,
+    primaryTestTag: String = AppFeedbackTags.PRIMARY_BUTTON,
+    secondaryTestTag: String = AppFeedbackTags.SECONDARY_BUTTON,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -197,7 +218,8 @@ private fun FeedbackLayout(
                         modifier = Modifier.fillMaxWidth(),
                         text = primaryText,
                         type = ButtonType.PRIMARY,
-                        onClick = onPrimary
+                        onClick = onPrimary,
+                        testTag = primaryTestTag,
                     )
                 }
                 if (onSecondary != null && secondaryText != null) {
@@ -205,7 +227,8 @@ private fun FeedbackLayout(
                         modifier = Modifier.fillMaxWidth(),
                         text = secondaryText,
                         type = ButtonType.SECONDARY,
-                        onClick = onSecondary
+                        onClick = onSecondary,
+                        testTag = secondaryTestTag,
                     )
                 }
             }

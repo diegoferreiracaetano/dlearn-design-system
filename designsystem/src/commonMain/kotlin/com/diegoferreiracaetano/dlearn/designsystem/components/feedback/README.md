@@ -48,3 +48,25 @@ Este componente não deve ser usado diretamente na maioria dos casos. Em vez dis
 - **Ações Empilhadas**: Suporta até duas ações (primária e secundária) exibidas verticalmente no rodapé.
 - **Modo FullScreen**: Suporta um modo com `Scaffold` e `TopBar` integrado.
 - **Responsivo**: Adapta-se a diferentes tamanhos de tela e orientações.
+
+## Testing
+
+Os botões de ação expõem tags via parâmetros com valores default definidos em `AppFeedbackTags`:
+
+| Parâmetro | Default | Descrição |
+| :--- | :--- | :--- |
+| `primaryTestTag` | `AppFeedbackTags.PRIMARY_BUTTON` | Tag do botão primário. |
+| `secondaryTestTag` | `AppFeedbackTags.SECONDARY_BUTTON` | Tag do botão secundário. |
+
+```kotlin
+// Usando os defaults
+composeTestRule.onNodeWithTag(AppFeedbackTags.PRIMARY_BUTTON).performClick()
+
+// Sobrescrevendo para isolar testes por tela
+AppFeedback(
+    title = "...",
+    primaryText = "Tentar novamente",
+    onPrimary = { /* ... */ },
+    primaryTestTag = "error_screen_retry_btn",
+)
+```

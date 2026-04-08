@@ -33,6 +33,11 @@ import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+object FullScreenVideoTags {
+    const val WATCH_BUTTON = "FullScreenVideo_WatchButton"
+    const val ADD_TO_LIST_BUTTON = "FullScreenVideo_AddToListButton"
+}
+
 private const val RATIO = 6f / 9f
 
 /**
@@ -46,6 +51,8 @@ private const val RATIO = 6f / 9f
  * @param onItemClick Action when the banner itself is clicked.
  * @param onWatchClick Action when the watch button is clicked.
  * @param onAddToListClick Action when the add to list button is clicked.
+ * @param watchTestTag Test tag for the watch button.
+ * @param addToListTestTag Test tag for the add to list button.
  */
 @Composable
 fun FullScreenVideo(
@@ -56,6 +63,8 @@ fun FullScreenVideo(
     onItemClick: () -> Unit,
     onWatchClick: () -> Unit,
     onAddToListClick: () -> Unit,
+    watchTestTag: String = FullScreenVideoTags.WATCH_BUTTON,
+    addToListTestTag: String = FullScreenVideoTags.ADD_TO_LIST_BUTTON,
 ) {
     Card(
         modifier = modifier
@@ -115,14 +124,16 @@ fun FullScreenVideo(
                     AppButton(
                         modifier = Modifier.weight(1f),
                         onClick = onWatchClick,
-                        text = stringResource(Res.string.action_watch)
+                        text = stringResource(Res.string.action_watch),
+                        testTag = watchTestTag,
                     )
                     Spacer(modifier = Modifier.padding(horizontal = 4.dp))
                     AppButton(
                         modifier = Modifier.weight(1f),
                         onClick = onAddToListClick,
                         text = stringResource(Res.string.action_add_to_list),
-                        type = ButtonType.SECONDARY
+                        type = ButtonType.SECONDARY,
+                        testTag = addToListTestTag,
                     )
                 }
 

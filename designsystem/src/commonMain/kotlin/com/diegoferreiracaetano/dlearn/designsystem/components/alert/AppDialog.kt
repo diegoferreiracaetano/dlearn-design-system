@@ -27,6 +27,11 @@ import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.question
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+object AppDialogTags {
+    const val CONFIRM_BUTTON = "AppDialog_ConfirmButton"
+    const val DISMISS_BUTTON = "AppDialog_DismissButton"
+}
+
 private val DialogPadding = 24.dp
 private val DialogImageSize = 120.dp
 private val DialogSpacing = 16.dp
@@ -79,6 +84,8 @@ fun AppDialogContainer(
  * @param title Optional title for the dialog.
  * @param description Optional description for the dialog.
  * @param imageSource Optional [AppImageSource] to be displayed at the top.
+ * @param confirmTestTag Test tag for the confirm button.
+ * @param dismissTestTag Test tag for the dismiss button.
  */
 @Composable
 fun AppDialog(
@@ -91,6 +98,8 @@ fun AppDialog(
     title: String? = null,
     description: String? = null,
     imageSource: AppImageSource? = null,
+    confirmTestTag: String = AppDialogTags.CONFIRM_BUTTON,
+    dismissTestTag: String = AppDialogTags.DISMISS_BUTTON,
 ) {
     AppDialogContainer(
         onDismissRequest = onDismissRequest,
@@ -134,14 +143,16 @@ fun AppDialog(
                     modifier = Modifier.weight(1f),
                     text = dismissButtonText,
                     onClick = onDismissClick,
-                    type = ButtonType.SECONDARY
+                    type = ButtonType.SECONDARY,
+                    testTag = dismissTestTag,
                 )
             }
             AppButton(
                 modifier = Modifier.weight(1f),
                 text = confirmButtonText,
                 onClick = onConfirmClick,
-                type = ButtonType.PRIMARY
+                type = ButtonType.PRIMARY,
+                testTag = confirmTestTag,
             )
         }
     }

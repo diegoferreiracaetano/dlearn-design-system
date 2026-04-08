@@ -2,6 +2,7 @@ package com.diegoferreiracaetano.dlearn.designsystem.components.alert
 
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
@@ -33,17 +34,16 @@ class AppDialogTest {
     @Test
     fun shouldTriggerConfirmClick() = runComposeUiTest {
         var confirmed = false
-        val confirmText = "Confirm"
 
         setContent {
             AppDialog(
                 onDismissRequest = {},
-                confirmButtonText = confirmText,
+                confirmButtonText = "Confirm",
                 onConfirmClick = { confirmed = true }
             )
         }
 
-        onNodeWithText(confirmText).performClick()
+        onNodeWithTag(AppDialogTags.CONFIRM_BUTTON).assertIsDisplayed().performClick()
 
         assertTrue(confirmed, "The onConfirmClick callback should have been triggered")
     }
@@ -51,20 +51,56 @@ class AppDialogTest {
     @Test
     fun shouldTriggerDismissClick() = runComposeUiTest {
         var dismissed = false
-        val dismissText = "Dismiss"
 
         setContent {
             AppDialog(
                 onDismissRequest = {},
                 confirmButtonText = "Confirm",
                 onConfirmClick = {},
-                dismissButtonText = dismissText,
+                dismissButtonText = "Dismiss",
                 onDismissClick = { dismissed = true }
             )
         }
 
-        onNodeWithText(dismissText).performClick()
+        onNodeWithTag(AppDialogTags.DISMISS_BUTTON).assertIsDisplayed().performClick()
 
         assertTrue(dismissed, "The onDismissClick callback should have been triggered")
+    }
+
+    @Test
+    fun shouldDisplayBothButtonsWhenDismissProvided() = runComposeUiTest {
+        setContent {
+            AppDialog(
+                onDismissRequest = {},
+                confirmButtonText = "Confirm",
+                onConfirmClick = {},
+                dismissButtonText = "Dismiss",
+                onDismissClick = {}
+            )
+        }
+
+        onNodeWithTag(AppDialogTags.CONFIRM_BUTTON).assertIsDisplayed()
+        onNodeWithTag(AppDialogTags.DISMISS_BUTTON).assertIsDisplayed()
+    }
+
+    @Test
+    fun shouldRespectCustomTestTags() = runComposeUiTest {
+        val customConfirmTag = "my_dialog_confirm"
+        val customDismissTag = "my_dialog_dismiss"
+
+        setContent {
+            AppDialog(
+                onDismissRequest = {},
+                confirmButtonText = "Confirm",
+                onConfirmClick = {},
+                dismissButtonText = "Dismiss",
+                onDismissClick = {},
+                confirmTestTag = customConfirmTag,
+                dismissTestTag = customDismissTag,
+            )
+        }
+
+        onNodeWithTag(customConfirmTag).assertIsDisplayed()
+        onNodeWithTag(customDismissTag).assertIsDisplayed()
     }
 }
