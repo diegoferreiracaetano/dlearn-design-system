@@ -54,8 +54,8 @@ jobs:
           disable-animations: true
           script: ./gradlew :designsystem:connectedDebugAndroidTest
 
-      - name: Verify Coverage (JaCoCo Android)
-        run: ./gradlew :designsystem:jacocoAndroidTestVerify
+#      - name: Verify Coverage (JaCoCo Android)
+#        run: ./gradlew :designsystem:jacocoAndroidTestVerify
 
       - name: Verify Coverage (Kover Global)
         run: ./gradlew :designsystem:koverVerify

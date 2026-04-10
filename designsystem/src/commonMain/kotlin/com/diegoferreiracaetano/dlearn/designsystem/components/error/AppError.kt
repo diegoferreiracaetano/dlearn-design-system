@@ -42,7 +42,6 @@ fun AppError(
     primaryTestTag: String = AppFeedbackTags.PRIMARY_BUTTON,
     secondaryTestTag: String = AppFeedbackTags.SECONDARY_BUTTON,
 ) {
-
     AppFeedback(
         modifier = modifier,
         title = errorData.title,

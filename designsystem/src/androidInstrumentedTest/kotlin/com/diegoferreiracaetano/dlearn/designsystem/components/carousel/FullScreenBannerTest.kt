@@ -31,7 +31,7 @@ class FullScreenBannerTest {
         var watchClicked = false
         var addClicked = false
         val title = "Video Title"
-        
+
         setContent {
             FullScreenVideo(
                 title = title,
@@ -43,8 +43,7 @@ class FullScreenBannerTest {
         }
 
         onNodeWithText(title).assertIsDisplayed()
-        
-        // Use strings from strings.xml
+
         onNodeWithText("Assistir", ignoreCase = true).performClick()
         assertTrue(watchClicked, "Watch click should be triggered")
 

@@ -5,20 +5,21 @@ import androidx.compose.runtime.remember
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.usePinned
+import platform.UIKit.UIApplication
 import platform.UIKit.UIImage
 import platform.UIKit.UIImagePickerController
 import platform.UIKit.UIImagePickerControllerDelegateProtocol
 import platform.UIKit.UIImagePickerControllerSourceType
 import platform.UIKit.UINavigationControllerDelegateProtocol
-import platform.UIKit.UIApplication
-import platform.posix.memcpy
 import platform.darwin.NSObject
+import platform.posix.memcpy
 
 @OptIn(ExperimentalForeignApi::class)
 @Composable
 actual fun rememberImagePickerLauncher(onImagePicked: (ByteArray) -> Unit): ImagePickerLauncher {
     val delegate = remember {
-        object : NSObject(),
+        object :
+            NSObject(),
             UIImagePickerControllerDelegateProtocol,
             UINavigationControllerDelegateProtocol {
             override fun imagePickerController(

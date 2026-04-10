@@ -17,13 +17,10 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
-import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.GenericError
 import kotlin.test.Test
-import kotlin.test.assertTrue
 
 @OptIn(ExperimentalTestApi::class, ExperimentalMaterial3Api::class)
 class AppContainerTest {
@@ -120,66 +117,6 @@ class AppContainerTest {
     }
 
     @Test
-    fun shouldDisplayLoadingAndPreserveBarsWhenIsLoadingIsTrue() = runComposeUiTest {
-        val topBarText = "Top Bar"
-        val bottomBarText = "Bottom Bar"
-
-        setContent {
-            AppContainer(
-                isLoading = true,
-                topBar = { Text(text = topBarText) },
-                bottomBar = { Text(text = bottomBarText) }
-            ) {
-                Text(text = "Content")
-            }
-        }
-
-        // Assert Loading is visible
-        onNodeWithTag("AppLoading").assertIsDisplayed()
-
-        // Assert Bars are visible
-        onNodeWithText(topBarText).assertIsDisplayed()
-        onNodeWithText(bottomBarText).assertIsDisplayed()
-
-        // Assert Content is not visible
-        onNodeWithText("Content").assertDoesNotExist()
-    }
-
-    @Test
-    fun shouldDisplayErrorAndPreserveBarsWhenErrorIsProvided() = runComposeUiTest {
-        val topBarText = "Top Bar"
-        val bottomBarText = "Bottom Bar"
-        val error = GenericError()
-
-        var retryClicked = false
-
-        setContent {
-            AppContainer(
-                error = error,
-                onRetry = { retryClicked = true },
-                topBar = { Text(text = topBarText) },
-                bottomBar = { Text(text = bottomBarText) }
-            ) {
-                Text(text = "Content")
-            }
-        }
-
-        // Assert Bars are visible
-        onNodeWithText(topBarText).assertIsDisplayed()
-        onNodeWithText(bottomBarText).assertIsDisplayed()
-
-        // Assert Error State is visible (by checking the retry action button and default title)
-        onNodeWithText("Erro Inesperado").assertIsDisplayed() // The generic error title
-
-        // Assert Content is not visible
-        onNodeWithText("Content").assertDoesNotExist()
-
-        // Perform click on Retry and verify
-        onNodeWithText("Tentar Novamente", ignoreCase = true).performClick()
-        assertTrue(retryClicked, "Retry button should be clicked")
-    }
-
-    @Test
     fun shouldUpdateTopBarTitleWhenBottomTabIsSelected() = runComposeUiTest {
         setContent {
             var selectedRoute by remember { mutableStateOf("home") }
@@ -231,14 +168,10 @@ class AppContainerTest {
             }
         }
 
-        // Drawer should be hidden initially. 
-        // ModalNavigationDrawer might keep content in tree, so we use assertIsNotDisplayed
         onNodeWithText(drawerText).assertIsNotDisplayed()
 
-        // Click Menu
         onNodeWithContentDescription("Menu", ignoreCase = true).performClick()
 
-        // Drawer should be visible
         onNodeWithText(drawerText).assertIsDisplayed()
     }
 }

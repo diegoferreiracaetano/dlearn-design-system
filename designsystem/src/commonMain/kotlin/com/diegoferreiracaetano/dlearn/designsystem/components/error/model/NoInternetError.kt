@@ -2,9 +2,9 @@ package com.diegoferreiracaetano.dlearn.designsystem.components.error.model
 
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.ic_error_no_internet
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.error_no_internet_title
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.error_no_internet_description
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.error_no_internet_title
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.ic_error_no_internet
 import org.jetbrains.compose.resources.StringResource
 
 /**

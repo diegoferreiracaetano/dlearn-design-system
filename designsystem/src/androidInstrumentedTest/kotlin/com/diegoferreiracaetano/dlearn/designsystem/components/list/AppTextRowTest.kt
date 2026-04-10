@@ -7,7 +7,6 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_back
-import org.jetbrains.compose.resources.stringResource
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)

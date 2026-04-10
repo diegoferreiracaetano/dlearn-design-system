@@ -73,16 +73,16 @@ class AppMovieActionsTest {
 
         // Initially collapsed, should see "Onde assistir"
         composeTestRule.onNodeWithText("Onde assistir").assertIsDisplayed()
-        
+
         // Click to expand
         composeTestRule.onNodeWithText("Onde assistir").performClick()
-        
+
         // Now should see provider names
         composeTestRule.onNodeWithText("Netflix").assertIsDisplayed()
-        
+
         // Click on a provider item
         composeTestRule.onNodeWithText("Netflix").performClick()
-        
+
         assert(clickedProvider?.name == "Netflix")
     }
 }

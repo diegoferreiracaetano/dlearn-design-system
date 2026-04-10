@@ -2,9 +2,9 @@ package com.diegoferreiracaetano.dlearn.designsystem.components.error.model
 
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.ic_error_auth
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.error_challenge_title
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.error_challenge_description
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.error_challenge_title
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.ic_error_auth
 import org.jetbrains.compose.resources.StringResource
 
 /**

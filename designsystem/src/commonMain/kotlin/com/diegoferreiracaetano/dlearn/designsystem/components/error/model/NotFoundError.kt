@@ -2,9 +2,9 @@ package com.diegoferreiracaetano.dlearn.designsystem.components.error.model
 
 import com.diegoferreiracaetano.dlearn.designsystem.components.image.AppImageSource
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.ic_error_not_found
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.error_not_found_title
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.error_not_found_description
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.error_not_found_title
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.ic_error_not_found
 import org.jetbrains.compose.resources.StringResource
 
 /**

@@ -1,10 +1,9 @@
 package com.diegoferreiracaetano.dlearn.designsystem.components.loading
 
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.hasProgressBarRangeInfo
 import androidx.compose.ui.test.runComposeUiTest
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import kotlin.test.Test
@@ -14,13 +13,12 @@ class AppLoadingTest {
 
     @Test
     fun shouldDisplayLoadingWhenRendered() = runComposeUiTest {
-        val testTag = "AppLoading"
         setContent {
             DLearnTheme {
-                AppLoading(modifier = Modifier.testTag(testTag))
+                AppLoading()
             }
         }
 
-        onNodeWithTag(testTag).assertIsDisplayed()
+        onNode(hasProgressBarRangeInfo(ProgressBarRangeInfo.Indeterminate)).assertIsDisplayed()
     }
 }

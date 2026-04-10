@@ -22,7 +22,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.flow.distinctUntilChanged
 
-
 /**
  * A custom [LazyColumn] that supports an optional collapsible header.
  * The header hides when scrolling down and shows when scrolling up or reaching the top.

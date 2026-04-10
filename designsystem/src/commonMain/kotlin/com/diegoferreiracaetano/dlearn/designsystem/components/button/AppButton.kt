@@ -138,6 +138,7 @@ fun AppButton(
             ButtonBorderWidth,
             defaultContentColor
         )
+
         ButtonType.TERTIARY -> BorderStroke(
             ButtonBorderWidth,
             finalBackgroundColor
@@ -175,7 +176,7 @@ private fun AppButtonInternal(
     border: BorderStroke?,
 ) {
     val isIconOnly = text.isNullOrEmpty()
-    
+
     val buttonModifier = if (isIconOnly) {
         modifier.size(ButtonHeight)
     } else {

@@ -41,8 +41,8 @@ import com.diegoferreiracaetano.dlearn.designsystem.components.image.toAppImageS
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.action_watch
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.ic_netflix
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.movie_where_to_watch
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.movie_watch_provider_more
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.movie_where_to_watch
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -230,10 +230,11 @@ private fun Header(
         )
 
         Icon(
-            imageVector = if (isExpanded)
+            imageVector = if (isExpanded) {
                 Icons.Default.KeyboardArrowUp
-            else
-                Icons.Default.KeyboardArrowDown,
+            } else {
+                Icons.Default.KeyboardArrowDown
+            },
             contentDescription = null
         )
     }

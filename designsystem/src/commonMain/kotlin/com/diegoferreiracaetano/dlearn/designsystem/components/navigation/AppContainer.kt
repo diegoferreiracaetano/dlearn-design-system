@@ -50,9 +50,6 @@ import androidx.compose.ui.unit.dp
 import com.diegoferreiracaetano.dlearn.designsystem.components.alert.AppSnackbarHost
 import com.diegoferreiracaetano.dlearn.designsystem.components.chip.AppChipGroup
 import com.diegoferreiracaetano.dlearn.designsystem.components.chip.AppChipItem
-import com.diegoferreiracaetano.dlearn.designsystem.components.error.AppError
-import com.diegoferreiracaetano.dlearn.designsystem.components.error.model.AppErrorData
-import com.diegoferreiracaetano.dlearn.designsystem.components.loading.AppLoading
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -61,9 +58,6 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 private fun AppScaffoldContent(
     modifier: Modifier = Modifier,
-    isLoading: Boolean = false,
-    error: AppErrorData? = null,
-    onRetry: (() -> Unit)? = null,
     topBar: @Composable (() -> Unit)? = null,
     searchBar: @Composable (() -> Unit)? = null,
     chipGroup: @Composable (() -> Unit)? = null,
@@ -110,26 +104,12 @@ private fun AppScaffoldContent(
                 .fillMaxSize(),
             contentAlignment = Alignment.TopCenter
         ) {
-            when {
-                isLoading -> {
-                    AppLoading(modifier = baseModifier)
-                }
-                error != null -> {
-                    AppError(
-                        errorData = error,
-                        modifier = baseModifier,
-                        onPrimary = onRetry
-                    )
-                }
-                else -> {
-                    AnimatedContent(
-                        targetState = content,
-                        transitionSpec = { fadeIn() togetherWith fadeOut() },
-                        label = "ContentTransition"
-                    ) { currentContent ->
-                        currentContent(baseModifier)
-                    }
-                }
+            AnimatedContent(
+                targetState = content,
+                transitionSpec = { fadeIn() togetherWith fadeOut() },
+                label = "ContentTransition"
+            ) { currentContent ->
+                currentContent(baseModifier)
             }
         }
     }
@@ -142,9 +122,6 @@ private fun AppScaffoldContent(
  * loading/error states.
  *
  * @param modifier The [Modifier] to be applied to the container.
- * @param isLoading Displays a centered loading state if true.
- * @param error Displays an error state if provided.
- * @param onRetry Callback for the primary action in the error state.
  * @param topBar Optional top app bar composable.
  * @param searchBar Optional search bar composable.
  * @param chipGroup Optional chip group composable.
@@ -159,9 +136,6 @@ private fun AppScaffoldContent(
 @Composable
 fun AppContainer(
     modifier: Modifier = Modifier,
-    isLoading: Boolean = false,
-    error: AppErrorData? = null,
-    onRetry: (() -> Unit)? = null,
     topBar: @Composable (() -> Unit)? = null,
     searchBar: @Composable (() -> Unit)? = null,
     chipGroup: @Composable (() -> Unit)? = null,
@@ -187,9 +161,6 @@ fun AppContainer(
                     content = {
                         AppScaffoldContent(
                             modifier = Modifier,
-                            isLoading = isLoading,
-                            error = error,
-                            onRetry = onRetry,
                             topBar = topBar,
                             searchBar = searchBar,
                             chipGroup = chipGroup,
@@ -221,9 +192,6 @@ fun AppContainer(
                     content = {
                         AppScaffoldContent(
                             modifier = Modifier,
-                            isLoading = isLoading,
-                            error = error,
-                            onRetry = onRetry,
                             topBar = topBarWithMenu,
                             searchBar = searchBar,
                             chipGroup = chipGroup,
@@ -239,9 +207,6 @@ fun AppContainer(
     } else {
         AppScaffoldContent(
             modifier = modifier,
-            isLoading = isLoading,
-            error = error,
-            onRetry = onRetry,
             topBar = topBar,
             searchBar = searchBar,
             chipGroup = chipGroup,

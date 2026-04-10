@@ -27,9 +27,7 @@ class AppContinueWatchingCarouselTest {
         }
 
         onNodeWithText(title).assertIsDisplayed()
-        
-        // Use assertExists() because items in a horizontal carousel might be partially or fully off-screen
-        // depending on the screen size, which would cause assertIsDisplayed() to fail.
+
         onNodeWithText("Episode 1").assertExists()
         onNodeWithText("Episode 2").assertExists()
     }

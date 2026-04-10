@@ -30,16 +30,13 @@ class AppErrorTest {
                 onSecondary = { secondaryClicked = true }
             )
         }
-        
-        // Assert texts from GenericError (Actual strings from strings.xml)
+
         onNodeWithText("Erro Inesperado").assertIsDisplayed()
         onNodeWithText("Ocorreu um erro inesperado. Por favor, tente novamente.").assertIsDisplayed()
-        
-        // Primary button ("Tentar novamente")
+
         onNodeWithText("Tentar novamente", ignoreCase = true).assertIsDisplayed().performClick()
         assertTrue(primaryClicked, "Primary button was not clicked")
 
-        // Secondary button ("Fechar")
         onNodeWithText("Fechar", ignoreCase = true).assertIsDisplayed().performClick()
         assertTrue(secondaryClicked, "Secondary button was not clicked")
     }
@@ -61,20 +58,16 @@ class AppErrorTest {
                 onClose = { closeClicked = true }
             )
         }
-        
-        // Assert texts from GenericError
+
         onNodeWithText("Erro Inesperado").assertIsDisplayed()
         onNodeWithText("Ocorreu um erro inesperado. Por favor, tente novamente.").assertIsDisplayed()
-        
-        // Primary button
+
         onNodeWithText("Tentar novamente", ignoreCase = true).assertIsDisplayed().performClick()
         assertTrue(primaryClicked, "Primary button was not clicked")
 
-        // Secondary button
         onNodeWithText("Fechar", ignoreCase = true).assertIsDisplayed().performClick()
         assertTrue(secondaryClicked, "Secondary button was not clicked")
 
-        // Close button (TopBar)
         onNodeWithContentDescription("Fechar", ignoreCase = true).assertIsDisplayed().performClick()
         assertTrue(closeClicked, "Close button was not clicked")
     }

@@ -12,8 +12,8 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.runComposeUiTest
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.Res
-import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.title_email
 import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.email_message_validation
+import com.diegoferreiracaetano.dlearn.designsystem.generated.resources.title_email
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals

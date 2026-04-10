@@ -16,8 +16,8 @@ actual class NetworkManager(private val context: Context) {
 
         return if (activeNetwork != null) {
             activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                    activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
-                    activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
         } else {
             false
         }

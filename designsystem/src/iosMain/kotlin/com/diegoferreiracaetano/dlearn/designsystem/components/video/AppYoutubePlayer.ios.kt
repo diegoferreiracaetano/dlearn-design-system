@@ -5,15 +5,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.interop.UIKitView
-import platform.Foundation.NSURL
-import platform.WebKit.WKWebView
 import kotlinx.cinterop.ExperimentalForeignApi
-import platform.Foundation.NSMutableURLRequest
-import platform.Foundation.addValue
-import platform.WebKit.WKWebViewConfiguration
-import platform.CoreGraphics.CGRectZero
 import kotlinx.cinterop.cValue
 import platform.CoreGraphics.CGRect
+import platform.CoreGraphics.CGRectZero
+import platform.Foundation.NSMutableURLRequest
+import platform.Foundation.NSURL
+import platform.Foundation.addValue
+import platform.WebKit.WKWebView
+import platform.WebKit.WKWebViewConfiguration
 
 @OptIn(ExperimentalForeignApi::class)
 @Composable

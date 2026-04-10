@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 /**
- * JVM implementation of [AppYoutubePlayer]. 
+ * JVM implementation of [AppYoutubePlayer].
  * Since WebView support varies on Desktop, this displays a placeholder.
  */
 @Composable

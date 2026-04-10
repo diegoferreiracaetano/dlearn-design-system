@@ -168,7 +168,7 @@ fun AppDialogPreview() {
             onDismissRequest = {},
             title = "Are you sure ?",
             description = "Ullamcorper imperdiet urna id non sed est sem. " +
-                    "Rhoncus amet, enim purus gravida donec aliquet.",
+                "Rhoncus amet, enim purus gravida donec aliquet.",
             confirmButtonText = "Cancel",
             onConfirmClick = {},
             dismissButtonText = "Log Out",

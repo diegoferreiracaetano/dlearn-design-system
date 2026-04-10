@@ -1,8 +1,6 @@
 package com.diegoferreiracaetano.dlearn.designsystem.util
 
-import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -10,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import java.io.ByteArrayOutputStream
-import java.io.InputStream
 
 @Composable
 actual fun rememberImagePickerLauncher(onImagePicked: (ByteArray) -> Unit): ImagePickerLauncher {
@@ -23,7 +20,7 @@ actual fun rememberImagePickerLauncher(onImagePicked: (ByteArray) -> Unit): Imag
             val bytes = context.contentResolver.openInputStream(it)?.use { input ->
                 input.readBytes()
             }
-            bytes?.let { onImagePicked(it) }
+            bytes?.let { byteArray -> onImagePicked(byteArray) }
         }
     }
 

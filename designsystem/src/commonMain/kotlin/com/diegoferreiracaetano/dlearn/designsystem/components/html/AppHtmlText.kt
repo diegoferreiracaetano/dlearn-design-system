@@ -50,7 +50,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  * @param color The base color for the text. If [Color.Unspecified], uses the default from [style].
  * @param linkColor The color to be used for <a> tags. Defaults to the theme's primary color.
  * @param headingColor The color to be used for headings. Defaults to onSurface.
- * @param onLinkClick Optional callback for when a link (<a> tag) is clicked. 
+ * @param onLinkClick Optional callback for when a link (<a> tag) is clicked.
  * If provided, overrides default URI handling.
  */
 @Composable
@@ -152,6 +152,7 @@ internal object HtmlParser {
                 SpanStyle(textDecoration = TextDecoration.LineThrough),
                 stack
             )
+
             "p" -> if (length > 0) append("\n")
             "a" -> handleAnchorTag(attrs, stack, styleConfig)
             "h1" -> handleHeadingTag(tagName, styleConfig.h1Size, styleConfig.headingColor, stack)
@@ -264,12 +265,12 @@ fun AppHtmlTextPreview() {
         ) {
             AppHtmlText(
                 html = "<h3>Terms</h3>" +
-                        "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-                        "Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. </p>" +
-                        "<h3>Changes to the Service and/or Terms:</h3>" +
-                        "<p><s><u>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-                        "Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. " +
-                        "Sapien, consequat ultrices morbi orci semper sit nulla.</u></s></p>"
+                    "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+                    "Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. </p>" +
+                    "<h3>Changes to the Service and/or Terms:</h3>" +
+                    "<p><s><u>Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+                    "Eget ornare quam vel facilisis feugiat amet sagittis arcu, tortor. " +
+                    "Sapien, consequat ultrices morbi orci semper sit nulla.</u></s></p>"
             )
 
             AppHtmlText(

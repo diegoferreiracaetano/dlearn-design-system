@@ -63,13 +63,14 @@ fun AppExpandableText(
     var clickable by remember { mutableStateOf(false) }
     var lastCharIndex by remember { mutableStateOf(0) }
 
-    Box(modifier = modifier
-        .fillMaxWidth()
-        .animateContentSize()
-        .clickable(enabled = clickable) {
-            isExpanded = !isExpanded
-        }
-        .testTag(testTag)
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .animateContentSize()
+            .clickable(enabled = clickable) {
+                isExpanded = !isExpanded
+            }
+            .testTag(testTag)
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -128,10 +129,10 @@ fun AppExpandableTextPreview() {
     DLearnTheme {
         AppExpandableText(
             text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-                    "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
-                    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi " +
-                    "ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit " +
-                    "in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+                "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi " +
+                "ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit " +
+                "in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
         )
     }
 }

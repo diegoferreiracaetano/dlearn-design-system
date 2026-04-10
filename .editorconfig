@@ -1,0 +1,15 @@
+root = true
+
+[*.{kt,kts}]
+indent_size = 4
+max_line_length = 120
+insert_final_newline = true
+
+[**/test/**.kt]
+max_line_length = off
+
+[**/commonTest/**.kt]
+max_line_length = off
+
+[**/jvmTest/**.kt]
+max_line_length = off

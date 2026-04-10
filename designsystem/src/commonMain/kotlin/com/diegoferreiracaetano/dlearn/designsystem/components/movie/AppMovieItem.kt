@@ -36,7 +36,7 @@ private val VerticalPosterHeight = 200.dp
 
 /**
  * Data class representing a movie or series item in the design system.
- * 
+ *
  * @property id Unique identifier for the movie.
  * @property title The name of the movie or series.
  * @property imageSource The source for the poster image (Resource, URL, etc).

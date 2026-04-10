@@ -7,7 +7,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import com.diegoferreiracaetano.dlearn.designsystem.theme.DLearnTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -20,8 +19,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun AppLoading(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .testTag("AppLoading"),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

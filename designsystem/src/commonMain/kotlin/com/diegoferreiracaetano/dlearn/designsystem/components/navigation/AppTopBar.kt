@@ -204,7 +204,6 @@ private fun AppTopBarDefault(
     profileImageSource: AppImageSource?,
     onProfileClick: (() -> Unit)?,
 ) {
-
     CenterAlignedTopAppBar(
         modifier = modifier,
         title = {

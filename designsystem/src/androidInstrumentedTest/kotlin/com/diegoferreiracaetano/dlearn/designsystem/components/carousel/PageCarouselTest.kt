@@ -16,7 +16,7 @@ class PageCarouselTest {
     @Test
     fun shouldDisplayContentOfFirstPageInitially() = runComposeUiTest {
         val page1Info = "Welcome to DLearn"
-        
+
         setContent {
             PageCarousel(
                 pageCount = 2,
@@ -35,7 +35,7 @@ class PageCarouselTest {
     @Test
     fun shouldNavigateToNextPageWhenButtonIsClicked() = runComposeUiTest {
         val page2Info = "Learn Android Development"
-        
+
         setContent {
             PageCarousel(
                 pageCount = 2,
@@ -48,7 +48,7 @@ class PageCarouselTest {
         }
 
         onNodeWithText("Page 1").assertIsDisplayed()
-        
+
         onNodeWithTag(PAGE_CAROUSEL_NEXT_BUTTON_TAG).performClick()
 
         waitForIdle()
@@ -60,7 +60,7 @@ class PageCarouselTest {
     @Test
     fun shouldTriggerOnFinishWhenClickingButtonOnLastPage() = runComposeUiTest {
         var finished = false
-        
+
         setContent {
             PageCarousel(
                 pageCount = 1,

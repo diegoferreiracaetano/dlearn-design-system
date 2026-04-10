@@ -4,15 +4,88 @@ plugins {
     alias(libs.plugins.composeMultiplatform) apply false
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
-    alias(libs.plugins.detekt) apply false
+    alias(libs.plugins.detekt)
     alias(libs.plugins.touchlab.kmmbridge) apply false
     alias(libs.plugins.kover) apply false
 }
 
-// Importa apenas o Detekt (Lint gratuito)
-apply(from = "gradle/detekt.gradle")
+val detektVersion = libs.versions.detekt.get()
 
 subprojects {
+
     group = findProperty("GROUP") as String? ?: "com.diegoferreiracaetano.dlearn"
     version = findProperty("VERSION_NAME") as String? ?: "0.0.1"
+
+    apply(plugin = "io.gitlab.arturbosch.detekt")
+    apply(plugin = "org.jetbrains.kotlinx.kover")
+
+    dependencies {
+        "detektPlugins"("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
+    }
+
+    detekt {
+        config.setFrom("${rootDir}/config/detekt/detekt.yml")
+        buildUponDefaultConfig = true
+        allRules = false
+        parallel = true
+        autoCorrect = project.hasProperty("detekt.autoCorrect")
+    }
+
+    tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+        jvmTarget = "17"
+        exclude("**/build/**")
+        exclude("**/resources/**")
+        exclude("**/generated/**")
+
+        val taskName = name.lowercase()
+        val baselineFile = when {
+            taskName.contains("main") -> file("${rootDir}/config/detekt/baseline-${project.name}-main.xml")
+            taskName.contains("test") -> file("${rootDir}/config/detekt/baseline-${project.name}-test.xml")
+            taskName.contains("debug") -> file("${rootDir}/config/detekt/baseline-${project.name}-debug.xml")
+            taskName.contains("release") -> file("${rootDir}/config/detekt/baseline-${project.name}-release.xml")
+            else -> file("${rootDir}/config/detekt/baseline-${project.name}.xml")
+        }
+
+        if (baselineFile.exists()) {
+            baseline.set(baselineFile)
+        }
+
+        reports {
+            html.required = true
+            xml.required = true
+            txt.required = false
+        }
+    }
+
+    tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
+        jvmTarget = "17"
+        val taskName = name.lowercase()
+        val baselineFile = when {
+            taskName.contains("main") -> file("${rootDir}/config/detekt/baseline-${project.name}-main.xml")
+            taskName.contains("test") -> file("${rootDir}/config/detekt/baseline-${project.name}-test.xml")
+            taskName.contains("debug") -> file("${rootDir}/config/detekt/baseline-${project.name}-debug.xml")
+            taskName.contains("release") -> file("${rootDir}/config/detekt/baseline-${project.name}-release.xml")
+            else -> file("${rootDir}/config/detekt/baseline-${project.name}.xml")
+        }
+        baseline.set(baselineFile)
+    }
 }
+
+tasks.register("detektAll") {
+    group = "verification"
+    description = "Runs Detekt on all subprojects"
+
+    dependsOn(subprojects.map { sub ->
+        sub.tasks.withType<io.gitlab.arturbosch.detekt.Detekt>()
+    })
+}
+
+tasks.register("detektBaselineAll") {
+    group = "verification"
+    description = "Generates Detekt baseline for all subprojects"
+
+    dependsOn(subprojects.map { sub ->
+        sub.tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>()
+    })
+}
+

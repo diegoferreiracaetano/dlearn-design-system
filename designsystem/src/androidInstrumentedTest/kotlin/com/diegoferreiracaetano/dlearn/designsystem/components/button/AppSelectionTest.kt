@@ -38,10 +38,10 @@ class AppSelectionTest {
             AppSelectionOption("Option 2", 2, Color.Blue)
         )
         var selected: AppSelectionOption? = null
-        
+
         setContent {
             AppSelection(
-                expanded = true, // Force expanded to show options
+                expanded = true,
                 selectedOption = options[0],
                 options = options,
                 onExpandedChange = {},

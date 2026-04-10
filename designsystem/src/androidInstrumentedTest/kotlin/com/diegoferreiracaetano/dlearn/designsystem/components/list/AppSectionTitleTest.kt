@@ -27,8 +27,5 @@ class AppSectionTitleTest {
         setContent {
             AppSectionTitle(title = Res.string.action_back)
         }
-        
-        // Verifies component renders with resource
-        // Actual text check would depend on resource resolution in test environment
     }
 }

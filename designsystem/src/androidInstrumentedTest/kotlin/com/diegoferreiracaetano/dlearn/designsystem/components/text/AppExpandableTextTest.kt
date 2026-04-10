@@ -44,11 +44,8 @@ class AppExpandableTextTest {
             }
         }
 
-        // Initially it should be clickable if it overflows (handled by internal logic)
-        // We perform a click to test the state change
         composeTestRule.onNodeWithTag(AppExpandableTextTags.TEXT_CONTAINER).performClick()
-        
-        // After click, it should still be displayed
+
         composeTestRule.onNodeWithTag(AppExpandableTextTags.TEXT_CONTAINER).assertIsDisplayed()
     }
 }
