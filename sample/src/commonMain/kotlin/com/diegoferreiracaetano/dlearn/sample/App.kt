@@ -15,7 +15,7 @@ fun App(darkTheme: Boolean = isSystemInDarkTheme()) {
     val isDarkTheme by themeViewModel.isDarkTheme.collectAsState()
 
     DLearnTheme(darkTheme = isDarkTheme) {
-        ComponentGalleryApp(themeViewModel)
+        DLearnCatalogApp(themeViewModel)
     }
 }
 
